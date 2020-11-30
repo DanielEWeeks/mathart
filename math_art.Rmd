@@ -1,0 +1,603 @@
+---
+title: "Math Art Fun"
+author: "Daniel E. Weeks"
+date: "`r format(Sys.time(), '%B %d, %Y, %R')`"
+header-includes:
+- \usepackage{pdflscape}
+- \newcommand{\blandscape}{\begin{landscape}}
+- \newcommand{\elandscape}{\end{landscape}}
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
+    toc_depth: 3
+  html_document:
+    df_print: paged
+    toc: true
+    number_sections: true
+    toc_depth: '3'
+    code_folding: show
+#   md_extensions: +raw_attribute
+---
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+require(knitr)
+# Set so that long lines in R will be wrapped:
+opts_chunk$set(tidy.opts=list(width.cutoff=80),tidy=TRUE)
+```
+
+```{r,echo=FALSE}
+# In the event of a crash, save the working space on exit:
+save_all <- function() {
+  save.image("recover.RData")
+}
+options(error = save_all)
+```
+
+
+# Load Libraries
+
+```{r load_libraries,message=FALSE}
+library(mathart)
+# library(ggart)
+library(ggforce)
+library(Rcpp)
+library(tidyverse)
+```
+
+# Input directory and files 
+
+```{r}
+# Print the working directory
+getwd()
+```
+The input files used in this analysis are ... and can be found in ... 
+
+# The mathart R package
+
+These are drawn with functions from the `mathart` R package from
+
+https://github.com/marcusvolz/mathart
+
+# Mollusc
+
+```
+df <- mollusc()
+df1 <- df %>% mutate(id = 1)
+df2 <- df %>% mutate(id = 2)
+df3 <- df %>% mutate(id = 3)
+
+p <- ggplot() +
+  geom_point(aes(x, y), df1, size = 0.03, alpha = 0.03) +
+  geom_path( aes(x, y), df1, size = 0.03, alpha = 0.03) +
+  geom_point(aes(x, z), df2, size = 0.03, alpha = 0.03) +
+  geom_path( aes(x, z), df2, size = 0.03, alpha = 0.03) +
+  geom_point(aes(y, z), df3, size = 0.03, alpha = 0.03) +
+  geom_path( aes(y, z), df3, size = 0.03, alpha = 0.03) +
+  facet_wrap(~id, nrow = 2, scales = "free") +
+  theme_blankcanvas(margin_cm = 0.5)
+
+p
+```
+
+```{r}
+# Set parameters (see mathart::mollusc() documentation for details)
+n_s <- 650L
+n_t <- 2000L
+n <- 1000
+alpha <- 82.6
+beta <- 1.515
+phi <- 14.3
+mu <- 0
+Omega <- 0
+s_min <- -193.8
+s_max <- 69.4
+A <- 7.031
+a <- 2.377
+b <- 6.42
+P <- 0
+W_1 <- 1
+W_2 <- 1
+N <- 0
+L <- 0
+D <- 1
+theta_start <- 0
+theta_end <- 10*pi
+
+# Generate data
+df <- mollusc(n_s = n_s, n_t = n_t,
+              alpha = alpha, beta = beta, phi = phi, mu = mu, Omega = Omega, s_min = s_min, s_max = s_max,
+              A = A, a = a, b = b, P = P, W_1 = W_1, W_2 = W_2, N = N, L = L, D = D,
+              theta_start = theta_start, theta_end = theta_end)
+
+# Create plot
+p <- ggplot() +
+  geom_point(aes(x, z), df, size = 0.03, alpha = 0.03) +
+  geom_path(aes(x, z), df, size = 0.03, alpha = 0.03) +
+  coord_equal() +
+  theme_blankcanvas(margin_cm = 0)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+```{r}
+df <- mollusc()
+
+p <- ggplot() +
+  geom_point(aes(x, z), df, size = 0.03, alpha = 0.03) +
+  geom_path(aes(x, z), df, size = 0.03, alpha = 0.03) +
+  coord_equal() +
+  theme_blankcanvas(margin_cm = 0)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+# Harmonograph
+
+```{r}
+df <- harmonograph(A1 = 1, A2 = 1, A3 = 1, A4 = 1,
+                    d1 = 0.004, d2 = 0.0065, d3 = 0.008, d4 = 0.019,
+                    f1 = 3.001, f2 = 2, f3 = 3, f4 = 2,
+                    p1 = 0, p2 = 0, p3 = pi/2, p4 = 3*pi/2) %>% mutate(id = 1)
+
+p <- ggplot() +
+  geom_path(aes(x, y), df, alpha = 0.25, size = 0.5) +
+  coord_equal() +
+  theme_blankcanvas(margin_cm = 0)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+# Lissajous curves
+
+```{r}
+set.seed(1)
+
+df <- 1:20 %>% map_df(~lissajous(a = runif(1, 0, 10), A = runif(1, 0, 1)), .id = "id")
+
+p <- ggplot() +
+  geom_path(aes(x, y), df, size = 0.25, lineend = "round") +
+  facet_wrap(~id, nrow = 2) +
+  coord_equal() +
+  theme_blankcanvas(margin_cm = 0.5)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+# Rose curves
+
+Rose curves defined by $r=cos(k\theta)$, for various values of $k=n/d$, $n$ across, $d$ down.
+
+```{r}
+df <- data.frame(x = numeric(0), y = numeric(0), n = integer(0), d = integer(0))
+
+for(n in 1:6) {
+  for(d in 1:6) {
+    result <- rose_curve(n, d) %>% mutate(n = n, d = d)
+    df <- rbind(df, result)
+  }
+}
+
+p <- ggplot() +
+  geom_path(aes(x, y), df, size = 0.35, lineend = "round") +
+  facet_grid(d ~ n) +
+  coord_equal() +
+  theme_blankcanvas(margin_cm = 1)
+
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+# Fractal ferns
+
+```{r}
+n <- 25000
+
+params1 <- data.frame(
+  a <- c(0, 0.85, 0.2, -0.15),
+  b <- c(0, 0.04, -0.26, 0.28),
+  c <- c(0, -0.04, 0.23, 0.26),
+  d <- c(0.16, 0.85, 0.22, 0.24),
+  e <- c(0, 0, 0, 0),
+  f <- c(0, 1.6, 1.6, 0.44),
+  p <- c(0.01, 0.85, 0.07, 0.07)
+)
+
+params2 <- data.frame(
+  a <- c(0, 0.85, 0.09, -0.09),
+  b <- c(0, 0.02, -0.28, 0.28),
+  c <- c(0, -0.02, 0.3, 0.3),
+  d <- c(0.25, 0.83, 0.11, 0.09),
+  e <- c(0, 0, 0, 0),
+  f <- c(-0.14, 1, 0.6, 0.7),
+  p <- c(0.02, 0.84, 0.07, 0.07)
+)
+
+df1 <- fractal_fern(n = n, a = params1$a, b = params1$b, c_ = params1$c, d = params1$d, e = params1$e,
+                   f = params1$f, p = params1$p) %>% mutate(id = 1)
+
+df2 <- fractal_fern(n = n, a = params2$a, b = params2$b, c_ = params2$c, d = params2$d, e = params2$e,
+                    f = params2$f, p = params2$p) %>% mutate(id = 2)
+
+df <- rbind(df1, df2 %>% mutate(x = x*1.75, y = y*1.75))
+
+p <- ggplot() +
+  geom_point(aes(x, y), df, size = 0.03, alpha = 0.06) +
+  coord_equal() +
+  facet_wrap(~id, nrow = 1) +
+  theme_blankcanvas(margin_cm = 1)
+```
+
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+# Rapidly exploring random tree
+
+```{r}
+set.seed(5)
+tmp <- capture.output(df <- rapidly_exploring_random_tree(n=1000) %>% mutate(id = 1:nrow(.)))
+
+# Create plot
+p <- ggplot() +
+  geom_segment(aes(x, y, xend = xend, yend = yend, size = -id, alpha = -id), df, lineend = "round") +
+  coord_equal() +
+  scale_size_continuous(range = c(0.1, 0.75)) +
+  scale_alpha_continuous(range = c(0.1, 1)) +
+  theme_blankcanvas(margin_cm = 0)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+# Vertiginous Spiral
+
+https://www.r-bloggers.com/2018/09/tweetable-mathematical-art-with-r/
+
+```{r}
+# library(tidyverse)
+ID <- 1
+df <- data.frame(x=0, y=0 , value="black", id = ID)
+for (i in 2:500){
+  df[i,1] <- df[i-1,1]+((0.98)^i)*cos(i)
+  df[i,2] <- df[i-1,2]+((0.98)^i)*sin(i) 
+  df[i,3] <- ifelse(i %% 2 == 0, "white","black")
+  df[i,4] <- ifelse(i %% 3 == 1, ID <- ID + 1, ID)
+}
+
+col_list<-c("#FF222C", "#1DFBFF", "#FDFF24", "#2CFF18", "#FF38F4", "#C3C4C9", "#000000")
+col_list <- c("red", "chocolate4")
+col_list2 <- c("deepskyblue2", "peachpuff")
+
+
+ggplot(df, aes(x,y)) + 
+  geom_polygon(aes(col=value))+
+  theme_void() +
+  theme(legend.position = "none")
+
+ggplot(df, aes(x,y)) + 
+  geom_polygon(aes(col=value, group=id, fill=value))  +
+  scale_color_manual(values = col_list) +
+  scale_fill_manual(values = col_list2) +
+  theme_void() +
+  theme(legend.position = "none") 
+
+ggplot(df, aes(x,y, col=factor(id), fill=factor(id))) + 
+  geom_polygon(aes( group=id))+
+  theme_void() +
+  theme(legend.position = "none")
+```
+
+# Birds
+
+## Stork
+
+Refer to [Hamid's equations](https://www.huffingtonpost.com/entry/mathematical-birds_b_8876904.html)
+
+```{r}
+# df <- rbind(parrot() %>% mutate(id = 1),
+#            stork() %>% mutate(id = 2),
+#            magpie() %>% mutate(id = 3))
+
+df <- stork()
+
+p <- ggplot() +
+  geom_point(aes(x, y, alpha = r), df, size = 0.03) +
+# facet_wrap(~id, nrow = 2, scales = "free") +
+  scale_alpha_continuous(range = c(0.03, 0.06)) +
+  theme_blankcanvas(margin_cm = 1)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+## Parrot
+
+Refer to [Hamid's equations](https://www.huffingtonpost.com/entry/mathematical-birds_b_8876904.html)
+
+```{r}
+
+df <- parrot()
+
+p <- ggplot() +
+  geom_point(aes(x, y, alpha = r), df, size = 0.03) +
+# facet_wrap(~id, nrow = 2, scales = "free") +
+  scale_alpha_continuous(range = c(0.03, 0.06)) +
+  theme_blankcanvas(margin_cm = 1)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+## Magpie
+
+Refer to [Hamid's equations](https://www.huffingtonpost.com/entry/mathematical-birds_b_8876904.html)
+
+```{r}
+
+df <- magpie()
+
+p <- ggplot() +
+  geom_point(aes(x, y, alpha = r), df, size = 0.03) +
+# facet_wrap(~id, nrow = 2, scales = "free") +
+  scale_alpha_continuous(range = c(0.03, 0.06)) +
+  theme_blankcanvas(margin_cm = 1)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+## Bird in Flight
+
+```{r}
+df <- bird_in_flight()
+
+p <- ggplot() +
+geom_segment(aes(x, y, xend=xend, yend=yend), df, size = 0.03) +
+# facet_wrap(~id, nrow = 2, scales = "free") +
+scale_alpha_continuous(range = c(0.03, 0.06)) +
+theme_blankcanvas(margin_cm = 1)
+
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+# Critters
+
+## Ant
+
+Refer to [Hamid's equations](https://www.huffingtonpost.com/entry/ant-spider-and-millipede-_b_8583338.html)
+
+
+```{r}
+df1 <- ant() %>% mutate(id = 1)
+df2 <- spider() %>% mutate(id = 2)
+df3 <- millipede() %>% mutate(id = 3)
+
+df <- rbind(df1 %>% mutate(x = (x - min(df1$x))*0.9  + 0.2, y = (y - min(df1$y))*0.9 + 1, r = r * 0.75),
+            df2 %>% mutate(x = (x - min(df2$x))*1.5  + 2.4, y = (y - min(df2$y))*1.5 + 2.2),
+            df3 %>% mutate(x = (x - min(df3$x))*1.75 + 2.4, y = (y - min(df3$y))*1.75))
+
+df1 <- df %>% filter(id==1)
+p <- ggplot() +
+  geom_circle(aes(x0 = x, y0 = y, r = r), df1, size = 0.03, alpha = 0.03, n = 100) +
+  geom_path(aes(x, y, group = id), df1, size = 0.5, alpha = 0.5) +
+  coord_equal() +
+  theme_blankcanvas(margin_cm = 1)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+## Spider
+
+Refer to [Hamid's equations](https://www.huffingtonpost.com/entry/ant-spider-and-millipede-_b_8583338.html)
+
+
+```{r}
+df1 <- df %>% filter(id==2)
+p <- ggplot() +
+  geom_circle(aes(x0 = x, y0 = y, r = r), df1, size = 0.03, alpha = 0.03, n = 100) +
+  geom_path(aes(x, y, group = id), df1, size = 0.5, alpha = 0.5) +
+  coord_equal() +
+  theme_blankcanvas(margin_cm = 1)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+## Millipede
+
+Refer to [Hamid's equations](https://www.huffingtonpost.com/entry/ant-spider-and-millipede-_b_8583338.html)
+
+
+```{r}
+df1 <- df %>% filter(id==3)
+p <- ggplot() +
+  geom_circle(aes(x0 = x, y0 = y, r = r), df1, size = 0.03, alpha = 0.03, n = 100) +
+  geom_path(aes(x, y, group = id), df1, size = 0.5, alpha = 0.5) +
+  coord_equal() +
+  theme_blankcanvas(margin_cm = 1)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+# Butterflies
+
+Refer to [Hamid's equations](https://www.huffingtonpost.com/entry/using-mathematical-formul_b_9313484.html)
+
+```{r}
+df <- rbind(butterfly1() %>% mutate(id = 1),
+            butterfly2() %>% mutate(id = 2),
+            butterfly3() %>% mutate(id = 3))
+
+p <- ggplot() +
+  geom_point(aes(x, y, alpha = r), df, size = 0.03) +
+  coord_equal() +
+  facet_wrap(~id, nrow = 2) +
+  scale_alpha_continuous(range = c(0.03, 0.16)) +
+  theme_blankcanvas(margin_cm = 0)
+
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+# Plants
+
+Refer to [Hamid's equations](https://www.huffingtonpost.com/entry/mathematical-plants_b_9010790.html)
+
+## Olive branch
+
+```{r}
+df <- rbind(olive_branch() %>% mutate(id = 1),
+            palm_branch() %>% mutate(id = 2),
+            branch() %>% mutate(id = 3))
+
+df <- olive_branch() %>% mutate(id = 1)
+
+p <- ggplot() +
+  geom_circle(aes(x0 = x, y0 = y, r = r), df, size = 0.03, alpha = 0.1) +
+  coord_equal() +
+  # facet_wrap(~id, nrow = 3) +
+  theme_blankcanvas(margin_cm = 1)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+## Palm branch
+
+```{r}
+df <- palm_branch() %>% mutate(id = 2)
+
+p <- ggplot() +
+  geom_circle(aes(x0 = x, y0 = y, r = r), df, size = 0.03, alpha = 0.1) +
+  coord_equal() +
+  # facet_wrap(~id, nrow = 3) +
+  theme_blankcanvas(margin_cm = 1)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+
+## Branch
+
+```{r}
+df <- branch() %>% mutate(id = 3)
+
+p <- ggplot() +
+  geom_circle(aes(x0 = x, y0 = y, r = r), df, size = 0.03, alpha = 0.1) +
+  coord_equal() +
+  # facet_wrap(~id, nrow = 3) +
+  theme_blankcanvas(margin_cm = 1)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+# Hearts
+
+Refer to [Hamid's equations](https://www.huffingtonpost.com/entry/mathematical-formulas-for-the-symbol-of-love_b_8848264.html)
+
+## Heart 1
+
+```{r}
+df <- rbind(heart1() %>% mutate(id = 1),
+            heart2() %>% mutate(id = 2),
+            heart3() %>% mutate(id = 3),
+            heart4() %>% mutate(id = 4))
+i<- 1
+p <- ggplot() +
+  geom_path(aes(x, y), df %>% filter(id==i), size = 0.25, lineend = "round") +
+  # facet_wrap(~id, nrow = 2, scales = "free") +
+  theme_blankcanvas(margin_cm = 1)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+## Heart 2
+
+```{r}
+i<- 2
+p <- ggplot() +
+  geom_path(aes(x, y), df %>% filter(id==i), size = 0.25, lineend = "round") +
+  # facet_wrap(~id, nrow = 2, scales = "free") +
+  theme_blankcanvas(margin_cm = 1)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+## Heart 3
+
+```{r}
+i<- 3
+p <- ggplot() +
+  geom_path(aes(x, y), df %>% filter(id==i), size = 0.25, lineend = "round") +
+  # facet_wrap(~id, nrow = 2, scales = "free") +
+  theme_blankcanvas(margin_cm = 1)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+
+## Heart 4
+
+```{r}
+i<- 4
+p <- ggplot() +
+  geom_path(aes(x, y), df %>% filter(id==i), size = 0.25, lineend = "round") +
+  # facet_wrap(~id, nrow = 2, scales = "free") +
+  theme_blankcanvas(margin_cm = 1)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+# Other approaches
+
+See this blog by Antonio Sánchez Chinchón:
+
+https://fronkonstin.com
+
+https://github.com/aschinchon
+
+# Session Information
+
+```{r}
+sessionInfo()
+```
+
