@@ -154,6 +154,29 @@ p <- ggplot() +
 p
 ```
 
+## My Harmonograph 1
+
+```{r}
+df <- harmonograph(A1 = 1, A2 = 1, A3 = 1, A4 = 1,
+                    d1 = 0.006, d2 = 0.0065, d3 = 0.008, d4 = 0.009,
+                    f1 = 2.001, f2 = 3, f3 = 3, f4 = 2,
+                    p1 = 0, p2 = 0, p3 = pi/4, p4 = 3*pi/4) %>% mutate(id = 1)
+
+p <- ggplot(mapping=aes(x, y), data = df) +
+  geom_path(colour="darkblue",alpha = 0.25, size = 1.0) +
+  coord_equal() +
+  theme_blankcanvas(margin_cm = 0)
+```
+
+```{r, dpi=600, dev='png', echo=FALSE}
+p
+```
+
+```{r}
+ggsave("harmonograph01.png", p, width = 20, height = 20, units = "cm", dpi = 300)
+```
+
+
 # Lissajous curves
 
 ```{r}
