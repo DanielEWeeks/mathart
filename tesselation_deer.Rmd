@@ -1,0 +1,482 @@
+---
+title: "Tesslation art"
+author: "Daniel E. Weeks"
+date: "`r format(Sys.time(), '%B %d, %Y, %R')`"
+header-includes:
+- \usepackage{pdflscape}
+- \newcommand{\blandscape}{\begin{landscape}}
+- \newcommand{\elandscape}{\end{landscape}}
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    number_sections: true
+    toc_depth: '3'
+    code_folding: show
+  pdf_document:
+    toc: true
+    number_sections: true
+    toc_depth: 3
+#   md_extensions: +raw_attribute
+---
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+require(knitr)
+# Set so that long lines in R will be wrapped:
+opts_chunk$set(tidy.opts=list(width.cutoff=80),tidy=TRUE)
+```
+
+```{r,echo=FALSE}
+# In the event of a crash, save the working space on exit:
+save_all <- function() {
+  save.image("recover.RData")
+}
+options(error = save_all)
+```
+
+
+# Load Libraries
+
+```{r load_libraries,message=FALSE}
+library(tidyverse)
+library(tidylog)
+```
+
+# Input directory and files 
+
+```{r}
+# Print the working directory
+getwd()
+```
+The input files used in this analysis are ... and can be found in ... 
+
+# Get edge points
+
+Based on code from https://github.com/will-r-chase/aRt
+
+```{r}
+library(imager)
+library(tidyverse)
+
+# Read and convert to grayscale if needed
+x <- load.image("DeerOutline.PNG")
+
+#if needed
+# load.image("DeerOutline.PNG") %>% grayscale() -> x
+
+y <- channels(x, 1:3)
+
+#get edges of image
+y[[1]] %>% cannyEdges() -> x_edges
+
+#convert logical to numerical
+edge_mat <- drop(x_edges)
+class(edge_mat) <- "array"
+edge_mat <- edge_mat*1
+
+#get points which are edges as dataframe
+df <-
+  y[[1]] %>% 
+  cannyEdges() %>% 
+  as.cimg() %>% 
+  as.data.frame() %>%
+  filter(value == 1) %>%
+  mutate(id = 1:nrow(.))
+
+#get rid of some junk for later calc
+data <-
+  df %>%
+  select(x, y)
+
+#we can see these points define the border really well!
+ggplot(data) +
+  geom_point(aes(x = x, y = y), color = "black") +
+  scale_y_reverse()
+
+#save points
+saveRDS(data, file = "Deer.rds")
+#now go to "select_points.R" shiny app to select your border points
+```
+
+
+## Triangulate
+
+```{r}
+library(RTriangle)
+library(tidyverse)
+library(colourlovers)
+library(mgcv)
+
+#######################################################################
+##triangulate an image starting with points from select_points app
+#######################################################################
+#give your points here
+# giraffe <- readRDS("Deer.rds")
+giraffe <- read_csv("DeerSparse.csv")
+giraffe <- giraffe %>% select(x,y)
+giraffe <- giraffe[-1,]
+
+#border points
+x <- giraffe$x
+y <- giraffe$y
+bounds <- cbind(x, y)
+
+#S tells the order of how the points are connected, required for concavity
+##to do: function to make S automatically
+s1 <- 1:nrow(giraffe)
+s2 <- 2:(nrow(giraffe)+1)
+s2[nrow(giraffe)] <- 1
+
+S <- as.matrix(cbind(s1, s2))
+
+#plot the outside points and check it
+ps <- pslg(P = bounds, S = S)
+plot(ps)
+rtriang <- RTriangle::triangulate(ps)
+plot(rtriang)
+
+#generate some points inside boundary
+#more points for more regular polygons
+#less points for more irregular polygons
+x <- runif(100, min = min(giraffe$x), max = max(giraffe$x))
+y <- runif(100, min = min(giraffe$y), max = max(giraffe$y))
+
+fill_df <- data.frame(x = x, y = y)
+
+## Function to buffer points in XY space:
+## from https://davidrroberts.wordpress.com/2015/09/25/spatial-buffering-of-points-in-r-while-retaining-maximum-sample-size/
+## Returns the original data table with buffered points removed.
+# foo - a data.frame to select from with columns x, y
+# buffer - the minimum distance between output points
+# reps - the number of repetitions for the points selection
+buffer.f <- function(foo, buffer, reps){
+  # Make list of suitable vectors
+  suitable <- list()
+  for(k in 1:reps){
+    # Make the output vector
+    outvec <- as.numeric(c())
+    # Make the vector of dropped (buffered out) points
+    dropvec <- c()
+    for(i in 1:nrow(foo)){
+      # Stop running when all points exhausted
+      if(length(dropvec)<nrow(foo)){
+        # Set the rows to sample from
+        if(i>1){
+          rowsleft <- (1:nrow(foo))[-c(dropvec)]
+        } else {
+          rowsleft <- 1:nrow(foo)
+        }
+        # Randomly select point
+        outpoint <- as.numeric(sample(as.character(rowsleft),1))
+        outvec[i] <- outpoint
+        # Remove points within buffer
+        outcoord <- foo[outpoint,c("x","y")]
+        dropvec <- c(dropvec, which(sqrt((foo$x-outcoord$x)^2 + (foo$y-outcoord$y)^2)<buffer))
+        # Remove unnecessary duplicates in the buffered points
+        dropvec <- dropvec[!duplicated(dropvec)]
+      } 
+    } 
+    # Populate the suitable points list
+    suitable[[k]] <- outvec
+  }
+  # Go through the iterations and pick a list with the most data
+  best <- unlist(suitable[which.max(lapply(suitable,length))])
+  foo[best,]
+}
+
+#second param is min dist between points
+#smaller dist means smaller polygons, and vice versa
+fill_df_buffer <- buffer.f(fill_df, 70, 1000)
+
+x <- fill_df_buffer$x
+y <- fill_df_buffer$y
+
+#remove points not within border
+is_inside <- inSide(giraffe, x, y)
+
+fill <- tibble(x, y, is_inside) %>%
+  filter(is_inside)
+
+inners <- cbind(fill$x, fill$y)
+
+#PB defines which points are borders, which are not (1 is border, 0 not)
+df <- giraffe
+df2 <- fill[, 1:2]
+df$PB <- 1
+df2$PB <- 0
+
+#setting up rtriangle data
+x_comb <- c(df$x, df2$x)
+y_comb <- c(df$y, df2$y)
+PB <- c(df$PB, df2$PB)
+xy_comb <- cbind(x_comb, y_comb)
+
+#triangulate
+ps <- pslg(P = xy_comb, PB = PB, S = S)
+plot(ps)
+rtriang <- RTriangle::triangulate(ps)
+plot(rtriang)
+```
+
+
+```{r}
+#####################################################
+##getting polygons from triangles
+## T variable gives vertex indicies of triangles, P gives points
+################################################################
+
+#extract points
+pts_df <- tibble(id = 1:(length(rtriang$P)/2), x = rtriang$P[, 1], y = rtriang$P[, 2])
+
+#get triangle vertex indices
+triangles <- as.data.frame(rtriang$T)
+tri_df <- tibble(id_1 = triangles$V1, id_2 = triangles$V2, id_3 = triangles$V3, group = 1:nrow(triangles))
+
+#join triangle vertex indices with vertex points
+tri_list <- split(tri_df, tri_df$group) %>%
+  map( ~select(., 1:3)) %>%
+  map( ~as_tibble(t(.))) %>%
+  map( ~inner_join(., pts_df, by = c("V1" = "id"))) %>%
+  map( ~select(., x, y))
+
+#function to get area of triangle from 3 points
+triang_area <- function(data) {
+  x <- data$x
+  y <- data$y
+  mat <- matrix(data = c(1,1,1,x[1],x[2],x[3],y[1],y[2],y[3]), nrow = 3, ncol = 3, byrow = TRUE)
+  area <- 0.5*det(mat)
+  return(area)
+}
+
+#add area to each triangle and do some reshuffling
+tri_list %>%
+  map( ~mutate(.x, area = triang_area(.x))) %>%
+  bind_rows(.id = "id") %>%
+  select(id, x, y, area) -> triang_df
+
+#here save polygons for use later in animation or whatever
+saveRDS(triang_df, "Deer_polys.rds")
+```
+
+
+```{r}
+
+################################
+#plotting
+################################
+
+#random colors
+palette <- 
+  sample(clpalettes('top'), 1)[[1]] %>% 
+  swatch %>% 
+  .[[1]]
+
+#plot w/ random color palette
+ggplot(triang_df, aes(x = x, y = y)) +
+  geom_polygon(aes(fill = area, color=area, group = id), 
+               show.legend = FALSE, size=0)+
+  scale_fill_gradientn(colors=sample(palette, length(palette))) + 
+  scale_color_gradientn(colors="gray30") +   
+  theme_void() +
+  scale_y_reverse()
+
+ggsave("Deer_1.png", device = "png", width = 7, height = 5, type = "cairo")
+```
+
+```{r}
+#a different color palette
+mid_mod <- c("#ECA069", "#CC6135", "#E9184C", "#9A151A", 
+             "#F9C802", "#95AC80", "#71BC91", "#9CDAB5", 
+             "#3D73D3", "#FAF1E0", "#FCE2D5", "#D8D4D5", 
+             "#445DAD", "#747900")
+
+ggplot(triang_df, aes(x = x, y = y)) +
+  geom_polygon(aes(fill = area, color=area, group = id), 
+               show.legend = FALSE, size=0)+
+  scale_fill_gradientn(colors = sample(mid_mod, length(mid_mod))) + 
+  scale_color_gradientn(colors="gray30") +   
+  theme_void() +
+  scale_y_reverse() +
+  theme(panel.background = element_rect(fill = "#F7E5D1"))
+
+ggsave("Deer_2.png", device = "png", width = 7, height = 5, type = "cairo")
+```
+
+```{r}
+#messing with look of plot, add border to polygons
+ggplot(triang_df, aes(x = x, y = y)) +
+  geom_polygon(aes(fill = area, group = id), 
+               color = "darkgoldenrod", show.legend = FALSE, size=0.5)+
+  scale_fill_gradientn(colors=sample(mid_mod, length(mid_mod))) + 
+  scale_color_gradientn(colors="gray30") +   
+  theme_void() +
+  scale_y_reverse()
+
+ggsave("Deer_3.png", device = "png", type = "cairo", width = 7, height = 5, units = "in")
+```
+
+## Voronoi tesselation
+
+```{r}
+library(tidyverse)
+library(colourlovers)
+library(mgcv)
+library(deldir)
+library(sp)
+library(rgeos)
+
+#load sparse border
+# giraffe <- readRDS("Deer.rds")
+giraffe <- read_csv("DeerSparse.csv")
+giraffe <- giraffe %>% select(x,y)
+
+#fill w/ some random points
+#check triangulate_image script for more details on this process
+x <- runif(8000, min = min(giraffe$x), max = max(giraffe$x))
+y <- runif(8000, min = min(giraffe$y), max = max(giraffe$y))
+
+fill_df <- data.frame(x = x, y = y)
+
+## Function to buffer points in XY space:
+## from https://davidrroberts.wordpress.com/2015/09/25/spatial-buffering-of-points-in-r-while-retaining-maximum-sample-size/
+## Returns the original data table with buffered points removed.
+# foo - a data.frame to select from with columns x, y
+# buffer - the minimum distance between output points
+# reps - the number of repetitions for the points selection
+buffer.f <- function(foo, buffer, reps){
+  # Make list of suitable vectors
+  suitable <- list()
+  for(k in 1:reps){
+    # Make the output vector
+    outvec <- as.numeric(c())
+    # Make the vector of dropped (buffered out) points
+    dropvec <- c()
+    for(i in 1:nrow(foo)){
+      # Stop running when all points exhausted
+      if(length(dropvec)<nrow(foo)){
+        # Set the rows to sample from
+        if(i>1){
+          rowsleft <- (1:nrow(foo))[-c(dropvec)]
+        } else {
+          rowsleft <- 1:nrow(foo)
+        }
+        # Randomly select point
+        outpoint <- as.numeric(sample(as.character(rowsleft),1))
+        outvec[i] <- outpoint
+        # Remove points within buffer
+        outcoord <- foo[outpoint,c("x","y")]
+        dropvec <- c(dropvec, which(sqrt((foo$x-outcoord$x)^2 + (foo$y-outcoord$y)^2)<buffer))
+        # Remove unnecessary duplicates in the buffered points
+        dropvec <- dropvec[!duplicated(dropvec)]
+      } 
+    } 
+    # Populate the suitable points list
+    suitable[[k]] <- outvec
+  }
+  # Go through the iterations and pick a list with the most data
+  best <- unlist(suitable[which.max(lapply(suitable,length))])
+  foo[best,]
+}
+
+fill_df_buffer <- buffer.f(fill_df, 50, 1000)
+
+x <- fill_df_buffer$x
+y <- fill_df_buffer$y
+
+is_inside_buff <- inSide(giraffe, x, y)
+
+fill_buff <- tibble(x, y, is_inside_buff) %>%
+  filter(is_inside_buff)
+
+#check plot
+ggplot() +
+  geom_path(data = giraffe, aes(x, y),colour= "blue") +
+  geom_point(data = fill_buff, aes(x, y)) +
+  scale_y_reverse() +
+  theme_void()
+```
+
+
+
+```{r}
+#to constrain voronoi tesselation to border
+#convert border to SpatialPolygons
+#then use deldir to get voronoi polygons
+#get intersection of the two w/ gIntersect
+#from https://stackoverflow.com/a/24237509/7712222
+giraffe_sp <- SpatialPolygons(list(Polygons(list(Polygon(giraffe)), ID=1)))
+
+voronoipolygons <- function(x, poly) {
+  crds <- x
+  bb = bbox(poly)
+  rw = as.numeric(t(bbox(poly)))
+  z <- deldir(crds$x, crds$y ,rw=rw)
+  w <- tile.list(z)
+  polys <- vector(mode='list', length=length(w))
+  require(sp)
+  for (i in seq(along=polys)) {
+    pcrds <- cbind(w[[i]]$x, w[[i]]$y)
+    pcrds <- rbind(pcrds, pcrds[1,])
+    polys[[i]] <- Polygons(list(Polygon(pcrds)), ID=as.character(i))
+  }
+  SP <- SpatialPolygons(polys)
+  
+  SpatialPolygonsDataFrame(
+    SP, data.frame(x=crds[,1], y=crds[,2], 
+                   row.names=sapply(slot(SP, 'polygons'), 
+                                    function(x) slot(x, 'ID'))))  
+}
+
+giraffe_voronoi <- voronoipolygons(fill_buff, giraffe_sp)
+
+final <- gIntersection(giraffe_sp, giraffe_voronoi, byid=TRUE, checkValidity = 2L)
+
+plot(final)
+
+#get polygons from spatialpolygons
+poly_list <- final@polygons
+
+get_polys <- function(x) {
+  pts_x <- x@Polygons[[1]]@coords[, 1]
+  pts_y <- x@Polygons[[1]]@coords[, 2]
+  area <- rep(x@Polygons[[1]]@area, length(pts_x))
+  data.frame(x = pts_x, y = pts_y, area = area)            
+}
+
+poly_df <- map_dfr(poly_list, ~get_polys(.x), .id = "id")
+
+ggplot(poly_df, aes(x = x, y = y, group = id)) + geom_polygon()
+
+#save polygons if nice
+saveRDS(poly_df, "Deer_Vpolys.rds")
+```
+
+```{r}
+#color
+palette <- 
+  sample(clpalettes('top'), 1)[[1]] %>% 
+  swatch %>% 
+  .[[1]]
+
+palette <- clpalettes('random') %>% 
+  swatch %>% 
+  .[[1]]
+
+#plot
+ggplot(poly_df) +
+  geom_polygon(aes(x = x, y = y, group = id, fill = area), size = 0.35, color = "#383131", show.legend = FALSE) +
+  scale_fill_gradientn(colors=sample(palette, length(palette))) +
+  theme_void() +
+  theme(panel.background = element_rect(fill = "white")) +
+  scale_y_reverse()
+
+ggsave("Deer_voronoi_3.png", device = "png", width = 7, height = 5, type = "cairo")
+```
+
+
+# Session Information
+
+```{r}
+sessionInfo()
+```
+

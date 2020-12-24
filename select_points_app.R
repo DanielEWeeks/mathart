@@ -4,22 +4,22 @@
 #enter your rds file for ordered points dataframe of your image outline
 #file comes from get_edge_points.R
 imageOutline <- readRDS("XmasTree.rds")
-
+imageOutline <- readRDS("Deer.rds")
 
 library(ggplot2)
 library(tidyverse)
 shinyApp(
   ui = basicPage(
     fluidRow(
-      column(width = 6,
-             plotOutput("plot", height = 500, width = 800, #change this to adjust view of plot in app
+      column(width = 12,
+             plotOutput("plot", height = 500, width = 1200, #change this to adjust view of plot in app
                         click = "plot_click"
              ),
              h4("Clicked points"),
              DT::DTOutput("plot_clickedpoints")
       ),
-      column(width = 6,
-             plotOutput("selected_plot", height = 500, width = 800)) #change this to adjust view of plot in app
+      column(width = 12,
+             plotOutput("selected_plot", height = 500, width = 1200)) #change this to adjust view of plot in app
     )
   ),
   server = function(input, output, session) {
