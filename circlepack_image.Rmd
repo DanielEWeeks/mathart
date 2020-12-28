@@ -76,6 +76,8 @@ im.df.colour <- im %>%
 
 # Steps 2 and 3 using circleProgressiveLayout function.
 
+This works best if the source image is square.  
+
 ```{r}
 ## Generate circle packing layout using rbeta distribution as size of circles
 pack_layout <- circleProgressiveLayout(rbeta(5000,1,2), sizetype='area') %>%
@@ -94,7 +96,9 @@ pack_layout2 <-
          angle = rescale(angle_t, from=c(-pi,pi))) ## convert theta value to value between 0 and 1
 ```
 
-## Step 4
+# Step 4
+
+circleLayoutVertices takes as input a matrix or data.frame of circle data (x, y, size).
 
 ```{r}
 ## Using the layout above create data frame using circleLayoutVertices function so that you can plot circle using ggplot2
@@ -115,6 +119,39 @@ data_gg2_3 <- circleLayoutVertices(pack_layout2 %>%
                                      sample_n(900,weight=radius) %>%
                                      mutate(radius=0.3*radius), npoints = 25)
 ```
+
+# Unscaled plotting on the original scales
+
+To adjust for the fact that the original source image is not square, here instead we use the `pack_layout` on the original scale, but then we have to adjust the `radius`.  The adjustment was determined by repeated plotting with different levels of adjustment.
+
+```{r}
+pack_layout3 <- pack_layout %>% select(im_x,im_y,radius,id,hex) %>% 
+  mutate(x = im_x, y= im_y, radius=22*radius) %>% 
+  select(x,y,radius,id,hex)
+dim(pack_layout3)
+head(pack_layout3)
+data_gg3 <- circleLayoutVertices(pack_layout3) %>%
+  inner_join(pack_layout3 %>% select(id,hex), by=c("id"))
+```
+
+
+
+
+```{r}
+## plot bubbles
+data_gg3 %>%
+  ggplot(aes(x=x,y=y,group=id)) +
+  geom_polygon(aes(fill=hex)) +
+  scale_fill_identity() +
+  coord_equal() +
+  scale_y_reverse() +  ## you need to reverse y-axis
+  theme_void()
+```
+
+```{r}
+ggsave("CommonBuckeyeCircles_unscaled1.png", device = "png", width = 7, height = 5, type = "cairo")
+```
+
 
 # Plot 1: bubbles
 
@@ -155,6 +192,56 @@ data_gg2 %>%
 ggsave("CommonBuckeyeCircles2.png", device = "png", width = 5, height = 5, type = "cairo")
 
 saveRDS(data_gg, "CommonBuckeye_points.rds")
+```
+
+
+# Unscaled Plot 2 
+
+Here we redraw the version with the smaller circles on the inside on the original scale, to compensate for the fact that the original source image is not square.
+
+
+```{r}
+
+#for smaller circles inside
+pack_layout4 <-
+  pack_layout3 %>%
+  mutate(r = sqrt(x^2 + y^2), ## calculate distance from 0,0 coordinate
+         angle_t = atan2(y,x),  ## The arc-tangent of two arguments atan2(y, x) returns the angle between the x-axis and the vector from the origin to (x, y)
+         angle = rescale(angle_t, from=c(-pi,pi))) ## convert theta value to value between 0 and 1
+
+data_gg2 <- circleLayoutVertices(pack_layout4) %>%
+  inner_join(pack_layout3 %>% select(id,hex), by=c("id"))
+
+data_gg2_1 <- circleLayoutVertices(pack_layout4 %>%
+                                     sample_n(800, weight=radius) %>%
+                                     mutate(radius=0.7*radius), npoints = 25) ## I want to draw smaller circle, so shrink the radius
+data_gg2_2 <- circleLayoutVertices(pack_layout4 %>%
+                                     sample_n(700,weight=radius) %>%
+                                     mutate(radius=0.5*radius), npoints = 25)
+data_gg2_3 <- circleLayoutVertices(pack_layout4 %>%
+                                     sample_n(900,weight=radius) %>%
+                                     mutate(radius=0.3*radius), npoints = 25)
+```
+
+
+```{r}
+#with smaller circles inside
+data_gg2 %>%
+  ggplot(aes(x=x,y=y, group=id)) +
+  geom_polygon(aes(fill=hex)) +
+  geom_path(data=data_gg2, size=0.5, color="#ffffff90") +
+  geom_path(data=data_gg2_1,size=1, color="#ffffff90") +
+  geom_path(data=data_gg2_2,size=0.5, color="#ffffff90") +
+  geom_path(data=data_gg2_3,size=0.3, color="#ffffff90") +
+  scale_fill_identity() +
+  scale_color_identity() +
+  theme_void() +
+  coord_fixed() +
+  scale_y_reverse()
+```
+
+```{r}
+ggsave("CommonBuckeyeCircles_unscaled2.png", device = "png", width = 7, height = 5, type = "cairo")
 ```
 
 # Session Information
