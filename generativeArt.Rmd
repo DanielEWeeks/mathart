@@ -1,0 +1,163 @@
+---
+title: "Generative Art"
+author: "Daniel E. Weeks"
+date: "`r format(Sys.time(), '%B %d, %Y, %R')`"
+header-includes:
+- \usepackage{pdflscape}
+- \newcommand{\blandscape}{\begin{landscape}}
+- \newcommand{\elandscape}{\end{landscape}}
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    number_sections: true
+    toc_depth: '3'
+    code_folding: show
+  pdf_document:
+    toc: true
+    number_sections: true
+    toc_depth: 3
+#   md_extensions: +raw_attribute
+---
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+require(knitr)
+# Set so that long lines in R will be wrapped:
+opts_chunk$set(tidy.opts=list(width.cutoff=80),tidy=TRUE)
+```
+
+```{r,echo=FALSE}
+# In the event of a crash, save the working space on exit:
+save_all <- function() {
+  save.image("recover.RData")
+}
+options(error = save_all)
+```
+
+
+# Load Libraries
+
+```{r load_libraries,message=FALSE}
+library(tidyverse)
+library(tidylog)
+library(generativeart)
+```
+
+# Input directory and files 
+
+```{r}
+# Print the working directory
+getwd()
+```
+The input files used in this analysis are ... and can be found in ... 
+
+# Analysis
+
+## The generativeart R package
+
+https://github.com/cutterkom/generativeart
+
+
+## Setup directories
+
+Do this once
+
+```
+setup_directories("img/", "everything/", "handpicked/", "logfile/")
+```
+
+## Set paths
+
+```{r}
+# set the paths
+IMG_DIR <- "img/"
+IMG_SUBDIR <- "everything/"
+IMG_SUBDIR2 <- "handpicked/"
+IMG_PATH <- paste0(IMG_DIR, IMG_SUBDIR)
+
+LOGFILE_DIR <- "logfile/"
+LOGFILE <- "logfile.csv"
+LOGFILE_PATH <- paste0(LOGFILE_DIR, LOGFILE)
+
+```
+
+
+## Generate some art
+
+```{r}
+my_formula <- list(
+  x = quote(runif(1, -1, 1) * x_i^2 - sin(y_i^2)),
+  y = quote(runif(1, -1, 1) * y_i^3 - cos(x_i^2))
+)
+
+generativeart::generate_img(formula = my_formula, nr_of_img = 5, polar = TRUE, color = "white", background_color = "darkblue")
+```
+
+```{r}
+my_formula <- list(
+  x = quote(runif(1, -1, 1) * x_i^3 - (pi/4)*sin(y_i^2)),
+  y = quote(runif(1, -1, 1) * y_i^3 - (pi/2)*cos(x_i^2))
+)
+
+generativeart::generate_img(formula = my_formula, nr_of_img = 5, polar = TRUE, color = "white", background_color = "darkblue")
+```
+
+```{r}
+my_formula <- list(
+  x = quote(runif(1, -1, 1) * x_i^2 - (pi/2)*sin(y_i^5)),
+  y = quote(runif(1, -1, 1) * y_i^2 - (pi/2)*cos(x_i^2))
+)
+
+generativeart::generate_img(formula = my_formula, nr_of_img = 5, polar = TRUE, color = "white", background_color = "darkblue")
+```
+
+```{r}
+my_formula <- list(
+  x = quote(runif(1, -1, 1) * x_i^2 - (pi/2)*sin(y_i^5)),
+  y = quote(runif(1, -1, 1) * y_i^2 - (pi/2)*cos(x_i^2))
+)
+
+generativeart::generate_img(formula = my_formula, nr_of_img = 5, polar = TRUE, color = "white", background_color = "darkblue")
+```
+
+Based on this Tweet:
+
+https://twitter.com/aschinchon/status/1346369429140078592?s=20
+
+we'll try out this formula:
+
+ggplot(aes(x=(1-abs(x)-sin(y^2)),y=(1+y-cos(x^2))))
+
+```{r}
+my_formula <- list(
+  x = quote(runif(1, -1, 1) *(1 - abs(x_i)) - (pi/2)*sin(y_i^5)),
+  y = quote(runif(1, -1, 1) *(1 + y_i) - (pi/2)*cos(x_i^2))
+)
+
+generativeart::generate_img(formula = my_formula, nr_of_img = 5, polar = TRUE, color = "white", background_color = "darkblue")
+```
+
+```{r}
+my_formula <- list(
+  x = quote(runif(1, -1, 1) *(1 - abs(x_i)) - sin(y_i^5)),
+  y = quote(runif(1, -1, 1) *(1 + y_i) - cos(x_i^2))
+)
+
+generativeart::generate_img(formula = my_formula, nr_of_img = 5, polar = TRUE, color = "white", background_color = "darkblue")
+```
+
+```{r}
+my_formula <- list(
+  x = quote(runif(1, -1, 1) *(1 - abs(x_i)) - sin(y_i^2)),
+  y = quote(runif(1, -1, 1) *(1 + y_i) - cos(x_i^2))
+)
+
+generativeart::generate_img(formula = my_formula, nr_of_img = 5, polar = TRUE, color = "white", background_color = "darkblue")
+```
+
+# Session Information
+
+```{r}
+sessionInfo()
+```
+
