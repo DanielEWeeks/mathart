@@ -1,0 +1,138 @@
+---
+title: "TITLE"
+author: "Daniel E. Weeks"
+date: "`r format(Sys.time(), '%B %d, %Y, %R')`"
+header-includes:
+- \usepackage{pdflscape}
+- \newcommand{\blandscape}{\begin{landscape}}
+- \newcommand{\elandscape}{\end{landscape}}
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    number_sections: true
+    toc_depth: '3'
+    code_folding: show
+  pdf_document:
+    toc: true
+    number_sections: true
+    toc_depth: 3
+#   md_extensions: +raw_attribute
+---
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+require(knitr)
+# Set so that long lines in R will be wrapped:
+opts_chunk$set(tidy.opts=list(width.cutoff=80),tidy=TRUE)
+```
+
+```{r,echo=FALSE}
+# In the event of a crash, save the working space on exit:
+save_all <- function() {
+  save.image("recover.RData")
+}
+options(error = save_all)
+```
+
+
+# Load Libraries
+
+```{r load_libraries,message=FALSE}
+library(tidyverse)
+library(tidylog)
+```
+
+# Input directory and files 
+
+```{r}
+# Print the working directory
+getwd()
+```
+The input files used in this analysis are ... and can be found in ... 
+
+# Analysis
+
+Code modified from:
+
+https://github.com/gkaramanis/aRtist/blob/main/remakes/orozco/orozco.R
+
+```{r}
+library(tidyverse)
+library(ggforce)
+library(generativeart)
+library(RColorBrewer)
+```
+
+```{r}
+seed <- generate_seeds(1)
+
+pal <- c("#173a74", "#9c2024", "#d4b23d", "#e4e4e4")
+pal <- brewer.pal(n = 4, name = "Set1")
+pal <- brewer.pal(n = 4, name = "Set3")
+# seed <- 7184
+# seed <- 1702
+set.seed(seed)
+flnm <- generate_filename(seed, "png")
+
+# rows and columns
+x = 1:7
+y = 1:8
+
+# Relationship of radius in original
+# R + r = 1
+# r = 0.735 * R
+R = 0.576
+r = 0.424
+
+discs <- crossing(y, x) %>% 
+  mutate(radius = rep(c(r, R), length.out = max(x)*max(y))) %>% 
+  rowwise() %>% 
+  mutate(
+    color = pal[sample(c(1:4), 1)],
+    start = sample(c(0, pi/2, pi, 3*pi/2), 1),
+    # big disc -> half, small -> whole
+    end =  if_else(radius == R, start + pi, start + 2*pi),
+    # remove from edges
+    radius = case_when(
+      x == 1 & (start != 0 | radius == r) ~ 0,
+      x == 7 & (start != pi | radius == r) ~ 0,
+      TRUE ~ radius
+    )
+    ) %>% 
+  ungroup() 
+
+discs2 <- discs %>% 
+  filter(radius > r & between(x, 2, 6)) %>% 
+  sample_n(11) %>% 
+  rowwise() %>% 
+  mutate(
+    start = start + pi,
+    end = end + pi,
+    color = sample(setdiff(pal, color), 1)
+    ) %>% 
+  ungroup()
+
+discs_final <- bind_rows(discs, discs2)
+
+ggplot(discs_final) +
+  geom_arc_bar(aes(x0 = x, y0 = y, r0 = 0, r = radius, start = start, end = end, fill = color), color = NA) +
+  scale_fill_identity() +
+  xlim(0.4, 7.6) +
+  ylim(0.4, 8.6) +
+  # coord_fixed() +
+  theme_void() +
+  theme(
+#   plot.background = element_rect(fill = "#D6D6D4", color = NA),
+    plot.background = element_rect(fill = "white", color = NA),
+    plot.margin = margin(0, -50, 0, -50)
+  ) +
+  ggsave(here::here("img", "everything", paste0("orozco_",flnm)), dpi = 320, height = 8, width = 5.65)
+```
+
+
+# Session Information
+
+```{r}
+sessionInfo()
+```
+
