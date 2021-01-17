@@ -52,6 +52,14 @@ The input files used in this analysis are ... and can be found in ...
 
 # Analysis
 
+Inspired by this Tweet (and the provided associated code) that sought to recreate, using R< an art work by Gabriel Orozco:
+
+https://twitter.com/geokaramanis/status/1343893181247717378?s=20
+
+See also:
+
+https://fineartmultiple.com/gabriel-orozco-untitled/
+
 Code modified from:
 
 https://github.com/gkaramanis/aRtist/blob/main/remakes/orozco/orozco.R
