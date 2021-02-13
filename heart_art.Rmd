@@ -1,0 +1,336 @@
+---
+title: "Heart Art"
+author: "Daniel E. Weeks"
+date: "`r format(Sys.time(), '%B %d, %Y, %R')`"
+header-includes:
+- \usepackage{pdflscape}
+- \newcommand{\blandscape}{\begin{landscape}}
+- \newcommand{\elandscape}{\end{landscape}}
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    number_sections: true
+    toc_depth: '3'
+    code_folding: show
+  pdf_document:
+    toc: true
+    number_sections: true
+    toc_depth: 3
+#   md_extensions: +raw_attribute
+---
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+require(knitr)
+# Set so that long lines in R will be wrapped:
+opts_chunk$set(tidy.opts=list(width.cutoff=80),tidy=TRUE)
+```
+
+```{r,echo=FALSE}
+# In the event of a crash, save the working space on exit:
+save_all <- function() {
+  save.image("recover.RData")
+}
+options(error = save_all)
+```
+
+
+# Load Libraries
+
+```{r load_libraries,message=FALSE}
+library(tidyverse)
+# library(tidylog)
+library(patchwork)
+library(pryr)
+```
+
+# Input directory and files 
+
+```{r}
+# Print the working directory
+getwd()
+```
+The input files used in this analysis are ... and can be found in ... 
+
+# Heart Art
+
+The goal here was to create some art out of hearts for use in making a Valentine's Day card.
+
+## Polar coordinate heart 1
+
+From
+
+https://stackoverflow.com/questions/8082429/plot-a-heart-in-r
+
+```{r}
+dat <- data.frame(x = seq(0, 2 * pi, length.out = 100))
+cardioid <- function(x, a = 2) {
+  a * (1 - cos(x))
+}
+ggplot(dat, aes(x = x)) + stat_function(fun = cardioid) + coord_polar()
+```
+## Polar coordinate heart 2
+
+```{r}
+x = seq(0, 2 * pi, length.out = 100)
+heart <- function(x) {
+  2 - 2 * sin(x) + sin(x) * (sqrt(abs(cos(x)))) / (sin(x) + 1.4)
+}
+ggplot(dat, aes(x = x)) + stat_function(fun = heart) + coord_polar(start =
+                                                                     -pi / 2)
+```
+# X, Y heart
+
+From https://rpubs.com/RandhyllCho/250112
+
+```{r}
+dat <- data.frame(t = seq(0, 2 * pi, by = 0.01))
+x <-  function(t)
+  16 * sin(t) ^ 3
+y <- function(t)
+  13 * cos(t) - 5 * cos(2 * t) - 2 * cos(3 * t) - cos(4 * t)
+
+dat$y <- y(dat$t)
+dat$x <- x(dat$t)
+
+heart <- ggplot(dat, aes(x, y)) +
+  geom_polygon(fill = "red", col = "firebrick", alpha = 0.9) +
+  theme_classic()
+
+heart
+```
+
+# X, Y heart 2
+
+From https://www.r-bloggers.com/2019/01/making-original-bingo-heart-theme/
+
+```{r}
+# library(tidyverse)
+# library(patchwork)
+
+##  Function to generate heart shape around point xc and rc with some sizing.  Output of function is data frame with bunch of points which you can use to draw a heart!
+# http://mathworld.wolfram.com/HeartCurve.html
+heart_vertices <- function(xc, yc, size, npoints = 100, ...) {
+  #area = pi*r*r for circle... this heart has area of 180 = r*r
+  radius = size * 0.05  ## I'm not set on this...  I just wanted to make size smaller
+  yc = yc + 0.1 * radius  ## Just adjusting center of heart bit
+  t = seq(-pi, pi, length.out = npoints + 1)
+  x = xc + 16 * radius * (sin(t)) ^ 3
+  y = yc + radius * 13 * cos(t) - radius * 5 * cos(2 * t) - radius * 2 *
+    cos(3 * t) - radius * cos(4 * t)
+  df <- tibble(theta = t, x = x, y = y)
+  return(df)
+}
+
+## Above function with generate points you'd need to generate heart. If you adjust npoints to be higher, then you can draw smoother shape.
+
+heart_vertices(0,0,1) %>%
+  ggplot() +
+  geom_polygon(aes(x=x,y=y), fill="pink", 
+               color="#61537520",size=10) + 
+  theme_void() +
+  coord_fixed() 
+```
+
+# Grid of hearts
+
+From https://www.r-bloggers.com/2019/01/making-original-bingo-heart-theme/
+
+```{r}
+xg <- 8
+# yg = # of grid points
+# yg is limited by the number of values in the scale_fill_manual
+yg <- 5
+my_grid <- tibble(
+  xc=rep(c(1:xg), times=yg), 
+  yc=rep(c(1:yg), each=xg),
+  size=0.6, 
+  id = c(1:(xg*yg))
+) 
+
+# pmap applies the function to each row in the data frame.
+
+## For each point on grid generate points to draw heart 
+heart_grid <- my_grid %>%
+  mutate(v = pmap(., heart_vertices)) %>%
+  unnest(v) %>%
+  ggplot(aes(x = x, y = y, group = id)) +
+  geom_polygon(aes(fill = factor(yc))) +
+  coord_fixed() +
+  theme_void() +
+  scale_x_continuous(breaks = seq(0.5, xg+0.5, by = 1), labels = NULL) +
+  scale_y_continuous(breaks = seq(0.5, yg+0.5, by = 1), labels = NULL) +
+  scale_fill_manual(
+    values = c("#30bcad", "#57a337", "#f8b620", "#e03426", "#eb73b3"),
+    guide = "none"
+  )
+
+heart_grid
+```
+
+```{r}
+ggsave("heart_grid.jpeg", width=4, height=4, units = "in", dpi=300)
+```
+
+
+```{r}
+heart_grid <- my_grid %>%
+  mutate(v = pmap(., heart_vertices)) %>%
+  unnest(v) %>%
+  ggplot(aes(x = x, y = y, group = id)) +
+  geom_polygon(aes(fill = factor(yc))) +
+  coord_fixed() +
+  theme_void() +
+  scale_x_continuous(breaks = seq(0.5, xg+0.5, by = 1), labels = NULL) +
+  scale_y_continuous(breaks = seq(0.5, yg+0.5, by = 1), labels = NULL) +
+  scale_fill_manual(
+    values = c("deeppink4", "deeppink3", "deeppink2", "deeppink1", "deeppink"),
+    guide = "none"
+  )
+
+heart_grid
+```
+
+```{r}
+ggsave("heart_grid_deeppink.jpeg", width=6, height=4, units = "in", dpi=300)
+```
+
+```{r}
+heart_grid <- my_grid %>%
+  mutate(v = pmap(., heart_vertices)) %>%
+  unnest(v) %>%
+  ggplot(aes(x = x, y = y, group = id)) +
+  geom_polygon(aes(fill = factor(yc))) +
+  coord_fixed() +
+  theme_void() +
+  scale_x_continuous(breaks = seq(0.5, xg+0.5, by = 1), labels = NULL) +
+  scale_y_continuous(breaks = seq(0.5, yg+0.5, by = 1), labels = NULL) +
+  scale_fill_manual(
+    values = c("hotpink4", "hotpink3", "hotpink2", "hotpink1", "hotpink"),
+    guide = "none"
+  )
+
+heart_grid
+```
+
+
+# Broken Heart
+
+```
+x	=	sin(t)*cos(t)*log(abs(t))	
+y	=	(abs(t)^(0.3))*(cos(t))^(1/2)	
+```
+
+where t is in (-1, 1)
+
+```{r}
+heart_vertices <- function(xc, yc, size, npoints = 100, ...) {
+  t = seq(-1, 1, length.out = npoints + 1)
+  x	=	sin(t)*cos(t)*log(abs(t))	
+  y	=	abs(t)^(0.3)*sqrt(cos(t))	
+  df <- tibble(t = t, x = x, y = y)
+  return(df)
+}
+
+heart_vertices(0,0,1) %>%
+  ggplot() +
+  geom_polygon(aes(x=x,y=y), fill="pink", 
+               color="#61537520",size=10) +  
+  theme_void() +
+  coord_fixed() 
+
+```
+
+# Heart Scatter Plot
+
+From: https://www.summitllc.us/blog/show-your-valentine-how-much-you-care-create-a-statistical-graph
+
+```{r}
+# heart curve formula
+heart <- quote((x^2 + y^2 - 1)^3 - x^2 * y^3)
+
+# formula for heart curve at a given x
+heart_at_x <- function(x) {
+  function(y) eval(substitute_q(heart, list(x = x)), list(y = y))
+}
+
+# trace the heart curve
+# by evaluating the heart curve formula at each x, then finding the roots of the
+# resulting formula in y; e.g. a x==0, find the roots of (y^2 - 1)^3 = 0
+# broken up into upper and lower parts (h_y1 and h_y2)
+heart_x <- seq(-1.136, 1.136, 0.001)
+heart_y_lower <- sapply(heart_x, function(x) uniroot(heart_at_x(x), c(-2, 0.6))$root)
+heart_y_upper <- sapply(heart_x, function(x) uniroot(heart_at_x(x), c(0.6, 2))$root)
+
+# put together data frame
+heart_df <- data.frame(x = rep(heart_x, 2), 
+                       y = c(heart_y_lower, heart_y_upper))
+
+# show outline
+with(heart_df, plot(x, y))
+
+# create a data frame with one row per x, so we can fill in the heart
+heart_df_minmax <- data.frame(x = heart_x,  
+                              y_min = heart_y_lower, 
+                              y_max = heart_y_upper)
+
+# set.seed(20150214)
+
+# fill in the heart by generating random deviates at each x 
+# and rejecting those that fall outside the heart curve
+heart_full <- apply(heart_df_minmax, 
+                    1, 
+                    function(w) {
+                      x <- w["x"]
+                      y_min = w["y_min"]
+                      y_max = w["y_max"]
+                      y <- rnorm(2, mean = 0.33)
+                      y <- y[between(y, y_min, y_max)]
+                      x <- x[any(is.finite(y))]
+                      data.frame(x, y, row.names = NULL)
+                    })
+
+# change from list to data frame
+heart_full <- bind_rows(heart_full)
+
+# add random numbers for color and size
+heart_full <- heart_full %>% 
+  mutate(z1 = runif(n()), 
+         z2 = pmin(abs(rnorm(n())), 3), 
+         order = runif(n())) %>%
+  arrange(order)
+
+#------------------------------------------------------------------------------#
+
+# plot the heart
+p <- ggplot(heart_full, 
+            aes(x, y, color = z1, size = z2)) + 
+  geom_point(pch = -1 * as.hexmode(9829)) + 
+  scale_color_gradient(limits = c(0, 1), low = "red3", high = "pink") + 
+  scale_size(limits = c(0, 3), range = c(0.1, 20)) + 
+  theme_void() +
+  theme(legend.position="none") 
+p
+
+# Use less of the points
+p <- ggplot(heart_full[c(1:round(3*nrow(heart_full)/8,0)),], 
+            aes(x, y, color = z1, size = z2)) + 
+  geom_point(pch = -1 * as.hexmode(9829)) + 
+  scale_color_gradient(limits = c(0, 1), low = "red3", high = "pink") + 
+  scale_size(limits = c(0, 3), range = c(0.1, 20)) + 
+  theme_void() +
+  theme(legend.position="none") 
+p
+```
+
+```{r}
+ggsave("heart_scatterplot.jpeg", width=6, height=4, units = "in", dpi=300)
+```
+
+
+# Session Information
+
+```{r}
+sessionInfo()
+```
+

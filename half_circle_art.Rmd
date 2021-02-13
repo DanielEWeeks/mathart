@@ -1,5 +1,5 @@
 ---
-title: "TITLE"
+title: "Half Circle Art"
 author: "Daniel E. Weeks"
 date: "`r format(Sys.time(), '%B %d, %Y, %R')`"
 header-includes:
