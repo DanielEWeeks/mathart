@@ -1,0 +1,161 @@
+---
+title: "Sketch"
+author: "Daniel E. Weeks"
+date: "`r format(Sys.time(), '%B %d, %Y, %R')`"
+header-includes:
+- \usepackage{pdflscape}
+- \newcommand{\blandscape}{\begin{landscape}}
+- \newcommand{\elandscape}{\end{landscape}}
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    number_sections: true
+    toc_depth: '3'
+    code_folding: show
+  pdf_document:
+    toc: true
+    number_sections: true
+    toc_depth: 3
+#   md_extensions: +raw_attribute
+---
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE}
+require(knitr)
+# Set so that long lines in R will be wrapped:
+opts_chunk$set(tidy.opts=list(width.cutoff=80),tidy=TRUE)
+```
+
+```{r,echo=FALSE}
+# In the event of a crash, save the working space on exit:
+save_all <- function() {
+  save.image("recover.RData")
+}
+options(error = save_all)
+```
+
+
+# Load Libraries
+
+```{r load_libraries,message=FALSE}
+library(tidyverse)
+library(tidylog)
+library(sketch)
+```
+
+# Input directory and files 
+
+```{r}
+# Print the working directory
+getwd()
+```
+The input files used in this analysis are ... and can be found in ... 
+
+# Sketch
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+knitr::knit_engines$set(sketch = sketch::eng_sketch)
+```
+
+```{sketch, debug = T, style = "width: 100%; height: 90px; border: none;"}
+print("'sketch' has its own knitr engine from version 1.0.5!")
+```
+## Using sketch chunks
+
+```{sketch, eval = TRUE, asset_tags = default_tags(local = FALSE), class = "border-none width-420 height-420", style = NULL}
+#! config(deparsers = default_2_deparsers())
+#! load_library("p5")
+
+# Setup
+WIDTH <- 400
+HEIGHT <- 400
+DIAMETER <- 10
+GRID_SIZE <- 40
+
+x_grid <- seq(0, WIDTH, step = DIAMETER)
+y_grid <- seq(0, HEIGHT, step = DIAMETER)
+
+setup <- function() {
+    createCanvas(WIDTH, HEIGHT)
+    for (x in x_grid) {
+        for (y in y_grid) {
+            circle(x, y, DIAMETER)
+        }
+    }
+    NULL
+}
+```
+
+```{sketch, eval = TRUE, asset_tags = default_tags(local = FALSE), class="border-none width-1720 height-1720", style = NULL}
+#! config(deparsers = default_2_deparsers())
+#! load_library("p5")
+# Setup
+WIDTH <- 400
+HEIGHT <- 400
+DIAMETER <- 10
+GRID_SIZE <- 40
+x_grid <- seq(0, WIDTH, step = DIAMETER)
+y_grid <- seq(0, HEIGHT, step = DIAMETER)
+setup <- function() {
+    createCanvas(WIDTH, HEIGHT)
+    for (x in x_grid) {
+        for (y in y_grid) {
+            # Uniform distribution for RGB color
+            rgb_color = runif(3, 0, 255)
+            fill(rgb_color)    # fill color
+            stroke(rgb_color)  # border color
+            
+            # Square of normal distribution for the diameter
+            d <- DIAMETER * rnorm(1, 0, 0.4)^2
+            circle(x, y, d)
+        }
+    }
+    NULL
+}
+```
+
+## Using R chunks
+
+### sketch1.R
+
+```{r, echo = F, eval = TRUE}
+sketch::insert_sketch(file = "sketch1.R", style = "width:420px; height:420px; border:none;")
+```
+
+### sketch2.R
+
+```{r, echo = F, eval = TRUE}
+sketch::insert_sketch(file = "sketch2.R", style = "width:420px; height:420px; border:none;")
+```
+
+
+### sketch2save.R
+
+```{r, echo = F, eval = TRUE}
+sketch::insert_sketch(file = "sketch2save.R", style = "width:420px; height:420px; border:none;")
+```
+
+# Generate R Markdown
+
+```{r}
+# This auto-installs required packages if not already installed
+if (!require("rmarkdown")) install.packages("rmarkdown")
+if (!require("here")) install.packages("here")
+# Note: a package needs only be installed once.
+library(rmarkdown)
+library(here)
+
+finalize <- function() {
+  rmd <- here("sketch", "sketch.Rmd")
+  rmarkdown::render(rmd, github_document(toc=TRUE, toc_depth=3))
+}
+```
+
+
+# Session Information
+
+```{r}
+sessionInfo()
+```
+
