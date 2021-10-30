@@ -13,7 +13,7 @@ x_grid <- seq(0, WIDTH, step = DIAMETER)
 y_grid <- seq(0, HEIGHT, step = DIAMETER)
 
 setup <- function() {
-    cnv = createCanvas(WIDTH, HEIGHT)
+    createCanvas(WIDTH, HEIGHT)
     background('rgb(255,255,255)')
     for (x in x_grid) {
         for (y in y_grid) {
@@ -27,6 +27,6 @@ setup <- function() {
             circle(x, y, d)
         }
     }
-    save(cnv, "sketch2.png")
+    save("sketch2.png")
     NULL
 }
