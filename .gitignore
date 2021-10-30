@@ -2,5 +2,10 @@
 *.Rproj
 *.pdf
 .Rbuildignore
-mathart.Rproj
+*.Rproj
 .gitignore
+*.png
+*.jpeg
+*.rds
+.Rhistory
+*DS_Store
