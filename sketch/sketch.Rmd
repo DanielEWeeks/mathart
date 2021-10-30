@@ -132,8 +132,14 @@ sketch::insert_sketch(file = "sketch2.R", style = "width:420px; height:420px; bo
 
 ### sketch2save.R
 
-```{r, echo = F, eval = TRUE}
+```{r, echo = F, eval = FALSE}
 sketch::insert_sketch(file = "sketch2save.R", style = "width:420px; height:420px; border:none;")
+```
+
+### sketch3_tiles.R
+
+```{r, echo = F, eval = TRUE}
+sketch::insert_sketch(file = "sketch3_tiles.R", style = "width:530px; height:530px; border:none;")
 ```
 
 # Generate R Markdown

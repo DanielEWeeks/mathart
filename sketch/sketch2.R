@@ -1,3 +1,5 @@
+# From
+# https://kcf-jackson.github.io/sketch-website/tutorial/
 #! config(deparsers = default_2_deparsers())
 #! load_library("p5")
 
@@ -18,7 +20,7 @@ setup <- function() {
             rgb_color = runif(3, 0, 255)
             fill(rgb_color)    # fill color
             stroke(rgb_color)  # border color
-            
+
             # Square of normal distribution for the diameter
             d <- DIAMETER * rnorm(1, 0, 0.4)^2
             circle(x, y, d)
