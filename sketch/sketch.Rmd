@@ -163,6 +163,11 @@ sketch::insert_sketch(file = "sketch_design_study.R", style = "width:630px; heig
 sketch::insert_sketch(file = "sketch_design_study_save.R", style = "width:630px; height:630px; border:none;")
 ```
 
+
+```{r, echo = F, eval = TRUE}
+sketch::insert_sketch(file = "sketch2_design_study_save.R", style = "width:630px; height:630px; border:none;")
+```
+
 # Generate R Markdown
 
 ```{r}
