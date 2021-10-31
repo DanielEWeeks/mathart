@@ -8,18 +8,18 @@
 WIDTH <- 600
 HEIGHT <- 600
 DIAMETER <- 590
-npoints <- 10
-inc <- 2*pi/npoints
 radius <- DIAMETER/2
 xlist <- Array()
 ylist <- Array()
 points <- Array()
-step <- 3
+# npoints <- 20
+# step <- 7
+npoints <- R::floor(runif(1, 10,30))
+step <- R::floor(runif(1, 3,10))
+inc <- 2*pi/npoints
 
 setup <- function() {
   createCanvas(WIDTH, HEIGHT)
-#  background('rgb(255,255,255)')
-#  stroke(0,0,0)
   background('rgb(30,144,255)')
   noFill()
   stroke('rgb(255,255,255)')
@@ -55,11 +55,13 @@ draw <- function() {
   }
 #  line(xlist[i],ylist[i],xlist[i+2],ylist[i+2])
 #  text(points,0,0)
-#  for (i in R::seq(0,length(seq(0,step*npoints-2,step)))) {
   for (i in R::c(1:max(seq(0,length(seq(0,step*npoints-1,step))))-1)) {
     line(xlist[points[i]],ylist[points[i]],xlist[points[i+1]],ylist[points[i+1]])
   }
+#  text(npoints,0,0)
+#  text(step,0,-20)
   pop();
-  save('circleCountByThrees.png')
+  save("circleRandom.png");
+# saveCanvas('circleRandom', 'png');
   NULL
 }
