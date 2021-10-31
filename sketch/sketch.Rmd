@@ -138,8 +138,29 @@ sketch::insert_sketch(file = "sketch2save.R", style = "width:420px; height:420px
 
 ### sketch3_tiles.R
 
+From https://kcf-jackson.github.io/sketch-website/tutorial/8_tiles
+
+
 ```{r, echo = F, eval = TRUE}
 sketch::insert_sketch(file = "sketch3_tiles.R", style = "width:530px; height:530px; border:none;")
+```
+
+
+### sketch_design_study.R
+
+Design Study    
+By Roni Kaufman     
+https://ronikaufman.github.io/     
+https://twitter.com/KaufmanRoni     
+https://openprocessing.org/sketch/1291822     
+
+
+```{r, echo = F, eval = TRUE}
+sketch::insert_sketch(file = "sketch_design_study.R", style = "width:630px; height:630px; border:none;")
+```
+
+```{r, echo = F, eval = TRUE}
+sketch::insert_sketch(file = "sketch_design_study_save.R", style = "width:630px; height:630px; border:none;")
 ```
 
 # Generate R Markdown
