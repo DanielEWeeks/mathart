@@ -176,6 +176,10 @@ sketch::insert_sketch(file = "sketch_circle.R", style = "width:630px; height:630
 sketch::insert_sketch(file = "sketch_circle_random.R", style = "width:630px; height:630px; border:none;")
 ```
 
+
+```{r, debug=TRUE, echo = F, eval = TRUE}
+sketch::insert_sketch(file = "sketch_modular_math.R", style = "width:630px; height:630px; border:none;")
+```
 # Generate R Markdown
 
 ```{r}
