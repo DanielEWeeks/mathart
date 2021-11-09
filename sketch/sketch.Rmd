@@ -189,6 +189,10 @@ sketch::insert_sketch(file = "sketch_flower_of_life.R", style = "width:630px; he
 sketch::insert_sketch(file = "sketch_FlowerOfLife_level2.R", style = "width:630px; height:630px; border:none;")
 ```
 
+```{r, debug=TRUE, echo = F, eval = TRUE}
+sketch::insert_sketch(file = "sketch_FlowerOfLife_v3.R", style = "width:630px; height:630px; border:none;")
+```
+
 # Generate R Markdown
 
 ```{r}
