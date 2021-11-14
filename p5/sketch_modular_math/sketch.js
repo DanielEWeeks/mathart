@@ -67,13 +67,37 @@ function exportHighResolution() {
 }
 
 // function keyReleased() { if (key == 'e') exportHighResolution(); }
-function keyReleased() { if (key == 'a') { 
+function keyReleased() { 
+         if (key == 'a') { 
+             // Increment step count
              step = step + 1; 
              loop();
+         } else {
+             if (key == 's') {
+               // Decrement step count
+               step = step - 1;
+               loop(); 
              } else {
-             if (key == 'e') { exportHighResolution(); }
+              if (key == 'e') { 
+               // Export high resolution version 
+               exportHighResolution(); 
+              }
              }
-             }
+         }
+        }
+
+
+function keyPressed() {
+  if (keyCode === UP_ARROW) {
+    npoints = 270;
+    inc = 2*PI/npoints;
+    loop();
+  } else if (keyCode === DOWN_ARROW) {
+    npoints = 180;
+    inc = 2*PI/npoints;
+    loop();
+  }
+}
 
 function mousePressed() { loop(); }
 
