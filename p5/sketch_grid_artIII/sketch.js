@@ -21,8 +21,7 @@ function setup() {
   inc = WIDTH/npoints;
   diameter = inc/1.5;
   palette = Array("#4464a1", "#56a1c4", "#ee726b", "#ffc5c7", "#fef9c6", "#df5f50", "#5a3034", "#f5b800", "#ffcc4d", "#4b8a5f", "#e590b8");
-  myScaledCanvas.colorMode(HSB, 360, 100, 100, 0.50);
-  myScaledCanvas.angleMode(DEGREES);
+
 }
 
 function draw() {
@@ -68,6 +67,8 @@ function drawMyDesign() {
   myScaledCanvas.background('rgb(255,255,255)');
   myScaledCanvas.fill(255, 0, 100,120);
   myScaledCanvas.noStroke();
+  myScaledCanvas.colorMode(HSB, 360, 100, 100, 0.50);
+  myScaledCanvas.angleMode(DEGREES);
   // Draw grid
   xpos = 0;
    for (var i = 0; i <= npoints; i += 1) {
