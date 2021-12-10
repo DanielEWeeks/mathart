@@ -31,8 +31,12 @@ let step = 1;
 
 let a1Slide;
 let a2Slide;
+let a3Slide;
+let a4Slide;
 let f1Slide;
 let f2Slide;
+let f3Slide;
+let f4Slide;
 
 var deepSlateGreen;
 var seashellPink;
@@ -88,10 +92,18 @@ function setup() {
   a1Slide.position(10, 20);
   a2Slide =  createSlider(0, 500, 100);
   a2Slide.position(10, 50);
+  a3Slide =  createSlider(0, 500, 100);
+  a3Slide.position(10, 80);
+  a4Slide =  createSlider(0, 500, 100);
+  a4Slide.position(10, 110);
   f1Slide =  createSlider(0, 20, 2);
-  f1Slide.position(10, 80);
+  f1Slide.position(10, 140);
   f2Slide =  createSlider(0, 20, 6);
-  f2Slide.position(10, 110);
+  f2Slide.position(10, 170);
+  // f3Slide =  createSlider(0, 20, 1);
+  // f3Slide.position(10, 200);
+  f4Slide =  createSlider(0, 20, 3);
+  f4Slide.position(10, 230);
 }
 
 
@@ -213,8 +225,13 @@ function drawMyDesign() {
 
   a1 = a1Slide.value();
   a2 = a2Slide.value();
+  a3 = a3Slide.value();
+  a4 = a4Slide.value();
+
   f1 = f1Slide.value();
   f2 = f2Slide.value();
+  // f3 = f3Slide.value();
+  f4 = f4Slide.value();
 
   var t = 0;
 
