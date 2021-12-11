@@ -29,6 +29,8 @@ let npoints = 50000;
 
 let step = 1;
 
+let pass = 1;
+
 let a1Slide;
 let a2Slide;
 let a3Slide;
@@ -80,6 +82,7 @@ var d2;
 var d3;
 var d4;
 
+var txt;
 
 //=================================================================
 function setup() {
@@ -88,22 +91,35 @@ function setup() {
   canvas = createCanvas(WIDTH, HEIGHT);
   myScaledCanvas = createGraphics(WIDTH, HEIGHT);
   currentScale = 1; // initialize to 1; don't touch
-  a1Slide =  createSlider(0, 500, 100);
-  a1Slide.position(10, 20);
-  a2Slide =  createSlider(0, 500, 100);
-  a2Slide.position(10, 50);
-  a3Slide =  createSlider(0, 500, 100);
-  a3Slide.position(10, 80);
-  a4Slide =  createSlider(0, 500, 100);
-  a4Slide.position(10, 110);
-  f1Slide =  createSlider(0, 20, 2);
-  f1Slide.position(10, 140);
-  f2Slide =  createSlider(0, 20, 6);
-  f2Slide.position(10, 170);
-  // f3Slide =  createSlider(0, 20, 1);
-  // f3Slide.position(10, 200);
-  f4Slide =  createSlider(0, 20, 3);
-  f4Slide.position(10, 230);
+  a1Slide =  createSlider(0, 500, 100, 0);
+  a1Slide.position(610, 20);
+  a2Slide =  createSlider(0, 500, 100, 0);
+  a2Slide.position(610, 50);
+  a3Slide =  createSlider(0, 500, 100, 0);
+  a3Slide.position(610, 80);
+  a4Slide =  createSlider(0, 500, 100, 0);
+  a4Slide.position(610, 110);
+  f1Slide =  createSlider(0, 20, 2, 0);
+  f1Slide.position(610, 140);
+  f2Slide =  createSlider(0, 20, 6, 0);
+  f2Slide.position(610, 170);
+  f3Slide =  createSlider(1.01, 2, 1, 0);
+  f3Slide.position(610, 200);
+  f4Slide =  createSlider(0, 20, 3, 0);
+  f4Slide.position(610, 230);
+
+  d1Slide =  createSlider(0, 1, 0, 0);
+  d1Slide.position(610, 290);
+  d2Slide =  createSlider(0, 1, 0, 0);
+  d2Slide.position(610, 310);
+  d3Slide =  createSlider(0, 1, 0, 0);
+  d3Slide.position(610, 340);
+  d4Slide =  createSlider(0, 1, 0, 0);
+  d4Slide.position(610, 370);
+
+  valueDisplayer = createP();
+  valueDisplayer.position(780,5);
+
 }
 
 
@@ -137,12 +153,12 @@ function exportHighResolution() {
 function keyReleased() {
          if (key == 'a') {
              // Increment step count
-             step = step + 1;
+             step = step + 0.01;
              loop();
          } else {
              if (key == 's') {
                // Decrement step count
-               step = step - 1;
+               step = step - 0.01;
                loop();
              } else {
               if (key == 'e') {
@@ -230,22 +246,30 @@ function drawMyDesign() {
 
   f1 = f1Slide.value();
   f2 = f2Slide.value();
-  // f3 = f3Slide.value();
+  f3 = step*f3Slide.value();
   f4 = f4Slide.value();
+
+  d1 = d1Slide.value();
+  d2 = d2Slide.value();
+  d3 = d3Slide.value();
+  d4 = d4Slide.value();
+
 
   var t = 0;
 
-  myScaledCanvas.background(duskyGreen);
+  // myScaledCanvas.background(duskyGreen);
   // myScaledCanvas.stroke(ivoryBuff);
  // myScaledCanvas.fill(oldRose);
   myScaledCanvas.background('rgb(30,144,255)');
   myScaledCanvas.fill('rgb(192,192,192)');
   myScaledCanvas.stroke('rgb(255,255,255)');
-  myScaledCanvas.colorMode(HSB, 360, 100, 100, 0.50);
+  // myScaledCanvas.colorMode(HSB, 360, 100, 100, 0.50);
 
   myScaledCanvas.strokeWeight(1);
 
   // var t = (millis() / 1000);
+  // myScaledCanvas.text(a1, 50, 20);
+  valueDisplayer.html('a1 = '+round(a1,3));
 
   // translate(width / 2, height / 2);
   myScaledCanvas.translate(WIDTH/2, (HEIGHT/2));
