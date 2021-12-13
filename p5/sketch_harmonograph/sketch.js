@@ -91,34 +91,50 @@ function setup() {
   canvas = createCanvas(WIDTH, HEIGHT);
   myScaledCanvas = createGraphics(WIDTH, HEIGHT);
   currentScale = 1; // initialize to 1; don't touch
-  a1Slide =  createSlider(0, 500, 100, 0);
+  a1Slide =  createSlider(0, 500, 100, 0.2);
   a1Slide.position(610, 20);
-  a2Slide =  createSlider(0, 500, 100, 0);
+  a2Slide =  createSlider(0, 500, 100, 0.2);
   a2Slide.position(610, 50);
-  a3Slide =  createSlider(0, 500, 100, 0);
+  a3Slide =  createSlider(0, 500, 100, 0.2);
   a3Slide.position(610, 80);
-  a4Slide =  createSlider(0, 500, 100, 0);
+  a4Slide =  createSlider(0, 500, 100, 0.2);
   a4Slide.position(610, 110);
-  f1Slide =  createSlider(0, 20, 2, 0);
+
+  f1Slide =  createSlider(0, 20, 2, 1);
   f1Slide.position(610, 140);
-  f2Slide =  createSlider(0, 20, 6, 0);
+  f2Slide =  createSlider(0, 20, 6, 1);
   f2Slide.position(610, 170);
   f3Slide =  createSlider(1.01, 2, 1, 0);
   f3Slide.position(610, 200);
-  f4Slide =  createSlider(0, 20, 3, 0);
+  f4Slide =  createSlider(0, 20, 3, 1);
   f4Slide.position(610, 230);
 
-  d1Slide =  createSlider(0, 1, 0, 0);
+  d1Slide =  createSlider(0, 1, 0, 0.1);
   d1Slide.position(610, 290);
-  d2Slide =  createSlider(0, 1, 0, 0);
+  d2Slide =  createSlider(0, 1, 0, 0.1);
   d2Slide.position(610, 310);
-  d3Slide =  createSlider(0, 1, 0, 0);
+  d3Slide =  createSlider(0, 1, 0, 0.1);
   d3Slide.position(610, 340);
-  d4Slide =  createSlider(0, 1, 0, 0);
+  d4Slide =  createSlider(0, 1, 0, 0.1);
   d4Slide.position(610, 370);
 
   valueDisplayer = createP();
   valueDisplayer.position(780,5);
+  a2valueDisplayer = createP();
+  a2valueDisplayer.position(780,35);
+  a3valueDisplayer = createP();
+  a3valueDisplayer.position(780,65);
+  a4valueDisplayer = createP();
+  a4valueDisplayer.position(780,95);
+
+  f1valueDisplayer = createP();
+  f1valueDisplayer.position(780,125);
+  f2valueDisplayer = createP();
+  f2valueDisplayer.position(780,155);
+  f3valueDisplayer = createP();
+  f3valueDisplayer.position(780,185);
+  f4valueDisplayer = createP();
+  f4valueDisplayer.position(780,215);
 
 }
 
@@ -171,15 +187,20 @@ function keyReleased() {
 
 
 function keyPressed() {
-  if (keyCode === UP_ARROW) {
+  if (keyCode === RIGHT_ARROW) {
     npoints = npoints + 10000;
     inc = 2*PI/npoints;
     loop();
-  } else if (keyCode === DOWN_ARROW) {
+  } else if (keyCode === LEFT_ARROW) {
     npoints = npoints - 10000;
     inc = 2*PI/npoints;
     loop();
+  } else if (keyCode === UP_ARROW) {
+    loop();
+  } else if (keyCode === DOWN_ARROW) {
+    loop();
   }
+
 }
 
 function mousePressed() { loop(); }
@@ -270,6 +291,14 @@ function drawMyDesign() {
   // var t = (millis() / 1000);
   // myScaledCanvas.text(a1, 50, 20);
   valueDisplayer.html('a1 = '+round(a1,3));
+  a2valueDisplayer.html('a2 = '+round(a2,3));
+  a3valueDisplayer.html('a3 = '+round(a3,3));
+  a4valueDisplayer.html('a4 = '+round(a4,3));
+
+  f1valueDisplayer.html('f1 = '+round(f1,3));
+  f2valueDisplayer.html('f2 = '+round(f2,3));
+  f3valueDisplayer.html('f3 = '+round(f3,3));
+  f4valueDisplayer.html('f4 = '+round(f4,3));
 
   // translate(width / 2, height / 2);
   myScaledCanvas.translate(WIDTH/2, (HEIGHT/2));
