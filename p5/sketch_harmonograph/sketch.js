@@ -19,6 +19,8 @@
 //  ( 1350 x 1050 ) x 5  = ( 6750 x 5250 )
 //  (  675 x 525 )  x 10 = ( 6750 x 5250 )
 
+// python -m SimpleHTTPServer
+// http://localhost:8000/sketch_harmonograph
 
 let outputScale = 10/2;
 let currentScale;
@@ -27,15 +29,15 @@ let canvas;
 
 let npoints = 50000;
 
-let step = 1;
+let step = 0;
 
 let pass = 1;
 
-let a1Slide;
+var a1Slide;
 let a2Slide;
 let a3Slide;
 let a4Slide;
-let f1Slide;
+var f1Slide;
 let f2Slide;
 let f3Slide;
 let f4Slide;
@@ -59,30 +61,62 @@ var ivoryBuff;
 // var line;
 
 // amplitude
-var a1;
-var a2;
-var a3;
-var a4;
+var a1 = 200;
+var a2 = 100;
+var a3 = 100;
+var a4 = 100;
 
 // frequency
-var f1;
-var f2;
-var f3;
-var f4;
+var f1 = 2;
+var f2 = 6;
+var f3 = 1.01;
+var f4 = 3;
 
 // phase
-var p1;
-var p2;
-var p3;
-var p4;
+var p1 = Math.PI/16;
+var p2 = 3*Math.PI/2;
+var p3 = 13*Math.PI/16;
+var p4 = Math.PI;
 
 // damping
-var d1;
-var d2;
-var d3;
-var d4;
+var d1 = 0.01;
+var d2 = 0;
+var d3 = 0;
+var d4 = 0;
 
 var txt;
+
+//  a1 = 100;
+//  a2 = 100;
+//  a3 = 100;
+//  a4 = 100;
+
+//  f1 = 2;
+//  f2 = 6;
+//  f3 = 1.01; //1.01
+//  f4 = 3; //3
+
+//  p1 = PI/16;
+//  p2 = 3 * PI / 2;
+//  p3 = 13 * PI / 16;
+//  p4 = PI;
+
+//  d1 = 0.02;
+//  d2 = 0;
+//  d3 = 0;
+//  d4 = 0;
+
+var table;
+var nrow = 5;
+
+// Load a comma-separated table where each row is a set of parameters.
+// Here's an example:
+// a1,a2,a3,a4,f1,f2,f3,f4,p1,p2,p3,p4,d1,d2,d3,d4
+// 100,100,100,100,2,6,1.01,3,0.1963495,4.712389,2.552544,3.141593,0,0,0,0
+
+function preload() {
+  table = loadTable('data.csv', 'csv', 'header');
+}
 
 //=================================================================
 function setup() {
@@ -91,32 +125,62 @@ function setup() {
   canvas = createCanvas(WIDTH, HEIGHT);
   myScaledCanvas = createGraphics(WIDTH, HEIGHT);
   currentScale = 1; // initialize to 1; don't touch
-  a1Slide =  createSlider(0, 500, 100, 0.2);
+  // Set parameters to the values read from the `nrow` of table `data.csv`
+  a1 = table.getNum(nrow,'a1');
+  a2 = table.getNum(nrow,'a2');
+  a3 = table.getNum(nrow,'a3');
+  a4 = table.getNum(nrow,'a4');
+
+  f1 = table.getNum(nrow,'f1');
+  f2 = table.getNum(nrow,'f2');
+  f3 = table.getNum(nrow,'f3');
+  f4 = table.getNum(nrow,'f4');
+
+  p1 = table.getNum(nrow,'p1');
+  p2 = table.getNum(nrow,'p2');
+  p3 = table.getNum(nrow,'p3');
+  p4 = table.getNum(nrow,'p4');
+
+  d1 = table.getNum(nrow,'d1');
+  d2 = table.getNum(nrow,'d2');
+  d3 = table.getNum(nrow,'d3');
+  d4 = table.getNum(nrow,'d4');
+
+  a1Slide =  createSlider(0, 500, a1, 0.2);
   a1Slide.position(610, 20);
-  a2Slide =  createSlider(0, 500, 100, 0.2);
+  a2Slide =  createSlider(0, 500, a2, 0.2);
   a2Slide.position(610, 50);
-  a3Slide =  createSlider(0, 500, 100, 0.2);
+  a3Slide =  createSlider(0, 500, a3, 0.2);
   a3Slide.position(610, 80);
-  a4Slide =  createSlider(0, 500, 100, 0.2);
+  a4Slide =  createSlider(0, 500, a4, 0.2);
   a4Slide.position(610, 110);
 
-  f1Slide =  createSlider(0, 20, 2, 1);
+  f1Slide =  createSlider(0, 20, f1, 0.01);
   f1Slide.position(610, 140);
-  f2Slide =  createSlider(0, 20, 6, 1);
+  f2Slide =  createSlider(0, 20, f2, 0.01);
   f2Slide.position(610, 170);
-  f3Slide =  createSlider(1.01, 2, 1, 0);
+  f3Slide =  createSlider(0, 20, f3, 0.01);
   f3Slide.position(610, 200);
-  f4Slide =  createSlider(0, 20, 3, 1);
+  f4Slide =  createSlider(0, 20, f4, 0.01);
   f4Slide.position(610, 230);
 
-  d1Slide =  createSlider(0, 1, 0, 0.1);
+  d1Slide =  createSlider(0, 0.07, d1, 0.0001);
   d1Slide.position(610, 290);
-  d2Slide =  createSlider(0, 1, 0, 0.1);
-  d2Slide.position(610, 310);
-  d3Slide =  createSlider(0, 1, 0, 0.1);
-  d3Slide.position(610, 340);
-  d4Slide =  createSlider(0, 1, 0, 0.1);
-  d4Slide.position(610, 370);
+  d2Slide =  createSlider(0, 0.07, d2, 0.0001);
+  d2Slide.position(610, 320);
+  d3Slide =  createSlider(0, 0.07, d3, 0.0001);
+  d3Slide.position(610, 350);
+  d4Slide =  createSlider(0, 0.07, d4, 0.0001);
+  d4Slide.position(610, 380);
+
+  p1Slide =  createSlider(0, 2*PI, p1, PI/16);
+  p1Slide.position(610, 420);
+  p2Slide =  createSlider(0, 2*PI, p2, PI/16);
+  p2Slide.position(610, 450);
+  p3Slide =  createSlider(0, 2*PI, p3, PI/16);
+  p3Slide.position(610, 480);
+  p4Slide =  createSlider(0, 2*PI, p4, PI/16);
+  p4Slide.position(610, 510);
 
   valueDisplayer = createP();
   valueDisplayer.position(780,5);
@@ -135,6 +199,24 @@ function setup() {
   f3valueDisplayer.position(780,185);
   f4valueDisplayer = createP();
   f4valueDisplayer.position(780,215);
+
+  d1valueDisplayer = createP();
+  d1valueDisplayer.position(780,275);
+  d2valueDisplayer = createP();
+  d2valueDisplayer.position(780,305);
+  d3valueDisplayer = createP();
+  d3valueDisplayer.position(780,335);
+  d4valueDisplayer = createP();
+  d4valueDisplayer.position(780,365);
+
+ p1valueDisplayer = createP();
+  p1valueDisplayer.position(780,405);
+  p2valueDisplayer = createP();
+  p2valueDisplayer.position(780,435);
+  p3valueDisplayer = createP();
+  p3valueDisplayer.position(780,465);
+  p4valueDisplayer = createP();
+  p4valueDisplayer.position(780,495);
 
 }
 
@@ -171,19 +253,31 @@ function keyReleased() {
              // Increment step count
              step = step + 0.01;
              loop();
-         } else {
-             if (key == 's') {
+         } else if (key == 's') {
                // Decrement step count
                step = step - 0.01;
                loop();
-             } else {
-              if (key == 'e') {
+         } else if (key == 'e') {
                // Export high resolution version
                exportHighResolution();
-              }
-             }
+         } else if (key == 'q') {
+               // Loop through the rows in the parameter table
+               nrow = nrow + 1;
+               if (nrow >= table.getRowCount()) {
+                 nrow = 0;
+               }
+               loadNewRow(table, nrow);
+               loop();
+         } else if (key == 'w') {
+              // Loop through the rows in the parameter table
+              nrow = nrow - 1;
+               if (nrow < 0) {
+                 nrow = table.getRowCount() - 1;
+               }
+               loadNewRow(table, nrow);
+               loop();
          }
-        }
+      }
 
 
 function keyPressed() {
@@ -237,27 +331,6 @@ function drawMyDesign() {
   duskyGreen = color('#154A42'); // CMYK(100, 30, 64, 50)
   ivoryBuff = color('#DDCC9E'); // CMYK(8, 15, 40, 0)
 
-  a1 = 100;
-  a2 = 100;
-  a3 = 100;
-  a4 = 100;
-
-  f1 = 2;
-  f2 = 6;
-  f3 = 1.01;
-  f4 = 3;
-
-  p1 = PI / 16;
-  p2 = 3 * PI / 2;
-  p3 = 13 * PI / 16;
-  p4 = PI;
-
-  d1 = 0;
-  d2 = 0;
-  d3 = 0;
-  d4 = 0;
-
-
 
 
   a1 = a1Slide.value();
@@ -267,13 +340,18 @@ function drawMyDesign() {
 
   f1 = f1Slide.value();
   f2 = f2Slide.value();
-  f3 = step*f3Slide.value();
+  f3 = step + f3Slide.value();
   f4 = f4Slide.value();
 
   d1 = d1Slide.value();
   d2 = d2Slide.value();
   d3 = d3Slide.value();
   d4 = d4Slide.value();
+
+  p1 = p1Slide.value();
+  p2 = p2Slide.value();
+  p3 = p3Slide.value();
+  p4 = p4Slide.value();
 
 
   var t = 0;
@@ -300,6 +378,16 @@ function drawMyDesign() {
   f3valueDisplayer.html('f3 = '+round(f3,3));
   f4valueDisplayer.html('f4 = '+round(f4,3));
 
+  d1valueDisplayer.html('d1 = '+round(d1,5));
+  d2valueDisplayer.html('d2 = '+round(d2,5));
+  d3valueDisplayer.html('d3 = '+round(d3,5));
+  d4valueDisplayer.html('d4 = '+round(d4,5));
+
+  p1valueDisplayer.html('p1 = '+round(p1,3));
+  p2valueDisplayer.html('p2 = '+round(p2,3));
+  p3valueDisplayer.html('p3 = '+round(p3,3));
+  p4valueDisplayer.html('p4 = '+round(p4,3));
+
   // translate(width / 2, height / 2);
   myScaledCanvas.translate(WIDTH/2, (HEIGHT/2));
 
@@ -310,6 +398,12 @@ function drawMyDesign() {
     y: (a3 * sin(t * f3 + p3) * exp(-d3 * t)) + (a4 * sin(t * f4 + p4) * exp(-d4 * t)),
   })
   }
+
+  // ParametricPlot[{
+  // on1*Sin[(a + afine) t + phase1] Exp[-xdamp1 t] +
+  // on2*Sin[(b + bfine) t + phase2] Exp[-xdamp2 t],
+  // on3*Sin[(c + cfine) t + phase3] Exp[-ydamp1 t] +
+  // on4*Sin[(d + dfine) t + phase4] Exp[-ydamp2 t]}
 
   myScaledCanvas.push();
   drawVertices(line);
@@ -324,4 +418,51 @@ function drawVertices(vertices) {
    	myScaledCanvas.vertex(vertices[i].x, vertices[i].y);
   }
   myScaledCanvas.endShape();
+}
+
+
+function loadNewRow(table, nrow) {
+
+  // Load the parameters from the current row
+  a1 = table.getNum(nrow,'a1');
+  a2 = table.getNum(nrow,'a2');
+  a3 = table.getNum(nrow,'a3');
+  a4 = table.getNum(nrow,'a4');
+
+  f1 = table.getNum(nrow,'f1');
+  f2 = table.getNum(nrow,'f2');
+  f3 = table.getNum(nrow,'f3');
+  f4 = table.getNum(nrow,'f4');
+
+  p1 = table.getNum(nrow,'p1');
+  p2 = table.getNum(nrow,'p2');
+  p3 = table.getNum(nrow,'p3');
+  p4 = table.getNum(nrow,'p4');
+
+  d1 = table.getNum(nrow,'d1');
+  d2 = table.getNum(nrow,'d2');
+  d3 = table.getNum(nrow,'d3');
+  d4 = table.getNum(nrow,'d4');
+
+  // Update the sliders to the current row's parameter values
+  a1Slide.value(a1);
+  a2Slide.value(a2);
+  a3Slide.value(a3);
+  a4Slide.value(a4);
+
+  f1Slide.value(f1);
+  f2Slide.value(f2);
+  f3Slide.value(f3);
+  f4Slide.value(f4);
+
+  p1Slide.value(p1);
+  p2Slide.value(p2);
+  p3Slide.value(p3);
+  p4Slide.value(p4);
+
+  d1Slide.value(d1);
+  d2Slide.value(d2);
+  d3Slide.value(d3);
+  d4Slide.value(d4);
+
 }
