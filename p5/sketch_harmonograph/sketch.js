@@ -237,11 +237,11 @@ function draw() {
 }
 
 // Scale up graphics before exporting
-function exportHighResolution() {
+function exportHighResolution(timeStamp) {
   currentScale = outputScale; // High-Res Export
   myScaledCanvas = createGraphics(currentScale * WIDTH, currentScale * HEIGHT);
   draw();
-  save(myScaledCanvas, "highResImage", 'png');
+  save(myScaledCanvas, "highResImage" + timeStamp, 'png');
   currentScale = 1; // Reset to default scale 1:1
   myScaledCanvas = createGraphics(WIDTH, HEIGHT);
   draw();
@@ -258,8 +258,15 @@ function keyReleased() {
                step = step - 0.01;
                loop();
          } else if (key == 'e') {
+               // Save current set of parameters to the table
+               addNewRow(table);
+               // Save table
+              let timeStamp = "_" + year()  + month() + day() + "-" + hour() + "-" + minute() + "-" + second();
+               saveTable(table, 'data' + timeStamp + '.csv');
+               // Save a single row table recording the parameters for this plot
+               saveImageTable(timeStamp);
                // Export high resolution version
-               exportHighResolution();
+               exportHighResolution(timeStamp);
          } else if (key == 'q') {
                // Loop through the rows in the parameter table
                nrow = nrow + 1;
@@ -465,4 +472,79 @@ function loadNewRow(table, nrow) {
   d3Slide.value(d3);
   d4Slide.value(d4);
 
+}
+
+function addNewRow(table) {
+
+  let newRow = table.addRow();
+
+  newRow.setNum('a1', a1);
+  newRow.setNum('a2', a2);
+  newRow.setNum('a3', a3);
+  newRow.setNum('a4', a4);
+
+  newRow.setNum('f1', f1);
+  newRow.setNum('f2', f2);
+  newRow.setNum('f3', f3);
+  newRow.setNum('f4', f4);
+
+  newRow.setNum('p1', p1);
+  newRow.setNum('p2', p2);
+  newRow.setNum('p3', p3);
+  newRow.setNum('p4', p4);
+
+  newRow.setNum('d1', d1);
+  newRow.setNum('d2', d2);
+  newRow.setNum('d3', d3);
+  newRow.setNum('d4', d4);
+
+}
+
+function saveImageTable(timeStamp) {
+  // Save a single row table that records the parameters for this image
+  let imageTable = new p5.Table();
+
+  imageTable.addColumn('a1');
+  imageTable.addColumn('a2');
+  imageTable.addColumn('a3');
+  imageTable.addColumn('a4');
+
+  imageTable.addColumn('f1');
+  imageTable.addColumn('f2');
+  imageTable.addColumn('f3');
+  imageTable.addColumn('f4');
+
+  imageTable.addColumn('p1');
+  imageTable.addColumn('p2');
+  imageTable.addColumn('p3');
+  imageTable.addColumn('p4');
+
+  imageTable.addColumn('d1');
+  imageTable.addColumn('d2');
+  imageTable.addColumn('d3');
+  imageTable.addColumn('d4');
+
+  let newRow = imageTable.addRow();
+
+  newRow.setNum('a1', a1);
+  newRow.setNum('a2', a2);
+  newRow.setNum('a3', a3);
+  newRow.setNum('a4', a4);
+
+  newRow.setNum('f1', f1);
+  newRow.setNum('f2', f2);
+  newRow.setNum('f3', f3);
+  newRow.setNum('f4', f4);
+
+  newRow.setNum('p1', p1);
+  newRow.setNum('p2', p2);
+  newRow.setNum('p3', p3);
+  newRow.setNum('p4', p4);
+
+  newRow.setNum('d1', d1);
+  newRow.setNum('d2', d2);
+  newRow.setNum('d3', d3);
+  newRow.setNum('d4', d4);
+
+  saveTable(imageTable, 'imageData' + timeStamp + '.csv');
 }
