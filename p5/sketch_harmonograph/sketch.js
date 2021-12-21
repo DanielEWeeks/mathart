@@ -58,7 +58,7 @@ var paleKingsBlue;
 var duskyGreen;
 var ivoryBuff;
 
-// var line;
+// var myLine;
 
 // amplitude
 var a1 = 200;
@@ -108,6 +108,8 @@ var txt;
 
 var table;
 var nrow = 5;
+
+var colorChange = 0;
 
 // Load a comma-separated table where each row is a set of parameters.
 // Here's an example:
@@ -321,7 +323,7 @@ function drawMyDesign() {
   // myScaledCanvas.line(0,HEIGHT/2,WIDTH,HEIGHT/2);
    //  myScaledCanvas.line(0,249.375,WIDTH,249.375);
    // myScaledCanvas.line(0,HEIGHT-26.25,WIDTH,HEIGHT-26.25);
-  var line = [];
+  var myLine = [];
 
   deepSlateGreen = color('#202C29'); // CMYK(80, 50, 60, 70)
   seashellPink = color('#EBCFB7'); // CMYK(0, 19, 23, 0)
@@ -400,7 +402,7 @@ function drawMyDesign() {
 
   for (var tt = 0; tt < npoints; tt++) {
       t = tt/1000;
-  line.push({
+  myLine.push({
     x: (a1 * sin(t * f1 + p1) * exp(-d1 * t)) + (a2 * sin(t * f2 + p2) * exp(-d2 * t)),
     y: (a3 * sin(t * f3 + p3) * exp(-d3 * t)) + (a4 * sin(t * f4 + p4) * exp(-d4 * t)),
   })
@@ -413,7 +415,7 @@ function drawMyDesign() {
   // on4*Sin[(d + dfine) t + phase4] Exp[-ydamp2 t]}
 
   myScaledCanvas.push();
-  drawVertices(line);
+  drawVerticesLerp(myLine);
   myScaledCanvas.pop();
 
 }
@@ -425,6 +427,27 @@ function drawVertices(vertices) {
    	myScaledCanvas.vertex(vertices[i].x, vertices[i].y);
   }
   myScaledCanvas.endShape();
+}
+
+function drawVerticesColor(theLine) {
+  myScaledCanvas.noFill();
+  colorChange = 0;
+  for (var i = 0; i < theLine.length-1; i++) {
+    myScaledCanvas.stroke(colorChange, 255, 255);
+   	myScaledCanvas.line(theLine[i].x, theLine[i].y,theLine[i+1].x, theLine[i+1].y);
+   	colorChange += 1/50;
+        if (colorChange > 255) {
+            colorChange = 0;
+        }
+  }
+}
+
+function drawVerticesLerp(theLine) {
+  myScaledCanvas.noFill();
+  for (var i = 0; i < theLine.length-1; i++) {
+    myScaledCanvas.stroke(lerpColor(color('red'),color('yellow'), i/(theLine.length -1)));
+   	myScaledCanvas.line(theLine[i].x, theLine[i].y,theLine[i+1].x, theLine[i+1].y);
+  }
 }
 
 
