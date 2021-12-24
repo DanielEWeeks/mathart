@@ -118,6 +118,7 @@ var colorChange = 0;
 
 function preload() {
   table = loadTable('data.csv', 'csv', 'header');
+  // console.log('table row count',table.getRowCount);
 }
 
 //=================================================================
@@ -127,6 +128,12 @@ function setup() {
   canvas = createCanvas(WIDTH, HEIGHT);
   myScaledCanvas = createGraphics(WIDTH, HEIGHT);
   currentScale = 1; // initialize to 1; don't touch
+
+  // table = loadTable('data.csv', 'csv', 'header');
+  // console.log('table row count',table.getRowCount());
+  //  print(table.getRowCount());
+
+
   // Set parameters to the values read from the `nrow` of table `data.csv`
   a1 = table.getNum(nrow,'a1');
   a2 = table.getNum(nrow,'a2');
