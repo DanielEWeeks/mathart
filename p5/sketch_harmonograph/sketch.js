@@ -84,6 +84,11 @@ var d2 = 0;
 var d3 = 0;
 var d4 = 0;
 
+// background color
+var bhue = 250;
+var bsat = 100;
+var bbri = 100;
+
 var txt;
 
 //  a1 = 100;
@@ -110,6 +115,8 @@ var table;
 var nrow = 5;
 
 var colorChange = 0;
+
+var RkeyPressed = false;
 
 // Load a comma-separated table where each row is a set of parameters.
 // Here's an example:
@@ -191,6 +198,13 @@ function setup() {
   p4Slide =  createSlider(0, 2*PI, p4, PI/16);
   p4Slide.position(610, 510);
 
+  bhueSlide =  createSlider(0, 360,250);
+  bhueSlide.position(610, 550);
+  bsatSlide =  createSlider(0, 100,100);
+  bsatSlide.position(610, 580);
+  bbriSlide =  createSlider(0, 100,100);
+  bbriSlide.position(610, 610);
+
   valueDisplayer = createP();
   valueDisplayer.position(780,5);
   a2valueDisplayer = createP();
@@ -218,7 +232,7 @@ function setup() {
   d4valueDisplayer = createP();
   d4valueDisplayer.position(780,365);
 
- p1valueDisplayer = createP();
+  p1valueDisplayer = createP();
   p1valueDisplayer.position(780,405);
   p2valueDisplayer = createP();
   p2valueDisplayer.position(780,435);
@@ -226,6 +240,13 @@ function setup() {
   p3valueDisplayer.position(780,465);
   p4valueDisplayer = createP();
   p4valueDisplayer.position(780,495);
+
+  bhuevalueDisplayer = createP();
+  bhuevalueDisplayer.position(780,535);
+  bsatvalueDisplayer = createP();
+  bsatvalueDisplayer.position(780,565);
+  bbrivalueDisplayer = createP();
+  bbrivalueDisplayer.position(780,595);
 
 }
 
@@ -266,7 +287,19 @@ function keyReleased() {
                // Decrement step count
                step = step - 0.01;
                loop();
-         } else if (key == 'e') {
+        } else if (key == 'r') {
+               RkeyPressed = true;
+               // Randomly set f1,f2,f3,f4
+               f1 = int(random(0, 21));
+               f1Slide.value(f1);
+               f2 = int(random(0, 21));
+               f2Slide.value(f2);
+               f3 = int(random(0, 21));
+               f3Slide.value(f3);
+               f4 = int(random(0, 21));
+               f4Slide.value(f4);
+               loop();
+         }else if (key == 'e') {
                // Save current set of parameters to the table
                addNewRow(table);
                // Save table
@@ -354,10 +387,14 @@ function drawMyDesign() {
   a3 = a3Slide.value();
   a4 = a4Slide.value();
 
+  if (RkeyPressed == true) {
+    RkeyPressed = false;
+  } else {
   f1 = f1Slide.value();
   f2 = f2Slide.value();
   f3 = step + f3Slide.value();
   f4 = f4Slide.value();
+  }
 
   d1 = d1Slide.value();
   d2 = d2Slide.value();
@@ -369,16 +406,22 @@ function drawMyDesign() {
   p3 = p3Slide.value();
   p4 = p4Slide.value();
 
+  bhue = bhueSlide.value();
+  bsat = bsatSlide.value();
+  bbri = bbriSlide.value();
 
   var t = 0;
 
   // myScaledCanvas.background(duskyGreen);
   // myScaledCanvas.stroke(ivoryBuff);
  // myScaledCanvas.fill(oldRose);
-  myScaledCanvas.background('rgb(30,144,255)');
+ // myScaledCanvas.background('rgb(30,144,255)');
+
   myScaledCanvas.fill('rgb(192,192,192)');
   myScaledCanvas.stroke('rgb(255,255,255)');
-  // myScaledCanvas.colorMode(HSB, 360, 100, 100, 0.50);
+  myScaledCanvas.colorMode(HSB, 360, 100, 100, 0.50);
+  myScaledCanvas.background(bhue,bsat,bbri);
+
 
   myScaledCanvas.strokeWeight(1);
 
@@ -403,6 +446,10 @@ function drawMyDesign() {
   p2valueDisplayer.html('p2 = '+round(p2,3));
   p3valueDisplayer.html('p3 = '+round(p3,3));
   p4valueDisplayer.html('p4 = '+round(p4,3));
+
+  bhuevalueDisplayer.html('hue= '+ bhue);
+  bsatvalueDisplayer.html('sat = '+ bsat);
+  bbrivalueDisplayer.html('bri = '+ bbri);
 
   // translate(width / 2, height / 2);
   myScaledCanvas.translate(WIDTH/2, (HEIGHT/2));
