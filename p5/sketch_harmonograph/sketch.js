@@ -118,6 +118,8 @@ var colorChange = 0;
 
 var RkeyPressed = false;
 
+var pArray = [];
+
 // Load a comma-separated table where each row is a set of parameters.
 // Here's an example:
 // a1,a2,a3,a4,f1,f2,f3,f4,p1,p2,p3,p4,d1,d2,d3,d4
@@ -139,7 +141,10 @@ function setup() {
   // table = loadTable('data.csv', 'csv', 'header');
   // console.log('table row count',table.getRowCount());
   //  print(table.getRowCount());
-
+  let pNpoints = 4;
+  for (var k = 0; k < pNpoints; k++) {
+    pArray.push(k*PI/(pNpoints))
+  }
 
   // Set parameters to the values read from the `nrow` of table `data.csv`
   a1 = table.getNum(nrow,'a1');
@@ -290,14 +295,24 @@ function keyReleased() {
         } else if (key == 'r') {
                RkeyPressed = true;
                // Randomly set f1,f2,f3,f4
-               f1 = int(random(0, 21));
+               f1 = int(random(0, 9));
                f1Slide.value(f1);
-               f2 = int(random(0, 21));
+               f2 = int(random(0, 9));
                f2Slide.value(f2);
-               f3 = int(random(0, 21));
+               f3 = int(random(0, 9));
                f3Slide.value(f3);
-               f4 = int(random(0, 21));
+               f4 = int(random(0, 9));
                f4Slide.value(f4);
+
+               p1 = random(pArray);
+               p1Slide.value(p1);
+               p2 = random(pArray);
+               p2Slide.value(p2);
+               p3 = random(pArray);
+               p3Slide.value(p3);
+               p4 = random(pArray);
+               p4Slide.value(p4);
+
                loop();
          }else if (key == 'e') {
                // Save current set of parameters to the table
@@ -387,14 +402,14 @@ function drawMyDesign() {
   a3 = a3Slide.value();
   a4 = a4Slide.value();
 
-  if (RkeyPressed == true) {
-    RkeyPressed = false;
-  } else {
+  // if (RkeyPressed == true) {
+  //  RkeyPressed = false;
+  // } else {
   f1 = f1Slide.value();
   f2 = f2Slide.value();
   f3 = step + f3Slide.value();
   f4 = f4Slide.value();
-  }
+  // }
 
   d1 = d1Slide.value();
   d2 = d2Slide.value();
