@@ -79,10 +79,12 @@ var p3 = 13*Math.PI/16;
 var p4 = Math.PI;
 
 // damping
-var d1 = 0.01;
-var d2 = 0;
-var d3 = 0;
-var d4 = 0;
+var d1 = 0.02;
+var d2 = 0.02;
+var d3 = 0.02;
+var d4 = 0.02;
+
+var dval = 0.02;
 
 // background color
 var bhue = 250;
@@ -176,13 +178,13 @@ function setup() {
   a4Slide =  createSlider(0, 500, a4, 0.2);
   a4Slide.position(610, 110);
 
-  f1Slide =  createSlider(0, 20, f1, 0.01);
+  f1Slide =  createSlider(0, 20, f1, 1);
   f1Slide.position(610, 140);
-  f2Slide =  createSlider(0, 20, f2, 0.01);
+  f2Slide =  createSlider(0, 20, f2, 1);
   f2Slide.position(610, 170);
-  f3Slide =  createSlider(0, 20, f3, 0.01);
+  f3Slide =  createSlider(0, 20, f3, 1);
   f3Slide.position(610, 200);
-  f4Slide =  createSlider(0, 20, f4, 0.01);
+  f4Slide =  createSlider(0, 20, f4, 1);
   f4Slide.position(610, 230);
 
   d1Slide =  createSlider(0, 0.07, d1, 0.0001);
@@ -203,11 +205,11 @@ function setup() {
   p4Slide =  createSlider(0, 2*PI, p4, PI/16);
   p4Slide.position(610, 510);
 
-  bhueSlide =  createSlider(0, 360,250);
+  bhueSlide =  createSlider(0, 360,250,5);
   bhueSlide.position(610, 550);
-  bsatSlide =  createSlider(0, 100,100);
+  bsatSlide =  createSlider(0, 100,100,5);
   bsatSlide.position(610, 580);
-  bbriSlide =  createSlider(0, 100,100);
+  bbriSlide =  createSlider(0, 100,100,5);
   bbriSlide.position(610, 610);
 
   valueDisplayer = createP();
@@ -292,6 +294,16 @@ function keyReleased() {
                // Decrement step count
                step = step - 0.01;
                loop();
+        } else if (key == 'd') {
+               dval = (dval + 0.01);
+               if (dval > 0.03) {
+                 dval = 0.00;
+               }
+               d1Slide.value(dval);
+               d2Slide.value(dval);
+               d3Slide.value(dval);
+               d4Slide.value(dval);
+               loop();
         } else if (key == 'r') {
                RkeyPressed = true;
                // Randomly set f1,f2,f3,f4
@@ -314,7 +326,7 @@ function keyReleased() {
                p4Slide.value(p4);
 
                loop();
-         }else if (key == 'e') {
+         } else if (key == 'e') {
                // Save current set of parameters to the table
                addNewRow(table);
                // Save table
