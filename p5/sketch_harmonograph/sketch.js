@@ -91,6 +91,16 @@ var bhue = 250;
 var bsat = 100;
 var bbri = 100;
 
+// start color
+var shue = 60;
+var ssat = 100;
+var sbri = 100;
+
+// end color
+var ehue = 360;
+var esat = 100;
+var ebri = 100;
+
 var txt;
 
 //  a1 = 100;
@@ -205,12 +215,26 @@ function setup() {
   p4Slide =  createSlider(0, 2*PI, p4, PI/16);
   p4Slide.position(610, 510);
 
-  bhueSlide =  createSlider(0, 360,250,5);
+  bhueSlide =  createSlider(0, 360,bhue,5);
   bhueSlide.position(610, 550);
-  bsatSlide =  createSlider(0, 100,100,5);
+  bsatSlide =  createSlider(0, 100,bsat,5);
   bsatSlide.position(610, 580);
-  bbriSlide =  createSlider(0, 100,100,5);
+  bbriSlide =  createSlider(0, 100,bbri,5);
   bbriSlide.position(610, 610);
+
+  shueSlide =  createSlider(0, 360,shue,5);
+  shueSlide.position(880, 550);
+  ssatSlide =  createSlider(0, 100,ssat,5);
+  ssatSlide.position(880, 580);
+  sbriSlide =  createSlider(0, 100,sbri,5);
+  sbriSlide.position(880, 610);
+
+  ehueSlide =  createSlider(0, 360,ehue,5);
+  ehueSlide.position(1100, 550);
+  esatSlide =  createSlider(0, 100,esat,5);
+  esatSlide.position(1100, 580);
+  ebriSlide =  createSlider(0, 100,ebri,5);
+  ebriSlide.position(1100, 610);
 
   valueDisplayer = createP();
   valueDisplayer.position(780,5);
@@ -254,6 +278,20 @@ function setup() {
   bsatvalueDisplayer.position(780,565);
   bbrivalueDisplayer = createP();
   bbrivalueDisplayer.position(780,595);
+
+  shuevalueDisplayer = createP();
+  shuevalueDisplayer.position(1020,535);
+  ssatvalueDisplayer = createP();
+  ssatvalueDisplayer.position(1020,565);
+  sbrivalueDisplayer = createP();
+  sbrivalueDisplayer.position(1020,595);
+
+  ehuevalueDisplayer = createP();
+  ehuevalueDisplayer.position(1240,535);
+  esatvalueDisplayer = createP();
+  esatvalueDisplayer.position(1240,565);
+  ebrivalueDisplayer = createP();
+  ebrivalueDisplayer.position(1240,595);
 
 }
 
@@ -437,6 +475,14 @@ function drawMyDesign() {
   bsat = bsatSlide.value();
   bbri = bbriSlide.value();
 
+  shue = shueSlide.value();
+  ssat = ssatSlide.value();
+  sbri = sbriSlide.value();
+
+  ehue = ehueSlide.value();
+  esat = esatSlide.value();
+  ebri = ebriSlide.value();
+
   var t = 0;
 
   // myScaledCanvas.background(duskyGreen);
@@ -447,6 +493,7 @@ function drawMyDesign() {
   myScaledCanvas.fill('rgb(192,192,192)');
   myScaledCanvas.stroke('rgb(255,255,255)');
   myScaledCanvas.colorMode(HSB, 360, 100, 100, 0.50);
+  colorMode(HSB, 360, 100, 100, 0.50);
   myScaledCanvas.background(bhue,bsat,bbri);
 
 
@@ -477,6 +524,14 @@ function drawMyDesign() {
   bhuevalueDisplayer.html('hue= '+ bhue);
   bsatvalueDisplayer.html('sat = '+ bsat);
   bbrivalueDisplayer.html('bri = '+ bbri);
+
+  shuevalueDisplayer.html('hue= '+ shue);
+  ssatvalueDisplayer.html('sat = '+ ssat);
+  sbrivalueDisplayer.html('bri = '+ sbri);
+
+  ehuevalueDisplayer.html('hue= '+ ehue);
+  esatvalueDisplayer.html('sat = '+ esat);
+  ebrivalueDisplayer.html('bri = '+ ebri);
 
   // translate(width / 2, height / 2);
   myScaledCanvas.translate(WIDTH/2, (HEIGHT/2));
@@ -525,8 +580,10 @@ function drawVerticesColor(theLine) {
 
 function drawVerticesLerp(theLine) {
   myScaledCanvas.noFill();
+  let colStart = color(shue, ssat, sbri);
+  let colEnd = color(ehue, esat, ebri);
   for (var i = 0; i < theLine.length-1; i++) {
-    myScaledCanvas.stroke(lerpColor(color('red'),color('yellow'), i/(theLine.length -1)));
+    myScaledCanvas.stroke(lerpColor(colStart,colEnd, i/(theLine.length -1)));
    	myScaledCanvas.line(theLine[i].x, theLine[i].y,theLine[i+1].x, theLine[i+1].y);
   }
 }
