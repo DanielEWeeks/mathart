@@ -85,6 +85,7 @@ var d3 = 0.02;
 var d4 = 0.02;
 
 var dval = 0.02;
+let fval = 0;
 
 // background color
 var bhue = 250;
@@ -332,6 +333,12 @@ function keyReleased() {
                // Decrement step count
                step = step - 0.01;
                loop();
+        } else if (key == 'f') {
+               fval = (fval + 0.01);
+               if (fval > 0.05) {
+                 fval = 0.00;
+               }
+               loop();
         } else if (key == 'd') {
                dval = (dval + 0.01);
                if (dval > 0.03) {
@@ -455,10 +462,10 @@ function drawMyDesign() {
   // if (RkeyPressed == true) {
   //  RkeyPressed = false;
   // } else {
-  f1 = f1Slide.value();
-  f2 = f2Slide.value();
-  f3 = step + f3Slide.value();
-  f4 = f4Slide.value();
+  f1 = fval + f1Slide.value();
+  f2 = fval + f2Slide.value();
+  f3 = fval + step + f3Slide.value();
+  f4 = fval + f4Slide.value();
   // }
 
   d1 = d1Slide.value();
