@@ -335,7 +335,7 @@ function keyReleased() {
                loop();
         } else if (key == 'f') {
                fval = (fval + 0.01);
-               if (fval > 0.05) {
+               if (fval > 0.10) {
                  fval = 0.00;
                }
                loop();
@@ -360,6 +360,18 @@ function keyReleased() {
                f3Slide.value(f3);
                f4 = int(random(0, 9));
                f4Slide.value(f4);
+
+               p1 = random(pArray);
+               p1Slide.value(p1);
+               p2 = random(pArray);
+               p2Slide.value(p2);
+               p3 = random(pArray);
+               p3Slide.value(p3);
+               p4 = random(pArray);
+               p4Slide.value(p4);
+
+               loop();
+         } else if (key == 'p') {
 
                p1 = random(pArray);
                p1Slide.value(p1);
