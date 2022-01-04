@@ -20,7 +20,23 @@
   <main>
   </main>
     <p>
-Instructions  
+<b>Instructions</b> 
+<br>
+The harmonograph is constructed as a function of these two equations:
+<br>
+<br>
+    x(t) = (a1 * sin(t * f1 + p1) * exp(-d1 * t)) + (a2 * sin(t * f2 + p2) * exp(-d2 * t))
+    <br>
+    y(t) = (a3 * sin(t * f3 + p3) * exp(-d3 * t)) + (a4 * sin(t * f4 + p4) * exp(-d4 * t))
+<br>
+<br>
+The first set of hue, saturation, brightness (HSB) sliders controls the background color.
+<br>
+The line is colored using interpolation from a starting color to an ending color.
+<br>
+The second set of HSB sliders controls the starting color.
+<br>
+The third set of HSB sliders controls the ending color.
 </p>
 <p>Key 'e': Save a high-resolution PNG of the current image.</p>
 <p>Key 'q': Load the next saved image.</p>
@@ -35,6 +51,7 @@ Instructions
 <p>LEFT_ARROW: Decrease the number of points drawn.</p>
 <p>UP_ARROW: Redraw.</p>
 <p>DOWN_ARROW: Redraw.</p>
+<p>Mouse pressed: Redraw.</p>
 </body>
 
 </html>
