@@ -155,7 +155,7 @@ function setup() {
   // console.log('table row count',table.getRowCount());
   //  print(table.getRowCount());
   let pNpoints = 4;
-  for (var k = 0; k < pNpoints; k++) {
+  for (var k = 0; k < 2*pNpoints + 1; k++) {
     pArray.push(k*PI/(pNpoints))
   }
 
