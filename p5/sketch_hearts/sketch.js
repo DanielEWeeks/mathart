@@ -37,7 +37,7 @@ let hueAold;
 
 //=================================================================
 function setup() {
-  WIDTH = 900;
+  WIDTH = 600;
   HEIGHT = 600;
   canvas = createCanvas(WIDTH, HEIGHT);
   myScaledCanvas = createGraphics(WIDTH, HEIGHT);
@@ -70,12 +70,12 @@ function exportHighResolution() {
 // function keyReleased() { if (key == 'e') exportHighResolution(); }
 function keyReleased() {
          if (key == 'a') {
-             // Increment step count
+             // Increment step count: controls stroke width
              step = step + 1;
              loop();
          } else {
              if (key == 's') {
-               // Decrement step count
+               // Decrement step count: controls stroke width
                step = step - 1;
                loop();
              } else {
@@ -89,11 +89,11 @@ function keyReleased() {
 
 
 function keyPressed() {
-  if (keyCode === UP_ARROW) {
+  if (keyCode === RIGHT_ARROW) {
     npoints = npoints + 1;
     inc = 2*PI/npoints;
     loop();
-  } else if (keyCode === DOWN_ARROW) {
+  } else if (keyCode === LEFT_ARROW) {
     npoints = npoints - 1;
     inc = 2*PI/npoints;
     loop();
