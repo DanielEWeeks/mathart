@@ -154,8 +154,8 @@ function drawMyDesign() {
     myScaledCanvas.strokeWeight(step);
     myScaledCanvas.rotate(angle);
     // Colors aren't right if I use the '0.2' as the fourth argument.
-    myScaledCanvas.fill(hueCurrent,80,100);
-    //myScaledCanvas.fill(degrees(angle),80,100);
+    // myScaledCanvas.fill(hueCurrent,80,100);
+    myScaledCanvas.fill(degrees(angle),80,100);
     myScaledCanvas.scale(2*(i+1)/npoints);
     myScaledCanvas.triangle(0,140,-140,140,0,0);
     myScaledCanvas.pop();
