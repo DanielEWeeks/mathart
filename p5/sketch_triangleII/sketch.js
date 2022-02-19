@@ -33,6 +33,9 @@ let xlist = Array();
 let ylist = Array();
 let points = Array();
 let step = 1;
+let bcolor = 1;
+let hueAold;
+let hueA;
 
 //=================================================================
 function setup() {
@@ -72,27 +75,27 @@ function keyReleased() {
              // Increment step count
              step = step + 1;
              loop();
-         } else {
-             if (key == 's') {
+         } else if (key == 's') {
                // Decrement step count
                step = step - 1;
                loop();
-             } else {
-              if (key == 'e') {
+         } else if (key == 'e') {
                // Export high resolution version
                exportHighResolution();
-              }
-             }
+         } else if (key == 'b') {
+           bcolor = bcolor + 1;
+           loop();
          }
-        }
+ 
+    }
 
 
 function keyPressed() {
-  if (keyCode === UP_ARROW) {
+  if (keyCode === RIGHT_ARROW) {
     npoints = npoints + 1;
     inc = 2*PI/npoints;
     loop();
-  } else if (keyCode === DOWN_ARROW) {
+  } else if (keyCode === LEFT_ARROW) {
     npoints = npoints - 1;
     inc = 2*PI/npoints;
     loop();
@@ -107,7 +110,11 @@ function drawMyDesign() {
   // Notice how all drawing functions begin with "myScaledCanvas."
 
   // myScaledCanvas.background('rgb(30,144,255)');
+  if ((bcolor%2) == 1) {
   myScaledCanvas.background('rgb(255,255,255)');
+  } else {
+  myScaledCanvas.background('rgb(0,0,0)');
+  }
   myScaledCanvas.noFill();
   myScaledCanvas.stroke('rgb(192,192,192)');
   myScaledCanvas.colorMode(HSB, 360, 100, 100, 0.50);
@@ -125,17 +132,22 @@ function drawMyDesign() {
   myScaledCanvas.rotate(-HALF_PI);
   // myScaledCanvas.circle(0, 0, DIAMETER);
   let angle = 0;
-           var hueA = random(360);
-
+          // var hueA = random(360);
+     if (currentScale != outputScale) {
+           hueA = random(0, 360);
+           hueAold = hueA;
+           } else {
+           hueA = hueAold;
+           }
   for (var i = 0; i < floor(npoints*1.3); i += 1) {
            var hueB = (hueA - 30 + 360) % 360;
           var hueC = (hueA + 30) % 360;
           if ((i%3) == 0) {
-            myScaledCanvas.stroke(hueA, 90, 100, 0.2);
+            myScaledCanvas.stroke(hueA, 90, 100);
           } else if ((i%3) == 1) {
-            myScaledCanvas.stroke(hueB, 90, 100, 0.2);
+            myScaledCanvas.stroke(hueB, 90, 100);
           } else {
-            myScaledCanvas.stroke(hueC, 90, 100, 0.2);
+            myScaledCanvas.stroke(hueC, 90, 100);
           }
     myScaledCanvas.push();
     myScaledCanvas.strokeWeight(step);
