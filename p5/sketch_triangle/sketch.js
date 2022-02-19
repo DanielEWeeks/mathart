@@ -33,6 +33,11 @@ let xlist = Array();
 let ylist = Array();
 let points = Array();
 let step = 2;
+let hueAold;
+let hueA;
+let hueB;
+let hueC; 
+let hueCurrent;
 
 //=================================================================
 function setup() {
@@ -88,11 +93,11 @@ function keyReleased() {
 
 
 function keyPressed() {
-  if (keyCode === UP_ARROW) {
+  if (keyCode === RIGHT_ARROW) {
     npoints = npoints + 1;
     inc = 2*PI/npoints;
     loop();
-  } else if (keyCode === DOWN_ARROW) {
+  } else if (keyCode === LEFT_ARROW) {
     npoints = npoints - 1;
     inc = 2*PI/npoints;
     loop();
@@ -124,20 +129,33 @@ function drawMyDesign() {
   myScaledCanvas.rotate(-HALF_PI);
   // myScaledCanvas.circle(0, 0, DIAMETER);
   let angle = 0;
-           var hueA = random(360);
-
+//          var hueA = random(360);
+     if (currentScale != outputScale) {
+           hueA = random(0, 360);
+           hueAold = hueA;
+           } else {
+           hueA = hueAold;
+           }
+          hueB = (hueA - 30 + 360) % 360;
+          hueC = (hueA + 30) % 360;
+         //  myScaledCanvas.text(hueA,-200,200);
   for (var i = 0; i < npoints; i += 1) {
-           var hueB = (hueA - 30 + 360) % 360;
-          var hueC = (hueA + 30) % 360;
-          if ((i%3) == 0) {
-          myScaledCanvas.fill(hueA, 50, 100, 0.2);
-          } else if ((i%3) == 1) {
-          myScaledCanvas.fill(hueB, 50, 100, 0.2);
-          } else {
-            myScaledCanvas.fill(hueC, 50, 100, 0.2);
-          }
     myScaledCanvas.push();
+          if ((i%3) == 0) {
+          //myScaledCanvas.fill(hueA, 80, 100, 0.2);
+          hueCurrent = hueA;
+          } else if ((i%3) == 1) {
+          //myScaledCanvas.fill(hueB, 80, 100, 0.2);
+          hueCurrent = hueB;
+          } else {
+           // myScaledCanvas.fill(hueC, 80, 100, 0.2);
+            hueCurrent = hueC;
+          }
+    myScaledCanvas.strokeWeight(step);
     myScaledCanvas.rotate(angle);
+    // Colors aren't write if I use the '0.2' as the fourth argument.
+    myScaledCanvas.fill(hueCurrent,80,100);
+    //myScaledCanvas.fill(degrees(angle),80,100);
     myScaledCanvas.scale(2*(i+1)/npoints);
     myScaledCanvas.triangle(0,140,-140,140,0,0);
     myScaledCanvas.pop();

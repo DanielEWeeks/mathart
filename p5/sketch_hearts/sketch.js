@@ -143,7 +143,7 @@ function drawMyDesign() {
            }
 
   for (var i = 0; i < floor(npoints*1.3) + 1; i += 1) {
-           var hueB = (hueA - 30 + 360) % 360;
+          var hueB = (hueA - 30 + 360) % 360;
           var hueC = (hueA + 30) % 360;
           if ((i%3) == 0) {
             myScaledCanvas.stroke(hueA, 90, 100, 0.2);
