@@ -88,11 +88,11 @@ function keyReleased() {
 
 
 function keyPressed() {
-  if (keyCode === UP_ARROW) {
+  if (keyCode === RIGHT_ARROW) {
     npoints = 270;
     inc = 2*PI/npoints;
     loop();
-  } else if (keyCode === DOWN_ARROW) {
+  } else if (keyCode === LEFT_ARROW) {
     npoints = 180;
     inc = 2*PI/npoints;
     loop();
