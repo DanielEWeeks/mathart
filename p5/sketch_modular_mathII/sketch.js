@@ -41,6 +41,15 @@ function setup() {
   canvas = createCanvas(WIDTH, HEIGHT);
   myScaledCanvas = createGraphics(WIDTH, HEIGHT);
   currentScale = 1; // initialize to 1; don't touch
+  colorPicker = createColorPicker('rgb(30,144,255)');
+  colorPicker.position(WIDTH + 5, HEIGHT - 5);
+  let txt = createDiv('Background color');
+  txt.position(WIDTH + 5, HEIGHT + 22);
+  lineColorPicker = createColorPicker('rgb(255,255,255)');
+  lineColorPicker.position(WIDTH + 75, HEIGHT - 5);
+  let txt2 = createDiv('Line color');
+  txt2.position(WIDTH + 75, HEIGHT - 22);
+
 }
 
 function draw() {
@@ -106,9 +115,10 @@ function drawMyDesign() {
   // Draw your design in this function -- into the scaled canvas.
   // Notice how all drawing functions begin with "myScaledCanvas."
   
-  myScaledCanvas.background('rgb(30,144,255)');
+  myScaledCanvas.background(colorPicker.color());
   myScaledCanvas.noFill();
-  myScaledCanvas.stroke('rgb(255,255,255)');
+  myScaledCanvas.stroke(lineColorPicker.color());
+
   // 600*0.125 = 75 pixels = 1/8 inch at 600 PPI.
   // But here we are using 525 instead of 5250 for HEIGHT 
   // So 1/8 = 0.125 inch trim is 7.5 out of 525 pixels
