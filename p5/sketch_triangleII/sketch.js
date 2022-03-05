@@ -44,6 +44,10 @@ function setup() {
   canvas = createCanvas(WIDTH, HEIGHT);
   myScaledCanvas = createGraphics(WIDTH, HEIGHT);
   currentScale = 1; // initialize to 1; don't touch
+  colorPicker = createColorPicker('rgb(0,0,0)');
+  colorPicker.position(WIDTH + 5, HEIGHT - 5);
+  let txt = createDiv('Background color');
+  txt.position(WIDTH + 5, HEIGHT + 22);
 }
 
 function draw() {
@@ -110,11 +114,13 @@ function drawMyDesign() {
   // Notice how all drawing functions begin with "myScaledCanvas."
 
   // myScaledCanvas.background('rgb(30,144,255)');
-  if ((bcolor%2) == 1) {
-  myScaledCanvas.background('rgb(255,255,255)');
-  } else {
-  myScaledCanvas.background('rgb(0,0,0)');
-  }
+  myScaledCanvas.background(colorPicker.color());
+
+  // if ((bcolor%2) == 1) {
+  // myScaledCanvas.background('rgb(255,255,255)');
+  // } else {
+  // myScaledCanvas.background('rgb(0,0,0)');
+  // }
   myScaledCanvas.noFill();
   myScaledCanvas.stroke('rgb(192,192,192)');
   myScaledCanvas.colorMode(HSB, 360, 100, 100, 0.50);
