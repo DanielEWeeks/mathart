@@ -25,7 +25,7 @@ let myScaledCanvas;
 let canvas;
 
 let DIAMETER = 450; // 450 = 7.5 inches at 600 PPI
-let npoints = 500;
+let npoints = 10000;
 let PI = 3.14159265358979323846;
 let inc = 2*PI/npoints;
 let radius = DIAMETER/2;
@@ -48,10 +48,16 @@ var a2 = 1;
 var a3 = 2;
 var a4 = 1.5;
 
+let xmax = -1;
+let ymax = -1;
+let bmax = -1;
+
+let vec = [];
+
 //=================================================================
 function setup() { 
   WIDTH = 675;
-  HEIGHT = 525;
+  HEIGHT = 675;
   canvas = createCanvas(WIDTH, HEIGHT);
   myScaledCanvas = createGraphics(WIDTH, HEIGHT);
   currentScale = 1; // initialize to 1; don't touch
@@ -64,13 +70,13 @@ function setup() {
   let txt2 = createDiv('Line color');
   txt2.position(WIDTH + 75, HEIGHT - 22);
   
-  a1Slide =  createSlider(0, 2, a1, 0.1);
+  a1Slide =  createSlider(-2, 2, a1, 0.1);
   a1Slide.position(WIDTH + 10, 20);
-  a2Slide =  createSlider(0, 2, a2, 0.1);
+  a2Slide =  createSlider(-2, 2, a2, 0.1);
   a2Slide.position(WIDTH + 10, 50);
-  a3Slide =  createSlider(0, 2, a3, 0.1);
+  a3Slide =  createSlider(-2, 2, a3, 0.1);
   a3Slide.position(WIDTH + 10, 80);
-  a4Slide =  createSlider(0, 2, a4, 0.1);
+  a4Slide =  createSlider(-2, 2, a4, 0.1);
   a4Slide.position(WIDTH + 10, 110);
   
   valueDisplayer = createP();
@@ -81,6 +87,8 @@ function setup() {
   a3valueDisplayer.position(WIDTH + 180,65);
   a4valueDisplayer = createP();
   a4valueDisplayer.position(WIDTH + 180,95);
+  
+
 
 }
 
@@ -127,13 +135,13 @@ function keyReleased() {
          }
          if (key == 'r') {
                // Randomly set parameters
-               a1 = random(0, 2);
+               a1 = random(-2, 2);
                a1Slide.value(a1);
-               a2 = random(0, 2);
+               a2 = random(-2, 2);
                a2Slide.value(a2);
-               a3 = random(0, 2);
+               a3 = random(-2, 2);
                a3Slide.value(a3);
-               a4 = random(0, 2);
+               a4 = random(-2, 2);
                a4Slide.value(a4);
                a = a1;
                b = a2;
@@ -147,11 +155,11 @@ function keyReleased() {
 
 function keyPressed() {
   if (keyCode === RIGHT_ARROW) {
-    npoints = 270;
+    npoints = 500000;
     inc = 2*PI/npoints;
     loop();
   } else if (keyCode === LEFT_ARROW) {
-    npoints = 180;
+    npoints = 10000;
     inc = 2*PI/npoints;
     loop();
   }
@@ -179,7 +187,7 @@ function drawMyDesign() {
    //  myScaledCanvas.line(0,249.375,WIDTH,249.375);
    // myScaledCanvas.line(0,HEIGHT-26.25,WIDTH,HEIGHT-26.25);
   myScaledCanvas.push();
-  myScaledCanvas.translate(WIDTH/2, (HEIGHT/2) - (26.25-7.5)/2);
+  myScaledCanvas.translate(WIDTH/2, (HEIGHT/2));
   myScaledCanvas.rotate(-HALF_PI);
   // myScaledCanvas.circle(0, 0, DIAMETER);
   
@@ -198,23 +206,44 @@ function drawMyDesign() {
   c = a3;
   d = a4;
   
-  let angle = 0;
-  for (var i = 0; i < npoints; i += 1) {
+  vec = [];
+  
+  xmax = -1;
+  ymax = -1;
+  bmax = -1;
+  
+  let trim = 50;
+  
+//  for (var i = 0; i < npoints; i += 1) {
   
 //  xn+1 = sin(a yn) + c cos(a xn) 
 //  yn+1 = sin(b xn) + d cos(b yn)
-    var x = random(-5,5);
-    var y = random(-5,5);
+//    var x = random(-5,5);
+//    var y = random(-5,5);
+    var x = WIDTH/2;
+    var y = HEIGHT/2;
+    vec.push(new p5.Vector(WIDTH/2, HEIGHT/2));
     for (var j = 0; j < npoints; j += 1) {
      var x1 = sin(a*y) + c*cos(a*x);
      var y1 = sin(b*x) + d*cos(b*y);
-     var xx1 = map(x1, -4, 4, -WIDTH/2, WIDTH/2);
-     var yy1 = map(y1, -4, 4, HEIGHT/2, -HEIGHT/2);
-     myScaledCanvas.point(xx1,yy1);
+     // var xx1 = map(x1, -3, 3, -WIDTH/2, WIDTH/2);
+     // var yy1 = map(y1, -3, 3, HEIGHT/2, -HEIGHT/2);
+     // myScaledCanvas.point(xx1,yy1);
+     vec.push(new p5.Vector(x1,y1));
      x = x1;
      y = y1;
+     xmax = max(abs(xmax), abs(x1));
+     ymax = max(abs(ymax), abs(y1));
     }
+//  }
+   bmax = max(xmax,ymax);
+   for (var i = 0; i < vec.length; i++) {
+    let pt = vec[i];
+    var xx1 = map(pt.x, -bmax, bmax, -WIDTH/2 + trim, WIDTH/2 - trim);
+    var yy1 = map(pt.y, -bmax, bmax, HEIGHT/2 - trim, -HEIGHT/2 + trim);
+    myScaledCanvas.point(xx1,yy1);
   }
+  
   myScaledCanvas.pop();
 
 }
