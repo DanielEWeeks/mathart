@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>p5.js de Jong Attractor</title>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+  <script src="../p5.js"></script>
+  <!-- <script src="../addons/p5.sound.js"></script> -->
+  <script src="sketch.js"></script>
+</head>
+
+<body>
+  <main>
+  </main>
+<hr width="675px" align="left">
+<b>Instructions</b> 
+<br>
+<p>The de Jong Attractor is defined by these two equations:
+<br>   x_n+1 = sin(a*y) - cos(b*x)
+<br>   y_n+1 = sin(c*x) - cos(d*y) 
+</p>
+<p>Change the values of the parameters a, b, c, and d by using the sliders.</p>
+<p>Key 'r': Redraw with a random set of parameters.</p>
+<p>Key 'e': Save a high-resolution PNG of the current image.</p>
+<p>Key 'a': Increment the number of lines.</p>
+<p>Key 's': Decrement the number of lines.</p>
+
+</body>
+
+</html>
