@@ -1,4 +1,4 @@
-// Modular Math
+// Modular Math II
 // Written by Daniel E. Weeks
 //
 // Exports a high-resolution image when 'e' key is pressed.

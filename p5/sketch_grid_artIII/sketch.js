@@ -1,3 +1,6 @@
+// Grid Art III
+// written by Daniel E. Weeks
+//
 // Exports a high-resolution image when 'e' key is pressed.
 // based on 'high-res-export by golan' code from
 // https://editor.p5js.org/golan/sketches/qKJcoNHXX
