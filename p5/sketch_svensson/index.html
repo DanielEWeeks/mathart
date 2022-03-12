@@ -10,6 +10,9 @@
       padding: 0;
       margin: 0;
     }
+    div#doc {
+      margin-left: 8px;
+    }
   </style>
   <script src="../p5.js"></script>
   <!-- <script src="../addons/p5.sound.js"></script> -->
@@ -20,8 +23,8 @@
   <main>
   </main>
 <hr width="675px" align="left">
-<b>Instructions</b> 
-<br>
+<div id="doc">
+<h2>Instructions</h2> 
 <p>The Svensson Attractor is defined by these two equations:
 <br>   x_n+1 = d*sin(a*x) - sin(b*y)
 <br>   y_n+1 = c*cos(a*x) + cos(b*y)
@@ -33,7 +36,15 @@
 <p>Key 'e': Save a high-resolution PNG of the current image.</p>
 <p>Key 'a': Increment the number of lines.</p>
 <p>Key 's': Decrement the number of lines.</p>
-
+<p><br></p>
+<hr width="675px" align="left">
+<h2>The p5js code</h2>
+<p>This p5js code is scrollable.</p>
+<div id="list">
+  <p><iframe src="sketch.js" frameborder="0" height="400"
+      width="95%"></iframe></p>
+</div>
+</div>
 </body>
 
 </html>

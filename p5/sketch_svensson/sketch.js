@@ -1,23 +1,9 @@
-// Modular Math
+// Svensson attractor
 // Written by Daniel E. Weeks
 //
 // Exports a high-resolution image when 'e' key is pressed.
 // based on 'high-res-export by golan' code from
 // https://editor.p5js.org/golan/sketches/qKJcoNHXX
-//
-// A Lulu calendar page is 11.25 x 8.75 inches
-//           Trimmed it is 11.00 x 8.50 inches
-// At 600 ppi, 8.75 x 600 = 5,250 pixels.
-//            11.25 x 600 = 6,750 pixels.
-// The trimmed page is 8.5 inches tall
-// so make sure to have at least 1/8 = 0.125 inch margin
-// on top and bottom that will be trimmed off. 
-// And it runs 8 3/16 inches down before it runs into
-// the spiral cuts.
-//
-//  ( 1350 x 1050 ) x 5  = ( 6750 x 5250 )
-//  (  675 x 525 )  x 10 = ( 6750 x 5250 )
-
 
 let outputScale = 10/2;
 let currentScale;
@@ -87,8 +73,6 @@ function setup() {
   a3valueDisplayer.position(WIDTH + 180,65);
   a4valueDisplayer = createP();
   a4valueDisplayer.position(WIDTH + 180,95);
-  
-
 
 }
 
@@ -115,7 +99,6 @@ function exportHighResolution() {
   draw();
 }
 
-// function keyReleased() { if (key == 'e') exportHighResolution(); }
 function keyReleased() { 
          if (key == 'a') { 
              // Increment step count
@@ -149,7 +132,6 @@ function keyReleased() {
                d = a4;
                loop();
             }
-
         }
 
 
@@ -169,27 +151,13 @@ function mousePressed() { loop(); }
 
 //=================================================================
 function drawMyDesign() {
-  // Draw your design in this function -- into the scaled canvas.
-  // Notice how all drawing functions begin with "myScaledCanvas."
-  
-  // myScaledCanvas.background('rgb(30,144,255)');
   myScaledCanvas.background(colorPicker.color());
   myScaledCanvas.noFill();
-  // myScaledCanvas.stroke('rgb(255,255,255)');
   myScaledCanvas.stroke(lineColorPicker.color(), 20);
 
-  // 600*0.125 = 75 pixels = 1/8 inch at 600 PPI.
-  // But here we are using 525 instead of 5250 for HEIGHT 
-  // So 1/8 = 0.125 inch trim is 7.5 out of 525 pixels
-   // myScaledCanvas.line(0,7.5,WIDTH,7.5);
-   // myScaledCanvas.line(0,HEIGHT-7.5,WIDTH,HEIGHT-7.5);
-  // myScaledCanvas.line(0,HEIGHT/2,WIDTH,HEIGHT/2);
-   //  myScaledCanvas.line(0,249.375,WIDTH,249.375);
-   // myScaledCanvas.line(0,HEIGHT-26.25,WIDTH,HEIGHT-26.25);
   myScaledCanvas.push();
   myScaledCanvas.translate(WIDTH/2, (HEIGHT/2));
   myScaledCanvas.rotate(-HALF_PI);
-  // myScaledCanvas.circle(0, 0, DIAMETER);
   
   a1 = a1Slide.value();
   a2 = a2Slide.value();
@@ -213,35 +181,24 @@ function drawMyDesign() {
   bmax = -1;
   
   let trim = 50;
-  
-//  for (var i = 0; i < npoints; i += 1) {
-  
-//    var x = random(-5,5);
-//    var y = random(-5,5);
-    var x = WIDTH/2;
-    var y = HEIGHT/2;
-    vec.push(new p5.Vector(WIDTH/2, HEIGHT/2));
-    for (var j = 0; j < npoints; j += 1) {
+  var x = WIDTH/2;
+  var y = HEIGHT/2;
+  vec.push(new p5.Vector(WIDTH/2, HEIGHT/2));
+  for (var j = 0; j < npoints; j += 1) {
      var x1 = d * sin(a * x) - sin(b * y);
      var y1 = c * cos(a * x) + cos(b * y);
-     // var xx1 = map(x1, -3, 3, -WIDTH/2, WIDTH/2);
-     // var yy1 = map(y1, -3, 3, HEIGHT/2, -HEIGHT/2);
-     // myScaledCanvas.point(xx1,yy1);
      vec.push(new p5.Vector(x1,y1));
      x = x1;
      y = y1;
      xmax = max(abs(xmax), abs(x1));
      ymax = max(abs(ymax), abs(y1));
-    }
-//  }
+   }
    bmax = max(xmax,ymax);
    for (var i = 0; i < vec.length; i++) {
     let pt = vec[i];
     var xx1 = map(pt.x, -bmax, bmax, -WIDTH/2 + trim, WIDTH/2 - trim);
     var yy1 = map(pt.y, -bmax, bmax, HEIGHT/2 - trim, -HEIGHT/2 + trim);
     myScaledCanvas.point(xx1,yy1);
-  }
-  
+  }  
   myScaledCanvas.pop();
-
 }
