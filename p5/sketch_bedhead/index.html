@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>p5.js Bedhead Attractor</title>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+    div#doc {
+      margin-left: 8px;
+    }
+  </style>
+  <script src="../p5.js"></script>
+  <!-- <script src="../addons/p5.sound.js"></script> -->
+  <script src="sketch.js"></script>
+</head>
+
+<body>
+  <main>
+  </main>
+<hr width="675px" align="left">
+<div id="doc">
+<h2>Instructions</h2> 
+<p>The Bedhead Attractor is defined by these two equations:
+<br>   x_n+1 = sin(x*y/b)*y + cos(a*x-y)
+<br>   y_n+1 = x + sin(y)/b
+</p>  
+<p>Change the values of the parameters a and b by using the sliders.</p>
+<p>Key 'r': Redraw with a random set of parameters.</p>
+<p>LEFT_ARROW: Draw with few points (faster).</p>
+<p>RIGHT_ARROW: Draw with many more points (slower).</p>
+<p>Key 'e': Save a high-resolution PNG of the current image.</p>
+<p>Key 'a': Increment the number of lines.</p>
+<p>Key 's': Decrement the number of lines.</p>
+<p><br></p>
+<hr width="675px" align="left">
+<h2>The p5js code</h2>
+<p>This p5js code is scrollable.</p>
+<div id="list">
+  <p><iframe src="sketch.js" frameborder="0" height="400"
+      width="95%"></iframe></p>
+</div>
+</div>
+</body>
+
+</html>
