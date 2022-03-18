@@ -37,6 +37,8 @@ var a4 = 1.5;
 let xmax = -1;
 let ymax = -1;
 let bmax = -1;
+let xmin = 1;
+let ymin = 1;
 
 let vec = [];
 
@@ -176,9 +178,11 @@ function drawMyDesign() {
   
   vec = [];
   
-  xmax = -1;
-  ymax = -1;
-  bmax = -1;
+  xmax = -10000000000000;
+  ymax = -10000000000000;
+  bmax = -10000000000000;
+  xmin = 10000000000000;
+  ymin = 10000000000000;
   
   let trim = 50;
   var x = WIDTH/2;
@@ -190,14 +194,20 @@ function drawMyDesign() {
      vec.push(new p5.Vector(x1,y1));
      x = x1;
      y = y1;
-     xmax = max(abs(xmax), abs(x1));
-     ymax = max(abs(ymax), abs(y1));
+     xmax = max(xmax, x1);
+     ymax = max(ymax, y1);
+     xmin = min(xmin, x1);
+     ymin = min(ymin, y1);
    }
-   bmax = max(xmax,ymax);
+   bmax = max(xmax,ymax, abs(xmin), abs(ymin));
+   let midx = xmin + (xmax - xmin)/2;
+   let midy = ymin + (ymax - ymin)/2;
+   var midx1 = map(midx, -bmax, bmax, -WIDTH/2 + trim, WIDTH/2 - trim);
+   var midy1 = map(midy, -bmax, bmax, -WIDTH/2 + trim, WIDTH/2 - trim);
    for (var i = 0; i < vec.length; i++) {
     let pt = vec[i];
-    var xx1 = map(pt.x, -bmax, bmax, -WIDTH/2 + trim, WIDTH/2 - trim);
-    var yy1 = map(pt.y, -bmax, bmax, HEIGHT/2 - trim, -HEIGHT/2 + trim);
+    var xx1 = map(pt.x - midx, -bmax, bmax, -WIDTH/2 + trim, WIDTH/2 - trim);
+    var yy1 = map(pt.y - midy, -bmax, bmax, HEIGHT/2 - trim, -HEIGHT/2 + trim);
     myScaledCanvas.point(xx1,yy1);
   }  
   myScaledCanvas.pop();
