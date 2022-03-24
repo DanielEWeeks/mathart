@@ -1,4 +1,4 @@
-// Archimedean Spiral
+// Spirals
 // Written by Daniel E. Weeks
 //
 // Exports a high-resolution image when 'e' key is pressed.
@@ -23,8 +23,8 @@ let a = 1;
 let b = 1;
 let c = 2;
 let d = 1.5;
-let degree = 5;
-let lambda = 1.56;
+let e = 0.01;
+let lambda = 1;
 
 var a1Slide;
 let a2Slide;
@@ -33,7 +33,7 @@ let a4Slide;
 let a5Slide;
 let a6Slide;
 
-var a1 = 1.5;    
+var a1 = 1.1;    
 var a2 = 0.5;
 var a3 = 2;
 var a4 = 2;
@@ -57,6 +57,8 @@ let ymin = 1;
 
 let vec = [];
 
+let spiral = 1;
+
 //=================================================================
 function setup() { 
   WIDTH = 675;
@@ -73,17 +75,17 @@ function setup() {
   let txt2 = createDiv('Line color');
   txt2.position(WIDTH + 75, HEIGHT - 22);
   
-  a1Slide =  createSlider(-3, 10, a1, 0.1);
+  a1Slide =  createSlider(-3, 10, a1, 0.01);
   a1Slide.position(WIDTH + 10, 20);
   a2Slide =  createSlider(-10, 10, a2, 0.01);
   a2Slide.position(WIDTH + 10, 50);
   a3Slide =  createSlider(1, 10, a3, 1);
   a3Slide.position(WIDTH + 10, 80);
-  a4Slide =  createSlider(-3, 3, a4, 0.1);
+  a4Slide =  createSlider(1, 60, a4, 1);
   a4Slide.position(WIDTH + 10, 110);
-  a5Slide =  createSlider(3, 30, a5, 1);
+  a5Slide =  createSlider(-1, 1, a5, 0.01);
   a5Slide.position(WIDTH + 10, 140);
-  a6Slide =  createSlider(-3, 3, a6, 0.1);
+  a6Slide =  createSlider(1,10, a6, 1);
   a6Slide.position(WIDTH + 10, 170);
 
    
@@ -125,7 +127,16 @@ function exportHighResolution() {
   draw();
 }
 
-function keyReleased() { 
+function keyReleased() {
+         if (key == '1') { 
+            spiral = 1;
+            }
+         if (key == '2') { 
+            spiral = 2;
+            }   
+         if (key == '3') { 
+            spiral = 3;
+            }        
          if (key == 'a') { 
              // Increment npoints count
              npoints = npoints + 50000; 
@@ -150,18 +161,18 @@ function keyReleased() {
                a2Slide.value(a2);
                a3 = random(1, 10);
                a3Slide.value(a3);
-               a4 = random(-3, 3);
+               a4 = random(1, 60);
                a4Slide.value(a4);
-               a5 = random(3, 30);
+               a5 = random(-1, 1);
                a5Slide.value(a5);
-               a6 = random(-3, 3);
+               a6 = random(1, 10);
                a6Slide.value(a6);
 
                a = a1;
                b = a2;
                c = a3;
                d = a4;
-               degree = a5;
+               e = a5;
                lambda = a6;
                loop();
             }
@@ -233,13 +244,27 @@ function drawMyDesign() {
   // c = gamma
   // d = omega
   
+  myScaledCanvas.strokeWeight(lambda);
   // vec.push(new p5.Vector(WIDTH/2, HEIGHT/2));
   // myScaledCanvas.beginShape();
     for (let i = 0; i < 360*c; i++) {
       //let t = seq(0,5*pi, length.out=500);
-     angle = angle + (2*PI)/360;
+     angle = angle + d*(2*PI)/360;
+     if (spiral == 1) {
+     // Archimedean Spiral
      var x1 = (a + b*angle) * cos(d*angle);
      var y1 = (a + b*angle) * sin(d*angle);
+     }
+     if (spiral ==2) {
+     // Fermat's Spiral
+     var x1 = a*sqrt(angle)*cos(angle);
+     var y1 = a*sqrt(angle)*sin(angle);
+     }
+     if (spiral ==3) {
+     // Logarithmic Spiral
+     var x1 = a*exp(e*angle)*cos(angle);
+     var y1 = a*exp(e*angle)*sin(angle);
+     }
      // myScaledCanvas.vertex(x1, y1);
      vec.push(new p5.Vector(x1,y1));
      x = x1;
