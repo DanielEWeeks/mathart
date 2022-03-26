@@ -46,6 +46,9 @@ let bmax = -1;
 let xmin = 1;
 let ymin = 1;
 
+var mode = 1;
+var maxmode = 2; 
+
      var zzbar;
      var p;
      var zreal;
@@ -128,6 +131,12 @@ function exportHighResolution() {
 }
 
 function keyReleased() {
+         if (key == 'm') { 
+            mode = mode + 1;
+            if (mode > maxmode) {
+              mode = 1;
+            }
+         }
          if (key == '1') { 
             spiral = 1;
             }
@@ -280,15 +289,28 @@ function drawMyDesign() {
    let midy = ymin + (ymax - ymin)/2;
    var midx1 = map(midx, -bmax, bmax, -WIDTH/2 + trim, WIDTH/2 - trim);
    var midy1 = map(midy, -bmax, bmax, -WIDTH/2 + trim, WIDTH/2 - trim);
-   myScaledCanvas.beginShape();
-  for (var i = 0; i < vec.length; i++) {
-    let pt = vec[i];
-    var xx1 = map(pt.x - midx, -bmax, bmax, -WIDTH/2 + trim, WIDTH/2 - trim);
-    var yy1 = map(pt.y - midy, -bmax, bmax, HEIGHT/2 - trim, -HEIGHT/2 + trim);
-    // myScaledCanvas.point(xx1,yy1);
-    myScaledCanvas.vertex(xx1, yy1);
-  } 
-     myScaledCanvas.endShape();
+   if (mode==1) {
+    myScaledCanvas.beginShape();
+    for (var i = 0; i < vec.length; i++) {
+     let pt = vec[i];
+     var xx1 = map(pt.x - midx, -bmax, bmax, -WIDTH/2 + trim, WIDTH/2 - trim);
+     var yy1 = map(pt.y - midy, -bmax, bmax, HEIGHT/2 - trim, -HEIGHT/2 + trim);
+     // myScaledCanvas.point(xx1,yy1);
+     myScaledCanvas.vertex(xx1, yy1);
+    } 
+    myScaledCanvas.endShape();
+   } 
+   if (mode==2) {
+    myScaledCanvas.beginShape(POINTS);
+    for (var i = 0; i < vec.length; i++) {
+     let pt = vec[i];
+     var xx1 = map(pt.x - midx, -bmax, bmax, -WIDTH/2 + trim, WIDTH/2 - trim);
+     var yy1 = map(pt.y - midy, -bmax, bmax, HEIGHT/2 - trim, -HEIGHT/2 + trim);
+     // myScaledCanvas.point(xx1,yy1);
+     myScaledCanvas.vertex(xx1, yy1);
+    } 
+    myScaledCanvas.endShape();
+   } 
  
   myScaledCanvas.pop();
 }
