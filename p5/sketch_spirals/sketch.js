@@ -25,6 +25,7 @@ let c = 2;
 let d = 1.5;
 let e = 0.01;
 let lambda = 1;
+let expand = 0.25;
 
 var a1Slide;
 let a2Slide;
@@ -37,7 +38,7 @@ var a1 = 1.1;
 var a2 = 0.5;
 var a3 = 2;
 var a4 = 2;
-var a5 = 3; // degree
+var a5 = 0.25; // expand
 var a6 = 1.56; // lambda
 
 let xmax = -1;
@@ -47,7 +48,7 @@ let xmin = 1;
 let ymin = 1;
 
 var mode = 1;
-var maxmode = 2; 
+var maxmode = 3; 
 
      var zzbar;
      var p;
@@ -233,7 +234,7 @@ function drawMyDesign() {
   b = a2;
   c = a3;
   d = a4;
-  degree = a5;
+  expand = a5;
   lambda = a6;
   
   vec = [];
@@ -310,6 +311,19 @@ function drawMyDesign() {
      myScaledCanvas.vertex(xx1, yy1);
     } 
     myScaledCanvas.endShape();
+   } 
+   if (mode==3) {
+    // myScaledCanvas.beginShape(POINTS);
+    let r = 1;
+    for (var i = 0; i < vec.length; i++) {
+     let pt = vec[i];
+     var xx1 = map(pt.x - midx, -bmax, bmax, -WIDTH/2 + trim, WIDTH/2 - trim);
+     var yy1 = map(pt.y - midy, -bmax, bmax, HEIGHT/2 - trim, -HEIGHT/2 + trim);
+     // myScaledCanvas.point(xx1,yy1);
+     r = expand*sqrt(xx1*xx1 + yy1*yy1)
+     myScaledCanvas.ellipse(xx1, yy1, r);
+    } 
+    // myScaledCanvas.endShape();
    } 
  
   myScaledCanvas.pop();
