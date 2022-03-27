@@ -28,21 +28,35 @@
 <p>Key 1: The Archimedean Spiral is defined by a set of equations as 
 defined on this web page:
 <br> <a href="https://en.wikipedia.org/wiki/Archimedean_spiral"  target="_blank">https://en.wikipedia.org/wiki/Archimedean_spiral</a>
+<br>  x = (a + b*angle) * cos(f*angle)
+<br>  y = (a + b*angle) * sin(f*angle)
 </p> 
-<p>Key 2: Fermat's Spiral </p>
-<p>Key 3: Logarithmic Spiral</p>
+<p>Key 2: Fermat's Spiral 
+<br> x = a*sqrt(angle)*cos(angle)
+<br> y = a*sqrt(angle)*sin(angle)
+</p>
+<p>Key 3: Logarithmic Spiral
+<br> x = a*exp(e*angle)*cos(angle)
+<br> y = a*exp(e*angle)*sin(angle)
+</p>
+
 <p>Key 'm': Toggle between the modes:</p>
 <p>Mode 1: lines</p>
 <p>Mode 2: points</p>
 <p>Mode 3: circles with increasing sizes</p>
 <p>Mode 4: individually colored circles with increasing sizes</p>
-<p>Change the values of the parameters a, b, c, and d by using the sliders.</p>
+<p>Change the values of the parameters by using the sliders:
+  <br> a = Parameter used in spiral equations
+  <br> b = Archimedean Spiral parameter
+  <br> c = Number of rotations through 360 degrees
+  <br> d = Angle increment control
+  <br> expand = radius multiplier controlling how fast circles enlarge
+  <br> lambda = stroke weight
+  <br> f = Archimedean Spiral parameter
+</p>
 <p>Key 'r': Redraw with a random set of parameters.</p>
-<p>LEFT_ARROW: Draw with few points (faster).</p>
-<p>RIGHT_ARROW: Draw with many more points (slower).</p>
 <p>Key 'e': Save a high-resolution PNG of the current image.</p>
-<p>Key 'a': Increment the number of points.</p>
-<p>Key 's': Decrement the number of points.</p>
+<p>Mouse pressed: redraw.</p>
 <p><br></p>
 <hr width="675px" align="left">
 <h2>The p5js code</h2>
