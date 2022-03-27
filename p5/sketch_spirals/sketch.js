@@ -26,6 +26,7 @@ let d = 1.5;
 let e = 0.01;
 let lambda = 1;
 let expand = 0.25;
+let f = 1.1;
 
 var a1Slide;
 let a2Slide;
@@ -40,6 +41,7 @@ var a3 = 2;
 var a4 = 2;
 var a5 = 0.25; // expand
 var a6 = 1.56; // lambda
+var a7 = 1.1;
 
 let xmax = -1;
 let ymax = -1;
@@ -48,7 +50,7 @@ let xmin = 1;
 let ymin = 1;
 
 var mode = 1;
-var maxmode = 3; 
+var maxmode = 4; 
 
      var zzbar;
      var p;
@@ -91,6 +93,8 @@ function setup() {
   a5Slide.position(WIDTH + 10, 140);
   a6Slide =  createSlider(1,10, a6, 1);
   a6Slide.position(WIDTH + 10, 170);
+  a7Slide =  createSlider(-3,3, a7, 0.01);
+  a7Slide.position(WIDTH + 10, 200);
 
    
   valueDisplayer = createP();
@@ -105,6 +109,8 @@ function setup() {
   a5valueDisplayer.position(WIDTH + 180,125);
   a6valueDisplayer = createP();
   a6valueDisplayer.position(WIDTH + 180,155);
+  a7valueDisplayer = createP();
+  a7valueDisplayer.position(WIDTH + 180,185);
 
 }
 
@@ -177,6 +183,8 @@ function keyReleased() {
                a5Slide.value(a5);
                a6 = random(1, 10);
                a6Slide.value(a6);
+               a7 = random(-3, 3);
+               a7Slide.value(a7);
 
                a = a1;
                b = a2;
@@ -184,6 +192,7 @@ function keyReleased() {
                d = a4;
                e = a5;
                lambda = a6;
+               f = a7;
                loop();
             }
         }
@@ -220,14 +229,16 @@ function drawMyDesign() {
   a4 = a4Slide.value();
   a5 = a5Slide.value();
   a6 = a6Slide.value();
+  a7 = a7Slide.value();
 
 
   valueDisplayer.html('a = '+round(a1,3));
   a2valueDisplayer.html('b = '+round(a2,3));
   a3valueDisplayer.html('c = '+round(a3,3));
   a4valueDisplayer.html('d = '+round(a4,3));
-  a5valueDisplayer.html('D = '+round(a5,3));
-  a6valueDisplayer.html('l = '+round(a6,3));
+  a5valueDisplayer.html('expand = '+round(a5,3));
+  a6valueDisplayer.html('lambda = '+round(a6,3));
+  a7valueDisplayer.html('f = '+round(a7,3));
 
   
   a = a1;
@@ -236,8 +247,10 @@ function drawMyDesign() {
   d = a4;
   expand = a5;
   lambda = a6;
+  f = a7;
   
   vec = [];
+  anglevec = [];
   
   xmax = -10000000000000;
   ymax = -10000000000000;
@@ -249,10 +262,13 @@ function drawMyDesign() {
   var x = 0.0;
   var y = 0.0;
   var angle = 0.0;
-  // a = alpha
-  // b = beta
-  // c = gamma
-  // d = omega
+  // a = Parameter used in spiral equations
+  // b = Archimedean Spiral parameter
+  // c = Number of rotations through 360 degrees
+  // d = Angle increment control
+  // expand = radius multiplier controlling how fast circles enlarge
+  // lambda = stroke weight
+  // f = Archimedean Spiral parameter
   
   myScaledCanvas.strokeWeight(lambda);
   // vec.push(new p5.Vector(WIDTH/2, HEIGHT/2));
@@ -260,10 +276,11 @@ function drawMyDesign() {
     for (let i = 0; i < 360*c; i++) {
       //let t = seq(0,5*pi, length.out=500);
      angle = angle + d*(2*PI)/360;
+     anglevec.push(new p5.Vector(angle));
      if (spiral == 1) {
      // Archimedean Spiral
-     var x1 = (a + b*angle) * cos(d*angle);
-     var y1 = (a + b*angle) * sin(d*angle);
+     var x1 = (a + b*angle) * cos(f*angle);
+     var y1 = (a + b*angle) * sin(f*angle);
      }
      if (spiral ==2) {
      // Fermat's Spiral
@@ -321,6 +338,23 @@ function drawMyDesign() {
      var yy1 = map(pt.y - midy, -bmax, bmax, HEIGHT/2 - trim, -HEIGHT/2 + trim);
      // myScaledCanvas.point(xx1,yy1);
      r = expand*sqrt(xx1*xx1 + yy1*yy1)
+     myScaledCanvas.ellipse(xx1, yy1, r);
+    } 
+    // myScaledCanvas.endShape();
+   } 
+   if (mode==4) {
+    // myScaledCanvas.beginShape(POINTS);
+    myScaledCanvas.colorMode(HSB, 360, 100, 100);
+    myScaledCanvas.noStroke();
+    let r = 1;
+    for (var i = 0; i < vec.length; i++) {
+     let pt = vec[i];
+     let colorangle = anglevec[i];
+     var xx1 = map(pt.x - midx, -bmax, bmax, -WIDTH/2 + trim, WIDTH/2 - trim);
+     var yy1 = map(pt.y - midy, -bmax, bmax, HEIGHT/2 - trim, -HEIGHT/2 + trim);
+     // myScaledCanvas.point(xx1,yy1);
+     r = expand*sqrt(xx1*xx1 + yy1*yy1)
+     myScaledCanvas.fill(colorangle.x%359,100,100);
      myScaledCanvas.ellipse(xx1, yy1, r);
     } 
     // myScaledCanvas.endShape();
