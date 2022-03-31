@@ -50,7 +50,7 @@ let xmin = 1;
 let ymin = 1;
 
 var mode = 1;
-var maxmode = 4; 
+var maxmode = 5; 
 
      var zzbar;
      var p;
@@ -111,6 +111,11 @@ function setup() {
   a6valueDisplayer.position(WIDTH + 180,155);
   a7valueDisplayer = createP();
   a7valueDisplayer.position(WIDTH + 180,185);
+  a8valueDisplayer = createP();
+  a8valueDisplayer.position(WIDTH + 180,215);
+  a9valueDisplayer = createP();
+  a9valueDisplayer.position(WIDTH + 180,245);
+
 
 }
 
@@ -239,6 +244,9 @@ function drawMyDesign() {
   a5valueDisplayer.html('expand = '+round(a5,3));
   a6valueDisplayer.html('lambda = '+round(a6,3));
   a7valueDisplayer.html('f = '+round(a7,3));
+  a8valueDisplayer.html('spiral = '+spiral);
+  a9valueDisplayer.html('mode = '+mode);
+
 
   
   a = a1;
@@ -356,6 +364,26 @@ function drawMyDesign() {
      r = expand*sqrt(xx1*xx1 + yy1*yy1)
      myScaledCanvas.fill(colorangle.x%359,100,100);
      myScaledCanvas.ellipse(xx1, yy1, r);
+    } 
+    // myScaledCanvas.endShape();
+   } 
+   if (mode==5) {
+    // myScaledCanvas.beginShape(POINTS);
+    myScaledCanvas.colorMode(HSB, 360, 100, 100);
+    // myScaledCanvas.noStroke();
+    let r = 1;
+    for (var i = 0; i < vec.length-1; i++) {
+     let pt = vec[i];
+     let colorangle = anglevec[i];
+     var xx1 = map(pt.x - midx, -bmax, bmax, -WIDTH/2 + trim, WIDTH/2 - trim);
+     var yy1 = map(pt.y - midy, -bmax, bmax, HEIGHT/2 - trim, -HEIGHT/2 + trim);
+     let pt2 = vec[i+1];
+     var xx2 = map(pt2.x - midx, -bmax, bmax, -WIDTH/2 + trim, WIDTH/2 - trim);
+     var yy2 = map(pt2.y - midy, -bmax, bmax, HEIGHT/2 - trim, -HEIGHT/2 + trim);
+     // myScaledCanvas.point(xx1,yy1);
+     r = expand*sqrt(xx1*xx1 + yy1*yy1)
+     myScaledCanvas.stroke(colorangle.x%359,100,100);
+     myScaledCanvas.line(xx1, yy1, xx2, yy2); 
     } 
     // myScaledCanvas.endShape();
    } 
