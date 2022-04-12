@@ -157,7 +157,16 @@ function keyReleased() {
             }   
          if (key == '3') { 
             spiral = 3;
-            }        
+            }   
+         if (key == '4') { 
+            spiral = 4;
+            }  
+         if (key == '5') { 
+            spiral = 5;
+            }  
+         if (key == '6') { 
+            spiral = 6;
+            }          
          if (key == 'a') { 
              // Increment npoints count
              npoints = npoints + 50000; 
@@ -299,6 +308,30 @@ function drawMyDesign() {
      // Logarithmic Spiral
      var x1 = a*exp(e*angle)*cos(angle);
      var y1 = a*exp(e*angle)*sin(angle);
+     }
+     if (spiral == 4) {
+     // Archimedean Spiral, but transformed (e^x cos y, e^x sin y)
+     var x1 = (a + b*angle) * cos(f*angle);
+     var y1 = (a + b*angle) * sin(f*angle);
+     x = cos(y1)*exp(x1);
+     y1 = sin(y1)*exp(x1);
+     x1 = x;
+     }
+     if (spiral == 5) {
+     // Fermat's Spiral, but transformed (e^x cos y, e^x sin y)
+     var x1 = a*sqrt(angle)*cos(angle);
+     var y1 = a*sqrt(angle)*sin(angle);
+     x = cos(y1)*exp(x1);
+     y1 = sin(y1)*exp(x1);
+     x1 = x;
+     }
+     if (spiral == 6) {
+     // Logarithmic Spiral, but transformed (e^x cos y, e^x sin y)
+     var x1 = a*exp(e*angle)*cos(angle);
+     var y1 = a*exp(e*angle)*sin(angle);
+     x = cos(y1)*exp(x1);
+     y1 = sin(y1)*exp(x1);
+     x1 = x;
      }
      // myScaledCanvas.vertex(x1, y1);
      vec.push(new p5.Vector(x1,y1));
