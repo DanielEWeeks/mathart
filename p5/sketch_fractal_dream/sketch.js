@@ -11,12 +11,14 @@
 //            11.25 x 600 = 6,750 pixels.
 // The trimmed page is 8.5 inches tall
 // so make sure to have at least 1/8 = 0.125 inch margin
-// on top and bottom that will be trimmed off. 
+// on top and bottom that will be trimmed off.
 // And it runs 8 3/16 inches down before it runs into
 // the spiral cuts.
 //
 //  ( 1350 x 1050 ) x 5  = ( 6750 x 5250 )
 //  (  675 x 525 )  x 10 = ( 6750 x 5250 )
+//
+// Instagram resolution: (1080 x 1080)
 
 
 let outputScale = 10/2;
@@ -55,7 +57,7 @@ let bmax = -1;
 let vec = [];
 
 //=================================================================
-function setup() { 
+function setup() {
   WIDTH = 675;
   HEIGHT = 675;
   canvas = createCanvas(WIDTH, HEIGHT);
@@ -69,7 +71,7 @@ function setup() {
   lineColorPicker.position(WIDTH + 75, HEIGHT - 5);
   let txt2 = createDiv('Line color');
   txt2.position(WIDTH + 75, HEIGHT - 22);
-  
+
   a1Slide =  createSlider(-3, 3, a1, 0.1);
   a1Slide.position(WIDTH + 10, 20);
   a2Slide =  createSlider(-3, 3, a2, 0.1);
@@ -78,7 +80,7 @@ function setup() {
   a3Slide.position(WIDTH + 10, 80);
   a4Slide =  createSlider(-3, 3, a4, 0.1);
   a4Slide.position(WIDTH + 10, 110);
-  
+
   valueDisplayer = createP();
   valueDisplayer.position(WIDTH + 180,5);
   a2valueDisplayer = createP();
@@ -87,7 +89,7 @@ function setup() {
   a3valueDisplayer.position(WIDTH + 180,65);
   a4valueDisplayer = createP();
   a4valueDisplayer.position(WIDTH + 180,95);
-  
+
 
 
 }
@@ -115,23 +117,36 @@ function exportHighResolution() {
   draw();
 }
 
+
+function exportInstagramResolution() {
+  currentScale = (1.6)/pixelDensity(); // Instagram-Res Export
+  myScaledCanvas = createGraphics(currentScale * WIDTH, currentScale * HEIGHT);
+  draw();
+  save(myScaledCanvas, "InstagramResImage", 'png');
+  currentScale = 1; // Reset to default scale 1:1
+  myScaledCanvas = createGraphics(WIDTH, HEIGHT);
+  draw();
+}
 // function keyReleased() { if (key == 'e') exportHighResolution(); }
-function keyReleased() { 
-         if (key == 'a') { 
+function keyReleased() {
+         if (key == 'a') {
              // Increment step count
-             step = step + 1; 
+             step = step + 1;
              loop();
          } else {
              if (key == 's') {
                // Decrement step count
                step = step - 1;
-               loop(); 
+               loop();
              } else {
-              if (key == 'e') { 
-               // Export high resolution version 
-               exportHighResolution(); 
+              if (key == 'e') {
+               // Export high resolution version
+               exportHighResolution();
               }
              }
+         }
+         if (key == 'l') {
+           exportInstagramResolution();
          }
          if (key == 'r') {
                // Randomly set parameters
@@ -171,7 +186,7 @@ function mousePressed() { loop(); }
 function drawMyDesign() {
   // Draw your design in this function -- into the scaled canvas.
   // Notice how all drawing functions begin with "myScaledCanvas."
-  
+
   // myScaledCanvas.background('rgb(30,144,255)');
   myScaledCanvas.background(colorPicker.color());
   myScaledCanvas.noFill();
@@ -179,7 +194,7 @@ function drawMyDesign() {
   myScaledCanvas.stroke(lineColorPicker.color(), 20);
 
   // 600*0.125 = 75 pixels = 1/8 inch at 600 PPI.
-  // But here we are using 525 instead of 5250 for HEIGHT 
+  // But here we are using 525 instead of 5250 for HEIGHT
   // So 1/8 = 0.125 inch trim is 7.5 out of 525 pixels
    // myScaledCanvas.line(0,7.5,WIDTH,7.5);
    // myScaledCanvas.line(0,HEIGHT-7.5,WIDTH,HEIGHT-7.5);
@@ -190,7 +205,7 @@ function drawMyDesign() {
   myScaledCanvas.translate(WIDTH/2, (HEIGHT/2));
   myScaledCanvas.rotate(-HALF_PI);
   // myScaledCanvas.circle(0, 0, DIAMETER);
-  
+
   a1 = a1Slide.value();
   a2 = a2Slide.value();
   a3 = a3Slide.value();
@@ -200,22 +215,22 @@ function drawMyDesign() {
   a2valueDisplayer.html('b = '+round(a2,3));
   a3valueDisplayer.html('c = '+round(a3,3));
   a4valueDisplayer.html('d = '+round(a4,3));
-  
+
   a = a1;
   b = a2;
   c = a3;
   d = a4;
-  
+
   vec = [];
-  
+
   xmax = -1;
   ymax = -1;
   bmax = -1;
-  
+
   let trim = 50;
-  
+
 //  for (var i = 0; i < npoints; i += 1) {
-  
+
 //    var x = random(-5,5);
 //    var y = random(-5,5);
     var x = WIDTH/2;
@@ -241,7 +256,7 @@ function drawMyDesign() {
     var yy1 = map(pt.y, -bmax, bmax, HEIGHT/2 - trim, -HEIGHT/2 + trim);
     myScaledCanvas.point(xx1,yy1);
   }
-  
+
   myScaledCanvas.pop();
 
 }
