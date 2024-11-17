@@ -5,16 +5,58 @@
 // variables: A B
 // axiom: A
 // rules: (A → AB), (B → A)
-var angle;
+var angle = 25;
 var axiom = "F";
-var sentence = axiom;
 var len = 160;
+var divisor = 0.5;
 
 var rules = [];
+// "Tree"
+// angle = 25;
+// axiom = "F";
 rules[0] = {
   a: "F",
   b: "FF+[+F-F-F]-[-F+F+F]"
 }
+
+var KochEdge = [];
+// angle = 60;
+// axiom = "F";
+KochEdge[0] = {
+  a: 'F',
+  b: 'F-F++F-F'
+}
+
+var KochSnowflake = [];
+// angle = 60;
+// axiom = "F++F++F";
+KochSnowflake[0] = {
+  a: 'F',
+  b: 'F-F++F-F'
+}
+
+var DragonCurve = [];
+// angle = 90;
+// axiom = "FX";
+// divisor = 1;
+DragonCurve[0] = {
+  a: 'X',
+  b: 'X+YF+'
+}
+DragonCurve[1] = {
+  a: 'Y',
+  b: '-FX-Y'
+}
+
+
+rules = KochSnowflake;
+angle = 60;
+axiom = "F++F++F";
+divisor = 0.40;
+
+
+var sentence = axiom;
+
 
 // Written by Daniel E. Weeks
 //
@@ -54,7 +96,7 @@ var a1 = -1;
 var a2 = 0.1;
 var a3 = -0.82;
 var a4 = 0.12;
-var a5 = 25; // degree
+var a5 = angle; // degree
 var a6 = 1.56; // lambda
 
 let xmax = -1;
@@ -83,11 +125,11 @@ function setup() {
   canvas = createCanvas(WIDTH, HEIGHT);
   myScaledCanvas = createGraphics(WIDTH, HEIGHT);
   currentScale = 1; // initialize to 1; don't touch
-  colorPicker = createColorPicker('rgb(0,0,0)');
+  colorPicker = createColorPicker('rgb(211,211,211)');
   colorPicker.position(WIDTH + 5, HEIGHT - 5);
   let txt = createDiv('Background color');
   txt.position(WIDTH + 5, HEIGHT + 22);
-  lineColorPicker = createColorPicker('rgb(255,255,0)');
+  lineColorPicker = createColorPicker('rgb(0,128,0)');
   lineColorPicker.position(WIDTH + 75, HEIGHT - 5);
   let txt2 = createDiv('Line color');
   txt2.position(WIDTH + 75, HEIGHT - 22);
@@ -209,7 +251,7 @@ function mousePressed() { loop(); }
 
 
 function generate() {
-  len *= 0.5;
+  len *= divisor;
   var nextSentence = "";
   for (var i = 0; i < sentence.length; i++) {
     var current = sentence.charAt(i);
