@@ -79,6 +79,14 @@ let currentScale;
 let myScaledCanvas;
 let canvas;
 
+let button;
+let button2;
+let button3;
+let button4;
+let button5;
+
+
+
 let DIAMETER = 450; // 450 = 7.5 inches at 600 PPI
 let npoints = 10000;
 let PI = 3.14159265358979323846;
@@ -174,7 +182,22 @@ function setup() {
   a6valueDisplayer = createP();
   a6valueDisplayer.position(WIDTH + 180,155);
 
+  button2 = createButton("DragonCurve");
+  button2.position(WIDTH + 5, HEIGHT - 125)
+  button2.mousePressed(ChooseDragonCurve);
+  button3 = createButton("Koch Edge");
+  button3.position(WIDTH + 5, HEIGHT - 150)
+  button3.mousePressed(ChooseKochEdge);
+  button4 = createButton("Koch Snowflake");
+  button4.position(WIDTH + 5, HEIGHT - 175)
+  button4.mousePressed(ChooseKochSnowflake);
+  button5 = createButton("Tree");
+  button5.position(WIDTH + 5, HEIGHT - 200)
+  button5.mousePressed(ChooseTree);
 
+  button = createButton("generate");
+  button.position(WIDTH + 5, HEIGHT - 75)
+  button.mousePressed(generate);
 
 
 }
@@ -330,11 +353,11 @@ function generate() {
 
 function turtle() {
 //  myScaledCanvas.background(51);
-  myScaledCanvas.background(colorPicker.color());
+//  myScaledCanvas.background(colorPicker.color());
 
-  myScaledCanvas.resetMatrix();
-  myScaledCanvas.translate(width / 2, height);
-  myScaledCanvas.stroke(lineColorPicker.color(), 100);
+//  myScaledCanvas.resetMatrix();
+//  myScaledCanvas.translate(width / 2, height);
+  myScaledCanvas.stroke(lineColorPicker.color(), len);
   for (var i = 0; i < sentence.length; i++) {
     var current = sentence.charAt(i);
 
@@ -356,29 +379,17 @@ function turtle() {
 
 //=================================================================
 function drawMyDesign() {
-  var button2 = createButton("DragonCurve");
-  button2.position(WIDTH + 5, HEIGHT - 125)
-  button2.mousePressed(ChooseDragonCurve);
-  var button3 = createButton("Koch Edge");
-  button3.position(WIDTH + 5, HEIGHT - 150)
-  button3.mousePressed(ChooseKochEdge);
-  var button4 = createButton("Koch Snowflake");
-  button4.position(WIDTH + 5, HEIGHT - 175)
-  button4.mousePressed(ChooseKochSnowflake);
-  var button5 = createButton("Tree");
-  button5.position(WIDTH + 5, HEIGHT - 200)
-  button5.mousePressed(ChooseTree);
 
 
 
   myScaledCanvas.background(colorPicker.color());
   myScaledCanvas.noFill();
-  myScaledCanvas.stroke(lineColorPicker.color(), 20);
+//  myScaledCanvas.stroke(lineColorPicker.color(), 20);
   myScaledCanvas.strokeWeight(lambda);
 
   myScaledCanvas.push();
-  myScaledCanvas.translate(WIDTH/2, (HEIGHT/2));
-  myScaledCanvas.rotate(-HALF_PI);
+  myScaledCanvas.translate(WIDTH/2, (HEIGHT));
+//  myScaledCanvas.rotate(-HALF_PI);
   
   a1 = a1Slide.value();
   a2 = a2Slide.value();
@@ -414,8 +425,6 @@ function drawMyDesign() {
   createP(axiom);
   turtle();
 
-  var button = createButton("generate");
-  button.position(WIDTH + 5, HEIGHT - 75)
-  button.mousePressed(generate);
+
  
 }
