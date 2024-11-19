@@ -271,7 +271,7 @@ function ChooseTree() {
 
 function ChooseKochSnowflake() {
     angle = 60;
-    axiom = "F";
+    axiom = "F++F++F";
     rules = KochSnowflake;
    	sentence = axiom;
 	a5Slide.value(angle);
@@ -374,6 +374,7 @@ function drawMyDesign() {
   myScaledCanvas.background(colorPicker.color());
   myScaledCanvas.noFill();
   myScaledCanvas.stroke(lineColorPicker.color(), 20);
+  myScaledCanvas.strokeWeight(lambda);
 
   myScaledCanvas.push();
   myScaledCanvas.translate(WIDTH/2, (HEIGHT/2));
@@ -392,7 +393,7 @@ function drawMyDesign() {
   a3valueDisplayer.html('c = '+round(a3,3));
   a4valueDisplayer.html('d = '+round(a4,3));
   a5valueDisplayer.html('Angle = '+round(a5,3));
-  a6valueDisplayer.html('l = '+round(a6,3));
+  a6valueDisplayer.html('Stroke weight = '+round(a6,3));
   
   len = a1;
   b = a2;
