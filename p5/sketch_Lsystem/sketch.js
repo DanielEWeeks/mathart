@@ -7,7 +7,8 @@
 // rules: (A → AB), (B → A)
 var angle = 25;
 var axiom = "F";
-var len = 160;
+var StartLength = 160;
+var len = StartLength;
 var divisor = 0.5;
 
 var rules = [];
@@ -15,6 +16,15 @@ var rules = [];
 // angle = 25;
 // axiom = "F";
 rules[0] = {
+  a: "F",
+  b: "FF+[+F-F-F]-[-F+F+F]"
+}
+
+var Tree = [];
+// "Tree"
+// angle = 25;
+// axiom = "F";
+Tree[0] = {
   a: "F",
   b: "FF+[+F-F-F]-[-F+F+F]"
 }
@@ -92,12 +102,12 @@ let a4Slide;
 let a5Slide;
 let a6Slide;
 
-var a1 = -1;    
+var a1 = StartLength;    
 var a2 = 0.1;
 var a3 = -0.82;
 var a4 = 0.12;
 var a5 = angle; // degree
-var a6 = 1.56; // lambda
+var a6 = lambda; // lambda
 
 let xmax = -1;
 let ymax = -1;
@@ -113,6 +123,7 @@ let ymin = 1;
      var x1;
      var y1;
 
+  
 
 let vec = [];
 
@@ -136,7 +147,7 @@ function setup() {
   
 
   
-  a1Slide =  createSlider(-3, 10, a1, 0.1);
+  a1Slide =  createSlider(1, 200, a1, 1);
   a1Slide.position(WIDTH + 10, 20);
   a2Slide =  createSlider(-3, 10, a2, 0.1);
   a2Slide.position(WIDTH + 10, 50);
@@ -210,7 +221,7 @@ function keyReleased() {
          }
          if (key == 'r') {
                // Randomly set parameters
-               a1 = random(25, 90);
+               a1 = random(1, 200);
                a1Slide.value(a1);
                a2 = random(-3, 10);
                a2Slide.value(a2);
@@ -223,7 +234,7 @@ function keyReleased() {
                a6 = random(-3, 3);
                a6Slide.value(a6);
 
-               a = a1;
+               len = a1;
                b = a2;
                c = a3;
                d = a4;
@@ -248,10 +259,54 @@ function keyPressed() {
 
 function mousePressed() { loop(); }
 
+function ChooseTree() {
+    angle = 25;
+    axiom = "F";
+    rules = Tree;
+   	sentence = axiom;
+	a5Slide.value(angle);
+	len = StartLength;
+	a1Slide.value(len);
+}
 
+function ChooseKochSnowflake() {
+    angle = 60;
+    axiom = "F";
+    rules = KochSnowflake;
+   	sentence = axiom;
+	a5Slide.value(angle);
+	len = StartLength;
+	a1Slide.value(len);
+}
+
+
+function ChooseKochEdge() {
+	angle = 60;
+	axiom = "F";
+	divisor = 0.5;
+	rules = KochEdge;
+	sentence = axiom;
+	a5Slide.value(angle);
+	len = StartLength;
+	a1Slide.value(len);
+}
+
+;
+
+function ChooseDragonCurve() {
+	angle = 90;
+	axiom = "FX";
+	divisor = 1;
+	rules = DragonCurve;
+	sentence = axiom;
+	a5Slide.value(angle);
+	len = StartLength;
+	a1Slide.value(len);
+}
 
 function generate() {
   len *= divisor;
+  a1Slide.value(len);
   var nextSentence = "";
   for (var i = 0; i < sentence.length; i++) {
     var current = sentence.charAt(i);
@@ -301,6 +356,21 @@ function turtle() {
 
 //=================================================================
 function drawMyDesign() {
+  var button2 = createButton("DragonCurve");
+  button2.position(WIDTH + 5, HEIGHT - 125)
+  button2.mousePressed(ChooseDragonCurve);
+  var button3 = createButton("Koch Edge");
+  button3.position(WIDTH + 5, HEIGHT - 150)
+  button3.mousePressed(ChooseKochEdge);
+  var button4 = createButton("Koch Snowflake");
+  button4.position(WIDTH + 5, HEIGHT - 175)
+  button4.mousePressed(ChooseKochSnowflake);
+  var button5 = createButton("Tree");
+  button5.position(WIDTH + 5, HEIGHT - 200)
+  button5.mousePressed(ChooseTree);
+
+
+
   myScaledCanvas.background(colorPicker.color());
   myScaledCanvas.noFill();
   myScaledCanvas.stroke(lineColorPicker.color(), 20);
@@ -317,14 +387,14 @@ function drawMyDesign() {
   a6 = a6Slide.value();
 
 
-  valueDisplayer.html('a = '+round(a1,3));
+  valueDisplayer.html('Length = '+round(a1,3));
   a2valueDisplayer.html('b = '+round(a2,3));
   a3valueDisplayer.html('c = '+round(a3,3));
   a4valueDisplayer.html('d = '+round(a4,3));
-  a5valueDisplayer.html('D = '+round(a5,3));
+  a5valueDisplayer.html('Angle = '+round(a5,3));
   a6valueDisplayer.html('l = '+round(a6,3));
   
-  a = a1;
+  len = a1;
   b = a2;
   c = a3;
   d = a4;
@@ -342,8 +412,9 @@ function drawMyDesign() {
 //  background(51);
   createP(axiom);
   turtle();
+
   var button = createButton("generate");
-  button.position(WIDTH + 5, HEIGHT - 100)
+  button.position(WIDTH + 5, HEIGHT - 75)
   button.mousePressed(generate);
  
 }
