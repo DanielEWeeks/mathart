@@ -285,6 +285,7 @@ function mousePressed() { loop(); }
 function ChooseTree() {
     angle = 25;
     axiom = "F";
+    divisor = 0.5;
     rules = Tree;
    	sentence = axiom;
 	a5Slide.value(angle);
@@ -295,6 +296,7 @@ function ChooseTree() {
 function ChooseKochSnowflake() {
     angle = 60;
     axiom = "F++F++F";
+    divisor = 0.4;
     rules = KochSnowflake;
    	sentence = axiom;
 	a5Slide.value(angle);
@@ -306,7 +308,7 @@ function ChooseKochSnowflake() {
 function ChooseKochEdge() {
 	angle = 60;
 	axiom = "F";
-	divisor = 0.5;
+	divisor = 0.4;
 	rules = KochEdge;
 	sentence = axiom;
 	a5Slide.value(angle);
@@ -318,12 +320,12 @@ function ChooseKochEdge() {
 
 function ChooseDragonCurve() {
 	angle = 90;
-	axiom = "FX";
+	axiom = "TTTTTTTFX";
 	divisor = 1;
 	rules = DragonCurve;
 	sentence = axiom;
 	a5Slide.value(angle);
-	len = StartLength;
+	len = StartLength/8;
 	a1Slide.value(len);
 }
 
@@ -363,6 +365,8 @@ function turtle() {
 
     if (current == "F") {
       myScaledCanvas.line(0, 0, 0, -len);
+      myScaledCanvas.translate(0, -len);
+    } else if (current == "T") {
       myScaledCanvas.translate(0, -len);
     } else if (current == "+") {
       myScaledCanvas.rotate(angle);
