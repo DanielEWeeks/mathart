@@ -225,6 +225,16 @@ function exportHighResolution() {
   draw();
 }
 
+function exportInstagramResolution() {
+  currentScale = (1.6)/pixelDensity(); // Instagram-Res Export
+  myScaledCanvas = createGraphics(currentScale * WIDTH, currentScale * HEIGHT);
+  draw();
+  save(myScaledCanvas, "InstagramResImage", 'png');
+  currentScale = 1; // Reset to default scale 1:1
+  myScaledCanvas = createGraphics(WIDTH, HEIGHT);
+  draw();
+}
+
 function keyReleased() { 
          if (key == 'a') { 
              // Increment npoints count
@@ -241,6 +251,9 @@ function keyReleased() {
                exportHighResolution(); 
               }
              }
+         }
+         if (key == 'l') {
+           exportInstagramResolution();
          }
          if (key == 'r') {
                // Randomly set parameters
