@@ -20,6 +20,8 @@ rules[0] = {
   b: "FF+[+F-F-F]-[-F+F+F]"
 }
 
+// A bush	F	Rule:	 F -> FF+[+F-F-F]-[-F+F+F]
+
 var Tree = [];
 // "Tree"
 // angle = 25;
@@ -29,6 +31,7 @@ Tree[0] = {
   b: "FF+[+F-F-F]-[-F+F+F]"
 }
 
+//Koch's curve	F	Rule:	 F -> F-F++F-F
 var KochEdge = [];
 // angle = 60;
 // axiom = "F";
@@ -37,6 +40,7 @@ KochEdge[0] = {
   b: 'F-F++F-F'
 }
 
+// Koch's snowflake	F++F++F	Rule:	 F -> F-F++F-F
 var KochSnowflake = [];
 // angle = 60;
 // axiom = "F++F++F";
@@ -45,6 +49,7 @@ KochSnowflake[0] = {
   b: 'F-F++F-F'
 }
 
+// Dragon curve	FX	Rules:	X -> X+YF+	Y -> -FX-Y
 var DragonCurve = [];
 // angle = 90;
 // axiom = "FX";
@@ -58,6 +63,18 @@ DragonCurve[1] = {
   b: '-FX-Y'
 }
 
+// Hilbert's curve
+var HilbertCurve = [];
+// Axiom: X
+// Angle: 90
+HilbertCurve[0] = {
+  a: 'X',
+  b: '-YF+XFX+FY-'
+}
+HilbertCurve[1] = {
+   a: 'Y',
+   b: '+XF-YFY-FX+'
+}
 
 rules = KochSnowflake;
 angle = 60;
@@ -84,6 +101,7 @@ let button2;
 let button3;
 let button4;
 let button5;
+let button6;
 
 
 
@@ -194,6 +212,10 @@ function setup() {
   button5 = createButton("Tree");
   button5.position(WIDTH + 5, HEIGHT - 200)
   button5.mousePressed(ChooseTree);
+  button6 = createButton("Hilbert's Curve");
+  button6.position(WIDTH + 5, HEIGHT - 225)
+  button6.mousePressed(ChooseHilbertCurve);
+
 
   button = createButton("generate");
   button.position(WIDTH + 5, HEIGHT - 75)
@@ -333,9 +355,20 @@ function ChooseKochEdge() {
 
 function ChooseDragonCurve() {
 	angle = 90;
-	axiom = "TTTTTTTFX";
+	axiom = "TTTTTTT-TTTTT+FX";
 	divisor = 1;
 	rules = DragonCurve;
+	sentence = axiom;
+	a5Slide.value(angle);
+	len = StartLength/8;
+	a1Slide.value(len);
+}
+
+function ChooseHilbertCurve() {
+	angle = 90;
+	axiom = "TT+TTTTTTTTTTTTTT-X";
+	divisor = 1;
+	rules = HilbertCurve;
 	sentence = axiom;
 	a5Slide.value(angle);
 	len = StartLength/8;
