@@ -1,0 +1,13 @@
+{
+ "Num": 20,
+ "Name":"A bush",
+ "Axiom":"F-F-F-F",
+ "Rule":"Rule:",
+ "Rule1":"F -> F-F+F+F-F",
+ "Rule1A":"F",
+ "Rule1B":"F-F+F+F-F",
+ "Angle":"90",
+ "Link":"MathWorld <a href=\"http://mathworld.wolfram.com/BoxFractal.html\">Box Fractal  </a>",
+ "Note":"NA",
+ "Nrules": 1
+}

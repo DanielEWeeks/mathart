@@ -1,0 +1,16 @@
+{
+ "Num": 40,
+ "Name":"NA",
+ "Axiom":"L--F--L--F",
+ "Rule":"Rules:",
+ "Rule1":"L -> +R-F-R+",
+ "Rule1A":"L",
+ "Rule1B":"+R-F-R+",
+ "Rule2":"R -> -L+F+L-",
+ "Rule2A":"R",
+ "Rule2B":"-L+F+L-",
+ "Angle":"45",
+ "Link":"William McWorter <a href=\"http://www.nahee.com/spanky/pub/fractals/lsystems/mcworter.l\">Sier&pi;nsk  </a>",
+ "Note":"NA",
+ "Nrules": 2
+}

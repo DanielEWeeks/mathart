@@ -1,0 +1,89 @@
+---
+title: "L-System Setup"
+author: "Daniel E. Weeks"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load Libraries
+
+```{r}
+library(readODS)
+library(rjson)
+library(tidyverse)
+```
+
+
+# Read in spreadsheet
+
+```{r}
+df <- read_ods("L-system_List.ods")
+df <- df %>% filter(!is.na(Axiom))
+dim(df)
+```
+
+# Trim whitespace
+
+```{r}
+df$Axiom <- str_trim(df$Axiom)
+df$Rule1 <- str_trim(df$Rule1)
+df$Rule2 <- str_trim(df$Rule2)
+df$Rule3 <- str_trim(df$Rule3)
+```
+
+
+# Split the Rules in parts A and B
+
+```{r}
+head(str_split_fixed(df$Rule1," -> ",2))
+df <- df %>% separate(Rule1, c("Rule1A","Rule1B"), sep = " -> ", remove = FALSE)
+df <- df %>% separate(Rule2, c("Rule2A","Rule2B"), sep = " -> ", remove = FALSE)
+df <- df %>% separate(Rule3, c("Rule3A","Rule3B"), sep = " -> ", remove = FALSE)
+```
+
+```{r}
+df$Rule1A <- str_trim(df$Rule1A)
+df$Rule2A <- str_trim(df$Rule2A)
+df$Rule3A <- str_trim(df$Rule3A)
+df$Rule1B <- str_trim(df$Rule1B)
+df$Rule2B <- str_trim(df$Rule2B)
+df$Rule3B <- str_trim(df$Rule3B)
+```
+
+```{r}
+df$Num <- (1:nrow(df))-1
+df <- df %>% select(Num, everything())
+```
+
+# Convert to JSON and write out
+
+
+
+```{r}
+df_files <- data.frame(num=(1:nrow(df))-1,filename=NA)
+for (i in 1:nrow(df)) {
+  df_row <- df[i,]
+  df_row$Nrules <- 3
+  if (is.na(df_row$Rule2)) {
+    df_row <- df_row %>%  select(-Rule2,-Rule2A,-Rule2B)
+    df_row$Nrules <- df_row$Nrules - 1
+  }
+   if (is.na(df_row$Rule3)) {
+    df_row <- df_row %>%  select(-Rule3,-Rule3A,-Rule3B)
+    df_row$Nrules <- df_row$Nrules - 1
+  }
+  df_json <- toJSON(as.list(df_row ),1)
+  outfl <- paste0("data/",formatC(i, width = 2, format = "d", flag = "0"),"_L-system.json")
+  df_files$filename[i] <- outfl
+  write(df_json,outfl)
+}
+
+write(toJSON(as.list(df_files),1),"data/FileList.json")
+```
+
+
+

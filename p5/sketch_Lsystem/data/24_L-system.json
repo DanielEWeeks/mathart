@@ -1,0 +1,16 @@
+{
+ "Num": 23,
+ "Name":"Serpinski triangle",
+ "Axiom":"FXF--FF--FF",
+ "Rule":"Rules:",
+ "Rule1":"F -> FF",
+ "Rule1A":"F",
+ "Rule1B":"FF",
+ "Rule2":"X -> --FXF++FXF++FXF--",
+ "Rule2A":"X",
+ "Rule2B":"--FXF++FXF++FXF--",
+ "Angle":"60",
+ "Link":"<a href=\"./Sierpinski_triangle\">Serpinski triangle</a>",
+ "Note":"NA",
+ "Nrules": 2
+}

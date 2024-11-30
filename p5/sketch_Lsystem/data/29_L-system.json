@@ -1,0 +1,13 @@
+{
+ "Num": 28,
+ "Name":"NA",
+ "Axiom":"F",
+ "Rule":"Rule:",
+ "Rule1":"F -> F+F-F",
+ "Rule1A":"F",
+ "Rule1B":"F+F-F",
+ "Angle":"120",
+ "Link":"William McWorter <a href=\"http://www.nahee.com/spanky/pub/fractals/lsystems/mcworter.l\">Terdragon  </a>",
+ "Note":"NA",
+ "Nrules": 1
+}

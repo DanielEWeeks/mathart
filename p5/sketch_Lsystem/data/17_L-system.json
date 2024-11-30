@@ -1,0 +1,16 @@
+{
+ "Num": 16,
+ "Name":"A bush",
+ "Axiom":"Y",
+ "Rule":"Rules:",
+ "Rule1":"X -> X[-FFF][+FFF]FX",
+ "Rule1A":"X",
+ "Rule1B":"X[-FFF][+FFF]FX",
+ "Rule2":"Y -> YFX[+Y][-Y]",
+ "Rule2A":"Y",
+ "Rule2B":"YFX[+Y][-Y]",
+ "Angle":"&pi;/7",
+ "Link":"NA",
+ "Note":"NA",
+ "Nrules": 2
+}

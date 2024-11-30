@@ -1,0 +1,13 @@
+{
+ "Num": 24,
+ "Name":"Serpinski carpet",
+ "Axiom":"F",
+ "Rule":"Rule:",
+ "Rule1":"F -> FFF[+FFF+FFF+FFF]",
+ "Rule1A":"F",
+ "Rule1B":"FFF[+FFF+FFF+FFF]",
+ "Angle":"90",
+ "Link":"<a href=\"./Sierpinski_carpet\">Serpinski carpet</a>",
+ "Note":"NA",
+ "Nrules": 1
+}

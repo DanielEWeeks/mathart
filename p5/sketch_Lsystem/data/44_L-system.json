@@ -1,0 +1,13 @@
+{
+ "Num": 43,
+ "Name":"NA",
+ "Axiom":"F+F+F+F++F-F-F-F",
+ "Rule":"Rule:",
+ "Rule1":"F -> F+F++F+FF",
+ "Rule1A":"F",
+ "Rule1B":"F+F++F+FF",
+ "Angle":"90",
+ "Link":"Anthony Hanmer <a href=\"http://www.nahee.com/spanky/pub/fractals/lsystems/horizons.l\">ADH256a  </a>",
+ "Note":"NA",
+ "Nrules": 1
+}

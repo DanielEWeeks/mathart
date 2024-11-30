@@ -1,0 +1,16 @@
+{
+ "Num": 19,
+ "Name":"A bush",
+ "Axiom":"X",
+ "Rule":"Rules:",
+ "Rule1":"F -> FF",
+ "Rule1A":"F",
+ "Rule1B":"FF",
+ "Rule2":"X -> F[+X]F[-X]+X",
+ "Rule2A":"X",
+ "Rule2B":"F[+X]F[-X]+X",
+ "Angle":"&pi;/9",
+ "Link":"NA",
+ "Note":"NA",
+ "Nrules": 2
+}

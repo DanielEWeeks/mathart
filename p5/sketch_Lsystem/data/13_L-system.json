@@ -1,0 +1,13 @@
+{
+ "Num": 12,
+ "Name":"Quadratic Snowflake",
+ "Axiom":"F",
+ "Rule":"Rule:",
+ "Rule1":"F -> F-F+F+F-F",
+ "Rule1A":"F",
+ "Rule1B":"F-F+F+F-F",
+ "Angle":"90",
+ "Link":"NA",
+ "Note":"NA",
+ "Nrules": 1
+}

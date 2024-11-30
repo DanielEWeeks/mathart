@@ -2,6 +2,9 @@
 // Code for: https://youtu.be/E1B4UoSQMFw
 // Code modified from https://editor.p5js.org/codingtrain/sketches/QmTx-Y_UP
 
+var numberInput;
+var number;
+
 // variables: A B
 // axiom: A
 // rules: (A → AB), (B → A)
@@ -102,6 +105,7 @@ let button3;
 let button4;
 let button5;
 let button6;
+let button7;
 
 
 
@@ -149,9 +153,36 @@ let ymin = 1;
      var x1;
      var y1;
 
-  
+var txt4;
+var txt5;
 
 let vec = [];
+
+let config = {};
+let LSys = {};
+let LSysVec = [];
+
+// Here we load each of the L-system JSON configuration files
+// and store them in the LSysVec array
+function configLoaded(_config) {
+    let files_length = _config.filename.length;
+    for (let i = 0; i < files_length; i++) {
+      // LSys = loadJSON(_config.filename[i], fileLoaded);
+      LSys = loadJSON(_config.filename[i]);
+      LSysVec.push(LSys);
+    }
+}
+
+// function fileLoaded(_file) {
+//    console.log(_file);
+// }
+
+
+// FileList.json lists each of the L-system configuration files
+function preload() {
+    config = loadJSON("data/FileList.json", configLoaded);
+}
+
 
 
 
@@ -170,7 +201,12 @@ function setup() {
   lineColorPicker.position(WIDTH + 75, HEIGHT - 5);
   let txt2 = createDiv('Line color');
   txt2.position(WIDTH + 75, HEIGHT - 22);
-  
+  txt4 = createDiv('Number:');
+  txt4.id = "txt4";
+  txt4.position(WIDTH +205, HEIGHT - 125);
+  txt5 = createDiv('Name:');
+  txt5.id = "txt5";
+  txt5.position(WIDTH + 205, HEIGHT -155);
 
   
   a1Slide =  createSlider(1, 200, a1, 1);
@@ -221,6 +257,12 @@ function setup() {
   button.position(WIDTH + 5, HEIGHT - 75)
   button.mousePressed(generate);
 
+  numberInput = createInput("Input an integer >=0 & <45");
+  numberInput.position(WIDTH + 5, HEIGHT - 50);
+
+  button7 = createButton("Enter number");
+  button7.position(WIDTH + 205, HEIGHT -50)
+  button7.mousePressed(EnterNumberAndSelect);
 
 }
 
@@ -398,6 +440,56 @@ function generate() {
   turtle();
 
 }
+
+function EnterNumberAndSelect() {
+   number =numberInput.value();
+   	angle = Number(LSysVec[number].Angle);
+	axiom =  LSysVec[number].Axiom;
+	divisor = 1;
+	let Curve = [];
+	Curve[0] = {
+	  a:  LSysVec[number].Rule1A,
+	  b:  LSysVec[number].Rule1B
+	}
+	if ( LSysVec[number].Nrules>1){
+	Curve[1] = {
+	  a:  LSysVec[number].Rule2A,
+	  b:  LSysVec[number].Rule2B
+	}
+	}
+	if ( LSysVec[number].Nrules>2){
+	Curve[2] = {
+	  a:  LSysVec[number].Rule3A,
+	  b:  LSysVec[number].Rule3B
+	}
+	}
+	rules = Curve;
+	sentence = axiom;
+	a5Slide.value(angle);
+	len = StartLength/8;
+	a1Slide.value(len);
+	txt4.remove();
+	txt4 = createDiv('Number: ' + number);
+    txt4.position(WIDTH +205, HEIGHT - 125);
+	txt5.remove();
+	txt5 = createDiv('Name: ' + LSysVec[number].Name);
+	txt5.position(WIDTH + 205, HEIGHT -155);
+}
+
+
+
+var HilbertCurve = [];
+// Axiom: X
+// Angle: 90
+HilbertCurve[0] = {
+  a: 'X',
+  b: '-YF+XFX+FY-'
+}
+HilbertCurve[1] = {
+   a: 'Y',
+   b: '+XF-YFY-FX+'
+}
+
 
 function turtle() {
 //  myScaledCanvas.background(51);

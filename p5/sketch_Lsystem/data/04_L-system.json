@@ -1,0 +1,13 @@
+{
+ "Num": 3,
+ "Name":"NA",
+ "Axiom":"F+F+F+F",
+ "Rule":"Rule:",
+ "Rule1":"F -> FF+F++F+F",
+ "Rule1A":"F",
+ "Rule1B":"FF+F++F+F",
+ "Angle":"90",
+ "Link":"<a href=\"http://fractalworld.xaoc.ru/Ice_fractal\">Ice fractals</a>",
+ "Note":"NA",
+ "Nrules": 1
+}

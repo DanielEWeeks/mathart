@@ -1,0 +1,13 @@
+{
+ "Num": 0,
+ "Name":"Koch's curve",
+ "Axiom":"F",
+ "Rule":"Rule:",
+ "Rule1":"F -> F-F++F-F",
+ "Rule1A":"F",
+ "Rule1B":"F-F++F-F",
+ "Angle":"60",
+ "Link":"<a href=\"http://fractalworld.xaoc.ru/Koch_curve\">Koch's curve</a>",
+ "Note":"Original source of this list: https://fedimser.github.io/l-systems.html",
+ "Nrules": 1
+}

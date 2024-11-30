@@ -1,0 +1,13 @@
+{
+ "Num": 9,
+ "Name":"NA",
+ "Axiom":"F+F+F+F",
+ "Rule":"Rule:",
+ "Rule1":"F -> F+F-F-FF+F+F-F",
+ "Rule1A":"F",
+ "Rule1B":"F+F-F-FF+F+F-F",
+ "Angle":"90",
+ "Link":"<a href=\"http://fractalworld.xaoc.ru/Generalizations_of_Koch_curve\">Generalizations of the Koch's curve</a><>",
+ "Note":"NA",
+ "Nrules": 1
+}

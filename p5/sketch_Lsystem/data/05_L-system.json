@@ -1,0 +1,16 @@
+{
+ "Num": 4,
+ "Name":"Dragon curve",
+ "Axiom":"FX",
+ "Rule":"Rules:",
+ "Rule1":"X -> X+YF+",
+ "Rule1A":"X",
+ "Rule1B":"X+YF+",
+ "Rule2":"Y -> -FX-Y",
+ "Rule2A":"Y",
+ "Rule2B":"-FX-Y",
+ "Angle":"90",
+ "Link":"<a href=\"http://fractalworld.xaoc.ru/Dragon_curve\">Dragon curve</a>",
+ "Note":"NA",
+ "Nrules": 2
+}

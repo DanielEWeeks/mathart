@@ -1,0 +1,19 @@
+{
+ "Num": 37,
+ "Name":"NA",
+ "Axiom":"X",
+ "Rule":"Rules:",
+ "Rule1":"F ->",
+ "Rule1A":"F ->",
+ "Rule1B":"NA",
+ "Rule2":"X -> FX+FX+FXFYFX+FXFY-FY-FY-",
+ "Rule2A":"X",
+ "Rule2B":"FX+FX+FXFYFX+FXFY-FY-FY-",
+ "Rule3":"Y -> +FX+FX+FXFY-FYFXFY-FY-FY",
+ "Rule3A":"Y",
+ "Rule3B":"+FX+FX+FXFY-FYFXFY-FY-FY",
+ "Angle":"90",
+ "Link":"William McWorter <a href=\"http://www.nahee.com/spanky/pub/fractals/lsystems/mcworter.l\">Moore  </a>",
+ "Note":"NA",
+ "Nrules": 3
+}

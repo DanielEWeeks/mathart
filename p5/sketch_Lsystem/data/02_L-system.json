@@ -1,0 +1,13 @@
+{
+ "Num": 1,
+ "Name":"Koch's snowflake",
+ "Axiom":"F++F++F",
+ "Rule":"Rule:",
+ "Rule1":"F -> F-F++F-F",
+ "Rule1A":"F",
+ "Rule1B":"F-F++F-F",
+ "Angle":"60",
+ "Link":"<a href=\"http://fractalworld.xaoc.ru/Koch_snowflake\">Koch's snowflake</a>",
+ "Note":"NA",
+ "Nrules": 1
+}

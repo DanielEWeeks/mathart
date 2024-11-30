@@ -1,0 +1,19 @@
+{
+ "Num": 33,
+ "Name":"NA",
+ "Axiom":"XYXYXYX+?XYXYXYX+?XYXYXYX+?XYXYXYX",
+ "Rule":"Rules:",
+ "Rule1":"F ->",
+ "Rule1A":"F ->",
+ "Rule1B":"NA",
+ "Rule2":"X -> FX+FX+FXFY-FY-",
+ "Rule2A":"X",
+ "Rule2B":"FX+FX+FXFY-FY-",
+ "Rule3":"Y -> +FX+FXFY-FY-FY",
+ "Rule3A":"Y",
+ "Rule3B":"+FX+FXFY-FY-FY",
+ "Angle":"90",
+ "Link":"William McWorter <a href=\"http://www.nahee.com/spanky/pub/fractals/lsystems/mcworter.l\">Border1  </a>",
+ "Note":"NA",
+ "Nrules": 3
+}

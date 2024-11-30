@@ -1,0 +1,16 @@
+{
+ "Num": 5,
+ "Name":"Gosper's curve",
+ "Axiom":"XF",
+ "Rule":"Rules:",
+ "Rule1":"X -> X+YF++YF-FX--FXFX-YF+",
+ "Rule1A":"X",
+ "Rule1B":"X+YF++YF-FX--FXFX-YF+",
+ "Rule2":"Y -> -FX+YFYF++YF+FX--FX-Y",
+ "Rule2A":"Y",
+ "Rule2B":"-FX+YFYF++YF+FX--FX-Y",
+ "Angle":"60",
+ "Link":"<a href=\"http://fractalworld.xaoc.ru/Gosper_curve\">Gosper's curve</a>",
+ "Note":"NA",
+ "Nrules": 2
+}

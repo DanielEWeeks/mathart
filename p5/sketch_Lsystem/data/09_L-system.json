@@ -1,0 +1,13 @@
+{
+ "Num": 8,
+ "Name":"NA",
+ "Axiom":"F+F+F+F",
+ "Rule":"Rule:",
+ "Rule1":"F -> FF+F+F+F+FF",
+ "Rule1A":"F",
+ "Rule1B":"FF+F+F+F+FF",
+ "Angle":"90",
+ "Link":"NA",
+ "Note":"NA",
+ "Nrules": 1
+}

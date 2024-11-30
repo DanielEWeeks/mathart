@@ -1,0 +1,19 @@
+{
+ "Num": 38,
+ "Name":"NA",
+ "Axiom":"X-X-X-X-X",
+ "Rule":"Rules:",
+ "Rule1":"F ->",
+ "Rule1A":"F ->",
+ "Rule1B":"NA",
+ "Rule2":"X -> FX-FX-FX+FY+FY+FX-FX",
+ "Rule2A":"X",
+ "Rule2B":"FX-FX-FX+FY+FY+FX-FX",
+ "Rule3":"Y -> FY+FY-FX-FX-FY+FY+FY",
+ "Rule3A":"Y",
+ "Rule3B":"FY+FY-FX-FX-FY+FY+FY",
+ "Angle":"72",
+ "Link":"William McWorter <a href=\"http://www.nahee.com/spanky/pub/fractals/lsystems/mcworter.l\">Pentant  </a>",
+ "Note":"NA",
+ "Nrules": 3
+}
