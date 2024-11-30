@@ -6,8 +6,8 @@
  "Rule1":"F -> FF+[+F-F-F]-[-F+F+F]",
  "Rule1A":"F",
  "Rule1B":"FF+[+F-F-F]-[-F+F+F]",
- "Angle":"&pi;/8",
- "Link":"P. Bourke <a href=\"http://local.wasp.uwa.edu.au/%7Epbourke/fractals/lsys_bush_b/\">L-System Bush  </a>",
+ "Angle": 22.5,
+ "Link":"&pi;/8 P. Bourke <a href=\"http://local.wasp.uwa.edu.au/%7Epbourke/fractals/lsys_bush_b/\">L-System Bush  </a>",
  "Note":"NA",
  "Nrules": 1
 }

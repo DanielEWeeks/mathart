@@ -6,7 +6,7 @@
  "Rule1":"X -> XF-F+F-XF+F+XF-F+F-X",
  "Rule1A":"X",
  "Rule1B":"XF-F+F-XF+F+XF-F+F-X",
- "Angle":"90",
+ "Angle": 90,
  "Link":"NA",
  "Note":"NA",
  "Nrules": 1

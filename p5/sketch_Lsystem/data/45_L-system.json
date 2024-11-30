@@ -1,12 +1,12 @@
 {
  "Num": 44,
- "Name":"NA",
+ "Name":"ADH258a",
  "Axiom":"F++F++F+++F--F--F",
  "Rule":"Rule:",
  "Rule1":"F -> FF++F++F++FFF",
  "Rule1A":"F",
  "Rule1B":"FF++F++F++FFF",
- "Angle":"60",
+ "Angle": 60,
  "Link":"Anthony Hanmer <a href=\"http://www.nahee.com/spanky/pub/fractals/lsystems/horizons.l\">ADH258a  </a>",
  "Note":"NA",
  "Nrules": 1

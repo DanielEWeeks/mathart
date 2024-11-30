@@ -1,6 +1,6 @@
 {
  "Num": 32,
- "Name":"NA",
+ "Name":"Peano-c",
  "Axiom":"FX",
  "Rule":"Rules:",
  "Rule1":"F ->",
@@ -12,7 +12,7 @@
  "Rule3":"Y -> FY",
  "Rule3A":"Y",
  "Rule3B":"FY",
- "Angle":"45",
+ "Angle": 45,
  "Link":"Gary Teachout <a href=\"http://www.nahee.com/spanky/pub/fractals/lsystems/teachout.l\">Peano-c  </a>",
  "Note":"NA",
  "Nrules": 3

@@ -1,6 +1,6 @@
 {
  "Num": 7,
- "Name":"Gilbert's curve",
+ "Name":"Hilbert's curve",
  "Axiom":"X",
  "Rule":"Rules:",
  "Rule1":"X -> -YF+XFX+FY-",
@@ -9,7 +9,7 @@
  "Rule2":"Y -> +XF-YFY-FX+",
  "Rule2A":"Y",
  "Rule2B":"+XF-YFY-FX+",
- "Angle":"90",
+ "Angle": 90,
  "Link":"<a href=\"http://fractalworld.xaoc.ru/Hilbert_curve\">Gilbert's curve</a>",
  "Note":"NA",
  "Nrules": 2

@@ -1,6 +1,6 @@
 {
  "Num": 41,
- "Name":"NA",
+ "Name":"Tiling1",
  "Axiom":"X",
  "Rule":"Rules:",
  "Rule1":"X -> F-F-F+F+FX++F-F-F+F+FX--F-F-F+F+FX",
@@ -9,7 +9,7 @@
  "Rule2":"F ->",
  "Rule2A":"F ->",
  "Rule2B":"NA",
- "Angle":"60",
+ "Angle": 60,
  "Link":"William McWorter <a href=\"http://www.nahee.com/spanky/pub/fractals/lsystems/mcworter.l\">Tiling1  </a>",
  "Note":"NA",
  "Nrules": 2

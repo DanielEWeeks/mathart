@@ -1,6 +1,6 @@
 {
  "Num": 31,
- "Name":"NA",
+ "Name":"Hex-7-b",
  "Axiom":"X",
  "Rule":"Rules:",
  "Rule1":"F ->",
@@ -12,7 +12,7 @@
  "Rule3":"Y -> +F++F-X-F--F+Y+F--F+Y---F--F+Y---F++F-X+++F++F-X+++F--F+Y",
  "Rule3A":"Y",
  "Rule3B":"+F++F-X-F--F+Y+F--F+Y---F--F+Y---F++F-X+++F++F-X+++F--F+Y",
- "Angle":"30",
+ "Angle": 30,
  "Link":"Gary Teachout <a href=\"http://www.nahee.com/spanky/pub/fractals/lsystems/teachout.l\">Hex-7-b  </a>",
  "Note":"NA",
  "Nrules": 3

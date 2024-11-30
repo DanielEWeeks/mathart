@@ -9,7 +9,7 @@
  "Rule2":"Y -> XF-YF-X",
  "Rule2A":"Y",
  "Rule2B":"XF-YF-X",
- "Angle":"60",
+ "Angle": 60,
  "Link":"NA",
  "Note":"NA",
  "Nrules": 2

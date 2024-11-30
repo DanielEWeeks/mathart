@@ -1,12 +1,12 @@
 {
  "Num": 30,
- "Name":"NA",
+ "Name":"Pentigree",
  "Axiom":"F-F-F-F-F",
  "Rule":"Rule:",
  "Rule1":"F -> F-F++F+F-F-F",
  "Rule1A":"F",
  "Rule1B":"F-F++F+F-F-F",
- "Angle":"72",
+ "Angle": 72,
  "Link":"William McWorter <a href=\"http://www.nahee.com/spanky/pub/fractals/lsystems/mcworter.l\">Pentigree  </a>",
  "Note":"NA",
  "Nrules": 1

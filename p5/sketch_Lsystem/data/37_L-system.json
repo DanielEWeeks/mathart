@@ -1,6 +1,6 @@
 {
  "Num": 36,
- "Name":"NA",
+ "Name":"Maze & Fractal1",
  "Axiom":"X",
  "Rule":"Rules:",
  "Rule1":"F ->",
@@ -12,7 +12,7 @@
  "Rule3":"Y -> FX-FXFX+FX",
  "Rule3A":"Y",
  "Rule3B":"FX-FXFX+FX",
- "Angle":"120",
+ "Angle": 120,
  "Link":"William McWorter <a href=\"http://www.nahee.com/spanky/pub/fractals/lsystems/mcworter.l\">Maze&amp;Fractal1  </a>",
  "Note":"NA",
  "Nrules": 3

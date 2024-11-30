@@ -1,12 +1,12 @@
 {
  "Num": 35,
- "Name":"NA",
+ "Name":"Maze01",
  "Axiom":"F+F+F",
  "Rule":"Rule:",
  "Rule1":"F -> F+FF-F",
  "Rule1A":"F",
  "Rule1B":"F+FF-F",
- "Angle":"120",
+ "Angle": 120,
  "Link":"William McWorter <a href=\"http://www.nahee.com/spanky/pub/fractals/lsystems/mcworter.l\">Maze01  </a>",
  "Note":"NA",
  "Nrules": 1

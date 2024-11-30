@@ -9,7 +9,7 @@
  "Rule2":"X -> --FXF++FXF++FXF--",
  "Rule2A":"X",
  "Rule2B":"--FXF++FXF++FXF--",
- "Angle":"60",
+ "Angle": 60,
  "Link":"<a href=\"./Sierpinski_triangle\">Serpinski triangle</a>",
  "Note":"NA",
  "Nrules": 2

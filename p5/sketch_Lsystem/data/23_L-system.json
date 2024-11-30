@@ -9,7 +9,7 @@
  "Rule2":"X -> [-F+F+F]+F-F-F+",
  "Rule2A":"X",
  "Rule2B":"[-F+F+F]+F-F-F+",
- "Angle":"60",
+ "Angle": 60,
  "Link":"\u0418\u0437 <a href=\"http://dmitriyku.narod.ru/html/gallery_lfr.htm\">\u0433\u0430\u043b\u0435\u0440\u0435\u0438 \u0414\u043c\u0438\u0442\u0440\u0438\u044f \u0417\u0430\u0439\u043a\u043e\u0432\u0430  </a>",
  "Note":"NA",
  "Nrules": 2

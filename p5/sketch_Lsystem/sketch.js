@@ -4,6 +4,7 @@
 
 var numberInput;
 var number;
+var startInput;
 
 // variables: A B
 // axiom: A
@@ -106,6 +107,7 @@ let button4;
 let button5;
 let button6;
 let button7;
+let button8;
 
 
 
@@ -152,6 +154,10 @@ let ymin = 1;
      var zn;
      var x1;
      var y1;
+
+// Number of L-system JSON configuration files
+let NumMin = 0;
+let NumMax = 44;
 
 var txt4;
 var txt5;
@@ -203,10 +209,13 @@ function setup() {
   txt2.position(WIDTH + 75, HEIGHT - 22);
   txt4 = createDiv('Number:');
   txt4.id = "txt4";
-  txt4.position(WIDTH +205, HEIGHT - 125);
+  txt4.position(WIDTH +205, HEIGHT - 145);
   txt5 = createDiv('Name:');
   txt5.id = "txt5";
-  txt5.position(WIDTH + 205, HEIGHT -155);
+  txt5.position(WIDTH + 205, HEIGHT -165);
+  txt6 = createDiv('Axiom:');
+  txt6.id = "txt6";
+  txt6.position(WIDTH + 205, HEIGHT -125);
 
   
   a1Slide =  createSlider(1, 200, a1, 1);
@@ -254,15 +263,24 @@ function setup() {
 
 
   button = createButton("generate");
-  button.position(WIDTH + 5, HEIGHT - 75)
+  button.position(WIDTH + 205, HEIGHT - 75)
   button.mousePressed(generate);
 
-  numberInput = createInput("Input an integer >=0 & <45");
-  numberInput.position(WIDTH + 5, HEIGHT - 50);
+  numberInput = createInput("0");
+  numberInput.size(20);
+  numberInput.position(WIDTH + 180, HEIGHT - 50);
+  
+  startInput = createInput("T");
+  startInput.size(150);
+  startInput.position(WIDTH + 5, HEIGHT - 75);
 
   button7 = createButton("Enter number");
   button7.position(WIDTH + 205, HEIGHT -50)
   button7.mousePressed(EnterNumberAndSelect);
+  
+  button8 = createButton("Increment number");
+  button8.position(WIDTH + 205, HEIGHT -25)
+  button8.mousePressed(IncrementNumberAndSelect);
 
 }
 
@@ -442,9 +460,10 @@ function generate() {
 }
 
 function EnterNumberAndSelect() {
+   startSeq = startInput.value();
    number =numberInput.value();
    	angle = Number(LSysVec[number].Angle);
-	axiom =  LSysVec[number].Axiom;
+	axiom =  startSeq + LSysVec[number].Axiom;
 	divisor = 1;
 	let Curve = [];
 	Curve[0] = {
@@ -470,10 +489,61 @@ function EnterNumberAndSelect() {
 	a1Slide.value(len);
 	txt4.remove();
 	txt4 = createDiv('Number: ' + number);
-    txt4.position(WIDTH +205, HEIGHT - 125);
+    txt4.position(WIDTH +205, HEIGHT - 145);
 	txt5.remove();
 	txt5 = createDiv('Name: ' + LSysVec[number].Name);
-	txt5.position(WIDTH + 205, HEIGHT -155);
+	txt5.position(WIDTH + 205, HEIGHT -165);
+	txt6.remove();
+	txt6 = createDiv('Axiom: ' + axiom);
+	txt6.position(WIDTH + 205, HEIGHT -125);
+
+}
+
+
+function IncrementNumberAndSelect() {
+   startSeq = startInput.value();
+   number =numberInput.value();
+   number = Number(number);
+   if (number < NumMax) {
+    number = number + 1;
+   } else {
+    number = NumMin;
+   }
+   numberInput.value(number);
+   	angle = Number(LSysVec[number].Angle);
+	axiom =  startSeq + LSysVec[number].Axiom;
+	divisor = 1;
+	let Curve = [];
+	Curve[0] = {
+	  a:  LSysVec[number].Rule1A,
+	  b:  LSysVec[number].Rule1B
+	}
+	if ( LSysVec[number].Nrules>1){
+	Curve[1] = {
+	  a:  LSysVec[number].Rule2A,
+	  b:  LSysVec[number].Rule2B
+	}
+	}
+	if ( LSysVec[number].Nrules>2){
+	Curve[2] = {
+	  a:  LSysVec[number].Rule3A,
+	  b:  LSysVec[number].Rule3B
+	}
+	}
+	rules = Curve;
+	sentence = axiom;
+	a5Slide.value(angle);
+	len = StartLength/8;
+	a1Slide.value(len);
+	txt4.remove();
+	txt4 = createDiv('Number: ' + number);
+    txt4.position(WIDTH +205, HEIGHT - 145);
+	txt5.remove();
+	txt5 = createDiv('Name: ' + LSysVec[number].Name);
+	txt5.position(WIDTH + 205, HEIGHT -165);
+	txt6.remove();
+	txt6 = createDiv('Axiom: ' + axiom);
+	txt6.position(WIDTH + 205, HEIGHT -125);
 }
 
 
@@ -510,6 +580,10 @@ function turtle() {
       myScaledCanvas.rotate(angle);
     } else if (current == "-") {
       myScaledCanvas.rotate(-angle)
+    } else if (current == "/") {
+      myScaledCanvas.rotate(radians(90));
+    } else if (current == "\\") {
+      myScaledCanvas.rotate(-radians(90))
     } else if (current == "[") {
       myScaledCanvas.push();
     } else if (current == "]") {

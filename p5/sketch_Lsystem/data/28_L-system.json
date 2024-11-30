@@ -1,12 +1,12 @@
 {
  "Num": 27,
- "Name":"NA",
+ "Name":"Pentaplexity",
  "Axiom":"F++F++F++F++F",
  "Rule":"Rule:",
  "Rule1":"F -> F++F++F+++++F-F++F",
  "Rule1A":"F",
  "Rule1B":"F++F++F+++++F-F++F",
- "Angle":"36",
+ "Angle": 36,
  "Link":"P. Bourke <a href=\"http://local.wasp.uwa.edu.au/%7Epbourke/fractals/pentaplexity/\">Pentaplexity  </a>",
  "Note":"NA",
  "Nrules": 1
