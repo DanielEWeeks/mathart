@@ -1,0 +1,16 @@
+{
+ "Num": 54,
+ "Name":"Bush (d)",
+ "Axiom":"X",
+ "Rule":"Rules:",
+ "Rule1":"X -> F[+X]F[-X]+X",
+ "Rule1A":"X",
+ "Rule1B":"F[+X]F[-X]+X",
+ "Rule2":"F -> FF",
+ "Rule2A":"F",
+ "Rule2B":"FF",
+ "Angle": 20,
+ "Link":"The Algorithmic Beauty of Plants, Figure 1,24d, page 25",
+ "Note":"NA",
+ "Nrules": 2
+}

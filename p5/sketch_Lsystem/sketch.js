@@ -109,8 +109,6 @@ let button6;
 let button7;
 let button8;
 
-
-
 let DIAMETER = 450; // 450 = 7.5 inches at 600 PPI
 let npoints = 10000;
 let PI = 3.14159265358979323846;
@@ -157,7 +155,7 @@ let ymin = 1;
 
 // Number of L-system JSON configuration files
 let NumMin = 0;
-let NumMax = 44;
+let NumMax = 57;
 
 var txt4;
 var txt5;
@@ -199,11 +197,11 @@ function setup() {
   canvas = createCanvas(WIDTH, HEIGHT);
   myScaledCanvas = createGraphics(WIDTH, HEIGHT);
   currentScale = 1; // initialize to 1; don't touch
-  colorPicker = createColorPicker('rgb(211,211,211)');
+  colorPicker = createColorPicker('rgb(0,0,255)');
   colorPicker.position(WIDTH + 5, HEIGHT - 5);
   let txt = createDiv('Background color');
   txt.position(WIDTH + 5, HEIGHT + 22);
-  lineColorPicker = createColorPicker('rgb(0,128,0)');
+  lineColorPicker = createColorPicker('rgb(255,255,255)');
   lineColorPicker.position(WIDTH + 75, HEIGHT - 5);
   let txt2 = createDiv('Line color');
   txt2.position(WIDTH + 75, HEIGHT - 22);
@@ -217,6 +215,12 @@ function setup() {
   txt6.id = "txt6";
   txt6.position(WIDTH + 205, HEIGHT -125);
 
+    ye = year();
+    mo = month();
+    d = day();
+    h = hour();
+    m = minute();
+    s = second();
   
   a1Slide =  createSlider(1, 200, a1, 1);
   a1Slide.position(WIDTH + 10, 20);
@@ -307,11 +311,24 @@ function exportHighResolution() {
   draw();
 }
 
+function generateTimestamp() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  return `${year}${month}${day}_${hours}${minutes}${seconds}`;
+}
+
 function exportInstagramResolution() {
   currentScale = (1.6)/pixelDensity(); // Instagram-Res Export
   myScaledCanvas = createGraphics(currentScale * WIDTH, currentScale * HEIGHT);
   draw();
-  save(myScaledCanvas, "InstagramResImage", 'png');
+  let timestamp = generateTimestamp();
+  let flnm = `InstagramResImage_${timestamp}.png`; 
+  save(myScaledCanvas, flnm, 'png');
   currentScale = 1; // Reset to default scale 1:1
   myScaledCanvas = createGraphics(WIDTH, HEIGHT);
   draw();

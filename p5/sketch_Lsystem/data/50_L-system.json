@@ -1,0 +1,13 @@
+{
+ "Num": 49,
+ "Name":"Koch curve (c)",
+ "Axiom":"F-F-F-F",
+ "Rule":"Rule:",
+ "Rule1":"F -> FF-F+F-F-FF",
+ "Rule1A":"F",
+ "Rule1B":"FF-F+F-F-FF",
+ "Angle": 90,
+ "Link":"The Algorithmic Beauty of Plants, Figure 1.9c, page 10",
+ "Note":"NA",
+ "Nrules": 1
+}

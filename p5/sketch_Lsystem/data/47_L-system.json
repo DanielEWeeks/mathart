@@ -1,0 +1,13 @@
+{
+ "Num": 46,
+ "Name":"Quadratic Snowflake",
+ "Axiom":"-F",
+ "Rule":"Rule:",
+ "Rule1":"F -> F+F-F-F+F",
+ "Rule1A":"F",
+ "Rule1B":"F+F-F-F+F",
+ "Angle": 90,
+ "Link":"The Algorithmic Beauty of Plants, Figure 1.7, page 9",
+ "Note":"NA",
+ "Nrules": 1
+}

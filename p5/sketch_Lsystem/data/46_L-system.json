@@ -1,0 +1,16 @@
+{
+ "Num": 45,
+ "Name":"Islands and Lakes",
+ "Axiom":"F+F+F+F",
+ "Rule":"Rules:",
+ "Rule1":"F -> F+T-FF+F+FF+FT+FF-T+FF-F-FF-FT-FFF",
+ "Rule1A":"F",
+ "Rule1B":"F+T-FF+F+FF+FT+FF-T+FF-F-FF-FT-FFF",
+ "Rule2":"T -> TTTTTT",
+ "Rule2A":"T",
+ "Rule2B":"TTTTTT",
+ "Angle": 90,
+ "Link":"The Algorithmic Beauty of Plants, Figure 1.8, page 9",
+ "Note":"NA",
+ "Nrules": 2
+}
