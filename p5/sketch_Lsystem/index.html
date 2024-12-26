@@ -31,15 +31,54 @@
 <p>To learn more about L-systems, also known as Lindenmayer Systems, please see:
 <br> <a href="https://paulbourke.net/fractals/lsys/" target="_blank">https://paulbourke.net/fractals/lsys/</a>
 </p>
+<p>L-system operators used here: <p>
+
+<table>
+  <tr>
+    <th>Operator</th>
+    <th>Meaning</th>
+  </tr>
+  <tr>
+    <td>F</td>
+    <td>Move forward drawing a line</td>
+  </tr>
+  <tr>
+    <td>T</td>
+    <td>Move forward without drawing a line</td>
+  </tr>
+  <tr>
+    <td>+</td>
+    <td>Rotate right</td>
+  </tr>
+  <tr>
+    <td>-</td>
+    <td>Rotate left</td>
+  </tr>
+  <tr>
+    <td>/</td>
+    <td>Rotate right 90 degrees</td>
+  </tr>
+  <tr>
+    <td>\</td>
+    <td>Rotate left 90 degrees</td>
+  </tr>
+  <tr>
+    <td>[</td>
+    <td>Push</td>
+  </tr>
+  <tr>
+    <td>]</td>
+    <td>Pop</td>
+  </tr>
+</table>
+
+
 <p>Click the 'generate' button to grow the L-system</p>
-<p>Change angle D by using the slider.</p>
- <p>Change the values of the parameters a, b, c, and d by using the sliders.</p>
-<p>Key 'r': Redraw with a random set of parameters.</p>
-<p>LEFT_ARROW: Draw with few points (faster).</p>
-<p>RIGHT_ARROW: Draw with many more points (slower).</p>
+<p>Change the branch length by using the 'Length' slider.</p>
+<p>Change the angle by using the 'Angle' slider.</p>
+<p>Change the stroke weight by using the 'Stroke weight' slider.</p>
+<p>Key 'l': Save a low-resolution PNG of the current image.</p>
 <p>Key 'e': Save a high-resolution PNG of the current image.</p>
-<p>Key 'a': Increment the number of points.</p>
-<p>Key 's': Decrement the number of points.</p>
 <p><br></p>
 <hr width="675px" align="left">
 <h2>The p5js code</h2>

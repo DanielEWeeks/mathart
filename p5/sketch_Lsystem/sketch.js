@@ -235,12 +235,12 @@ function setup() {
   
   a1Slide =  createSlider(1, 200, a1, 1);
   a1Slide.position(WIDTH + 10, 20);
-  a2Slide =  createSlider(-3, 10, a2, 0.1);
-  a2Slide.position(WIDTH + 10, 50);
-  a3Slide =  createSlider(-3, 10, a3, 0.1);
-  a3Slide.position(WIDTH + 10, 80);
-  a4Slide =  createSlider(-3, 3, a4, 0.1);
-  a4Slide.position(WIDTH + 10, 110);
+//  a2Slide =  createSlider(-3, 10, a2, 0.1);
+//  a2Slide.position(WIDTH + 10, 50);
+//  a3Slide =  createSlider(-3, 10, a3, 0.1);
+//  a3Slide.position(WIDTH + 10, 80);
+//  a4Slide =  createSlider(-3, 3, a4, 0.1);
+//  a4Slide.position(WIDTH + 10, 110);
   a5Slide =  createSlider(3, 180, a5, 1);
   a5Slide.position(WIDTH + 10, 140);
   a6Slide =  createSlider(-3, 3, a6, 0.1);
@@ -370,11 +370,11 @@ function keyReleased() {
                a1 = random(1, 200);
                a1Slide.value(a1);
                a2 = random(-3, 10);
-               a2Slide.value(a2);
+               // a2Slide.value(a2);
                a3 = random(-3, 10);
-               a3Slide.value(a3);
+               // a3Slide.value(a3);
                a4 = random(-3, 3);
-               a4Slide.value(a4);
+               // a4Slide.value(a4);
                a5 = random(3, 180);
                a5Slide.value(a5);
                a6 = random(-3, 3);
@@ -633,8 +633,10 @@ function turtle() {
     } else if (current == "T") {
       myScaledCanvas.translate(0, -len);
     } else if (current == "+") {
+      // Note: this 'angle' is in radians.
       myScaledCanvas.rotate(angle);
     } else if (current == "-") {
+      // Note: this 'angle' is in radians.
       myScaledCanvas.rotate(-angle)
     } else if (current == "/") {
       myScaledCanvas.rotate(radians(90));
@@ -664,17 +666,17 @@ function drawMyDesign() {
 //  myScaledCanvas.rotate(-HALF_PI);
   
   a1 = a1Slide.value();
-  a2 = a2Slide.value();
-  a3 = a3Slide.value();
-  a4 = a4Slide.value();
+//  a2 = a2Slide.value();
+//  a3 = a3Slide.value();
+//  a4 = a4Slide.value();
   a5 = a5Slide.value();
   a6 = a6Slide.value();
 
 
   valueDisplayer.html('Length = '+round(a1,3));
-  a2valueDisplayer.html('b = '+round(a2,3));
-  a3valueDisplayer.html('c = '+round(a3,3));
-  a4valueDisplayer.html('d = '+round(a4,3));
+ // a2valueDisplayer.html('b = '+round(a2,3));
+ // a3valueDisplayer.html('c = '+round(a3,3));
+ // a4valueDisplayer.html('d = '+round(a4,3));
   a5valueDisplayer.html('Angle = '+round(a5,3));
   a6valueDisplayer.html('Stroke weight = '+round(a6,3));
   
@@ -682,6 +684,7 @@ function drawMyDesign() {
   b = a2;
   c = a3;
   d = a4;
+  // a5 is set to the angle in degrees
   degree = a5;
   lambda = a6;
   
@@ -690,10 +693,9 @@ function drawMyDesign() {
   // c = gamma
   // d = omega
   
-//  createCanvas(400, 400);
-//  angle = radians(25);
+// As the 'rotate' command expects radians by default,
+// we convert the 'degree' measure to radians here:
   angle = radians(degree);
-//  background(51);
   createP(axiom);
   turtle();
 
