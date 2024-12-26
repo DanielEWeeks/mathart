@@ -85,6 +85,7 @@ angle = 60;
 axiom = "F++F++F";
 divisor = 0.40;
 
+var RandAng = false;
 
 var sentence = axiom;
 
@@ -223,6 +224,9 @@ function setup() {
   txt9 = createDiv('Rule 3:');
   txt9.id = "txt9";
   txt9.position(WIDTH + 205, HEIGHT -125);
+  txt10 = createDiv(RandAng);
+  txt10.id = "txt10";
+  txt10.position(WIDTH + 335, HEIGHT);
 
 
 
@@ -296,6 +300,11 @@ function setup() {
   button8 = createButton("Increment number");
   button8.position(WIDTH + 205, HEIGHT -25)
   button8.mousePressed(IncrementNumberAndSelect);
+
+  button9 = createButton("Randomize angle");
+  button9.position(WIDTH + 205, HEIGHT -0)
+  button9.mousePressed(ToggleRandomizeAngle);
+
 
 }
 
@@ -487,6 +496,13 @@ function generate() {
 
 }
 
+function ToggleRandomizeAngle() {
+    RandAng = !RandAng;
+    txt10.remove();
+    txt10 = createDiv(RandAng);
+    txt10.position(WIDTH + 335, HEIGHT);
+}
+
 function EnterNumberAndSelect() {
    startSeq = startInput.value();
    number =numberInput.value();
@@ -537,7 +553,9 @@ function EnterNumberAndSelect() {
       txt9 = createDiv('Rule 3:  ' + LSysVec[number].Rule3A + ' -> ' + LSysVec[number].Rule3B);
 	  txt9.position(WIDTH + 205, HEIGHT -125);
     }
-
+    txt10.remove();
+    txt10 = createDiv(RandAng);
+    txt10.position(WIDTH + 335, HEIGHT);
 
 }
 
@@ -599,7 +617,9 @@ function IncrementNumberAndSelect() {
       txt9 = createDiv('Rule 3:  ' + LSysVec[number].Rule3A + ' -> ' + LSysVec[number].Rule3B);
 	  txt9.position(WIDTH + 205, HEIGHT -125);
     }
-
+    txt10.remove();
+    txt10 = createDiv(RandAng);
+    txt10.position(WIDTH + 335, HEIGHT);
 }
 
 
@@ -633,11 +653,19 @@ function turtle() {
     } else if (current == "T") {
       myScaledCanvas.translate(0, -len);
     } else if (current == "+") {
+     if (RandAng == true) {
+       myScaledCanvas.rotate(angle + random(-0.2,0.2));
+     } else {
       // Note: this 'angle' is in radians.
       myScaledCanvas.rotate(angle);
+      }
     } else if (current == "-") {
+      if (RandAng == true) {
+       myScaledCanvas.rotate(-angle - random(-0.2,0.2));
+      } else {
       // Note: this 'angle' is in radians.
       myScaledCanvas.rotate(-angle)
+      }
     } else if (current == "/") {
       myScaledCanvas.rotate(radians(90));
     } else if (current == "\\") {
