@@ -207,13 +207,24 @@ function setup() {
   txt2.position(WIDTH + 75, HEIGHT - 22);
   txt4 = createDiv('Number:');
   txt4.id = "txt4";
-  txt4.position(WIDTH +205, HEIGHT - 145);
+  txt4.position(WIDTH +205, HEIGHT - 205);
   txt5 = createDiv('Name:');
   txt5.id = "txt5";
-  txt5.position(WIDTH + 205, HEIGHT -165);
+  txt5.position(WIDTH + 205, HEIGHT -225);
   txt6 = createDiv('Axiom:');
   txt6.id = "txt6";
-  txt6.position(WIDTH + 205, HEIGHT -125);
+  txt6.position(WIDTH + 205, HEIGHT -185);
+  txt7 = createDiv('Rule 1:');
+  txt7.id = "txt7";
+  txt7.position(WIDTH + 205, HEIGHT -165);
+  txt8 = createDiv('Rule 2:');
+  txt8.id = "txt8";
+  txt8.position(WIDTH + 205, HEIGHT -145);
+  txt9 = createDiv('Rule 3:');
+  txt9.id = "txt9";
+  txt9.position(WIDTH + 205, HEIGHT -125);
+
+
 
     ye = year();
     mo = month();
@@ -506,13 +517,27 @@ function EnterNumberAndSelect() {
 	a1Slide.value(len);
 	txt4.remove();
 	txt4 = createDiv('Number: ' + number);
-    txt4.position(WIDTH +205, HEIGHT - 145);
+    txt4.position(WIDTH +205, HEIGHT - 205);
 	txt5.remove();
 	txt5 = createDiv('Name: ' + LSysVec[number].Name);
-	txt5.position(WIDTH + 205, HEIGHT -165);
+	txt5.position(WIDTH + 205, HEIGHT -225);
 	txt6.remove();
 	txt6 = createDiv('Axiom: ' + axiom);
-	txt6.position(WIDTH + 205, HEIGHT -125);
+	txt6.position(WIDTH + 205, HEIGHT -185);
+	txt7.remove();
+	txt7 = createDiv('Rule 1:  ' + LSysVec[number].Rule1A + ' -> ' + LSysVec[number].Rule1B);
+	txt7.position(WIDTH + 205, HEIGHT -165);
+	txt8.remove();
+    if ( LSysVec[number].Nrules>1){
+      txt8 = createDiv('Rule 2:  ' + LSysVec[number].Rule2A + ' -> ' + LSysVec[number].Rule2B);
+	  txt8.position(WIDTH + 205, HEIGHT -145);
+    }
+	txt9.remove();
+    if ( LSysVec[number].Nrules>2){
+      txt9 = createDiv('Rule 3:  ' + LSysVec[number].Rule3A + ' -> ' + LSysVec[number].Rule3B);
+	  txt9.position(WIDTH + 205, HEIGHT -125);
+    }
+
 
 }
 
@@ -554,13 +579,27 @@ function IncrementNumberAndSelect() {
 	a1Slide.value(len);
 	txt4.remove();
 	txt4 = createDiv('Number: ' + number);
-    txt4.position(WIDTH +205, HEIGHT - 145);
+    txt4.position(WIDTH +205, HEIGHT - 205);
 	txt5.remove();
 	txt5 = createDiv('Name: ' + LSysVec[number].Name);
-	txt5.position(WIDTH + 205, HEIGHT -165);
+	txt5.position(WIDTH + 205, HEIGHT -225);
 	txt6.remove();
 	txt6 = createDiv('Axiom: ' + axiom);
-	txt6.position(WIDTH + 205, HEIGHT -125);
+	txt6.position(WIDTH + 205, HEIGHT -185);
+	txt7.remove();
+	txt7 = createDiv('Rule 1:  ' + LSysVec[number].Rule1A + ' -> ' + LSysVec[number].Rule1B);
+	txt7.position(WIDTH + 205, HEIGHT -165);
+	txt8.remove();
+    if ( LSysVec[number].Nrules>1){
+      txt8 = createDiv('Rule 2:  ' + LSysVec[number].Rule2A + ' -> ' + LSysVec[number].Rule2B);
+	  txt8.position(WIDTH + 205, HEIGHT -145);
+    }
+    txt9.remove();
+    if ( LSysVec[number].Nrules>2){
+      txt9 = createDiv('Rule 3:  ' + LSysVec[number].Rule3A + ' -> ' + LSysVec[number].Rule3B);
+	  txt9.position(WIDTH + 205, HEIGHT -125);
+    }
+
 }
 
 
